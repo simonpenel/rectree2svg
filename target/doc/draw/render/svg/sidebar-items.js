@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SvgRenderer","Renders the canvas as an SVG"]]});

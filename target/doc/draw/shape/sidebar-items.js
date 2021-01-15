@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LinePoint","Enum that describes the various types of lines"],["Shape","Enum containing all supported shapes todo: Make this Shape to support float sizes"],["ShapeBuilder",""]],"struct":[["Line","Helper object for building lines; provides a better syntax than building a `Shape::Line` from scratch."],["LineBuilder",""]]});
