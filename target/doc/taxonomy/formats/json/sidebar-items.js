@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["load_json","Load a Taxonomy out of the `reader` automatically trying to determine what subtype of the JSON types we understand it is."],["load_node_link_json",""],["load_tree_json",""],["save_json",""],["save_node_link_json",""],["save_tree_json",""]]});

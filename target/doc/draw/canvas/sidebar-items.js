@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Canvas","Container for a drawing"]]});

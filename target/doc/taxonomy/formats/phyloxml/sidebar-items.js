@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["load_phyloxml","Read PhyloXML format into a Taxonomy object out of a `reader`."],["save_phyloxml","Write a Taxonomy object out to a `writer` in the PhyloXML format."]]});

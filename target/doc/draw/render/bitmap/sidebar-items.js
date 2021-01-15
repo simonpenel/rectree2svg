@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["PNGRenderer","Renders `Canvas` to a PNG format todo: Implement!"]]});
