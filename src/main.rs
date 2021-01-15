@@ -35,6 +35,36 @@ fn main() {
     //  Explore l'arbre
     explore_arbre_ref(& noeud2);
 
+
+    // Test l'Arena
+    let mut tree: ArenaTree<String> = ArenaTree::default();
+    let hello = tree.node("Hello".into());
+    println!("Index de Hello = {}",hello);
+    let world = tree.node("World".into());
+    println!("Index de World = {}",world);
+    let coucou = tree.node(String::from("Coucou"));
+    println!("Index de Coucou = {}",coucou);
+    let coucou = tree.node(String::from("World"));
+    println!("Index de World = {}",coucou);
+
+    println!("ARENA :{:?}",tree);
+
+    tree.arena[hello].children.push(world);
+    tree.arena[world].parent = Some(hello);
+
+    println!("ARENA :{:?}",tree);
+
+    let mut tree_svg: ArenaTree<NoeudSVG> = ArenaTree::default();
+    let mut noeud_svg_1 = NoeudSVG {
+            identifiant: 0,
+            name : String::from("Racine"),
+            x: 12.1,
+            y: 23.5,
+            e: String::from("Duplication")
+        };
+
+    noeud_svg_1.check();
+    noeud_svg_1.check();
     // Teste le module de lecture de Taxonomie
     let mut f = File::open("newick.txt").expect("Impossible d'ouvrir le fichier");
     let phyl = newick::load_newick(&mut f);
