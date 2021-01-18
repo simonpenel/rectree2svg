@@ -60,8 +60,11 @@ fn main() {
             name : String::from("Racine"),
             x: 12.1,
             y: 23.5,
-            e: String::from("Duplication")
+            e: Event::Undef,
         };
+    let mut noeud_svg: NoeudSVG = Default::default();
+    noeud_svg.check();
+    println!("NOEUD :{:?}",noeud_svg);
 
     noeud_svg_1.check();
     noeud_svg_1.check();

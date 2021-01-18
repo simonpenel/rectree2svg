@@ -79,13 +79,17 @@ where
     }
 }
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum Event {
     Speciation,
     Duplication,
     Loss,
     Transfer,
     Undef,
+}
+// Pas de trait Default pour enum, donc
+impl Default for Event {
+    fn default() -> Self { Event::Undef }
 }
 
 #[derive(Debug, Default,PartialEq)]
@@ -95,20 +99,17 @@ pub struct NoeudSVG
     pub name: String,
     pub x: f32,
     pub y: f32,
-    pub e: String,
+    pub e: Event,
 }
 
 impl NoeudSVG {
     pub fn check (&mut self) {
         println!("Name = {}",self.name);
     }
-    //  pub fn get_event (&mut self) -> Event  {
-    //      match self.e {
-    //             String::from("Speciation") => Event::Speciation,
-    //             _ => Event::Undef,
-    //
-    //      }
-    // }
+
+    pub fn get_event (&mut self) -> &Event  {
+        &self.e
+    }
 
 
 }
