@@ -14,6 +14,8 @@ fn main() {
     println!("Index de Coucou = {}",coucou);
     let coucou = tree.node(String::from("World"));
     println!("Index de World = {}",coucou);
+        let coucou = tree.new_node(String::from("World"));
+        println!("Index de World = {:?}",coucou);
 
     println!("ARENA :{:?}",tree);
 
@@ -22,19 +24,30 @@ fn main() {
 
     println!("ARENA :{:?}",tree);
 
-    let mut tree_svg: ArenaTree<NoeudSVG> = ArenaTree::default();
-    let mut noeud_svg_1 = NoeudSVG {
-            identifiant: 0,
-            name : String::from("Racine"),
-            x: 12.1,
-            y: 23.5,
-            e: Event::Undef,
-        };
-    let mut noeud_svg: NoeudSVG = Default::default();
-    noeud_svg.check();
-    println!("NOEUD :{:?}",noeud_svg);
-
-    noeud_svg_1.check();
-    noeud_svg_1.check();
-
+    // let mut tree_svg: ArenaTree<NoeudSVG> = ArenaTree::default();
+    // let mut noeud_svg_1 = NoeudSVG {
+    //         identifiant: 0,
+    //         name : String::from("Racine"),
+    //         x: 12.1,
+    //         y: 23.5,
+    //         e: Event::Undef,
+    //     };
+    // let  racine_svg: NoeudSVG = Default::default();
+    // let  racine_svg = NoeudSVG {
+    //         identifiant: 1,
+    //         name : String::from("Racine"),
+    //         x: 12.1,
+    //         y: 23.5,
+    //         e: Event::Speciation,
+    //     };
+    //
+    // let racine = tree_svg.node(racine_svg);
+    //
+    // let  feuille_svg: NoeudSVG = Default::default();
+    // let feuille = tree_svg.node(feuille_svg);
+    //
+    // tree_svg.arena[racine].children.push(feuille);
+    // tree_svg.arena[feuille].parent = Some(racine);
+    //
+    // println!("TREE SVG:{:?}",tree_svg);
 }

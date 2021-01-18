@@ -50,8 +50,21 @@ where
         self.arena.push(Node::new(idx, val));
         idx
     }
+    pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
+        //first see if it exists
+        for node in &self.arena {
+            if node.val == val {
+                return Err("Ce noeud existe déjà")
+            }
+        }
+        // Otherwise, add new node
+        let idx = self.arena.len();
+        self.arena.push(Node::new(idx, val));
+        Ok(idx)
+    }
 }
 
+// enum des evenements possibles
 #[derive(Debug, PartialEq)]
 pub enum Event {
     Speciation,
@@ -65,19 +78,23 @@ impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
+// NoeudSVG
 #[derive(Debug, Default,PartialEq)]
 pub struct NoeudSVG
 {
     pub identifiant:usize,
     pub name: String,
-    pub x: f32,
+    pub x: f32 ,
     pub y: f32,
     pub e: Event,
 }
 
 impl NoeudSVG {
     pub fn check (&mut self) {
-        println!("Name = {}",self.name);
+        println!("Name =        {}",self.name);
+        println!("Identifiant = {}",self.identifiant);
+        println!("Coordinates = {} {}",self.x,self.y);
+        println!("Event =       {:?}",self.e);
     }
 
     pub fn get_event (&mut self) -> &Event  {
