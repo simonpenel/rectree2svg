@@ -1,6 +1,13 @@
+//! # tree2svg
+//!
+//! `tree2svg` is a collection of utilities to draw phylogentic trees in svg format.
+//! Part of the code is taken from :
+//! https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
+
 use taxonomy::Taxonomy;
 
-// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
+/// Structure Node.
+///
 #[derive(Debug)]
 pub struct Node<T>
 where
@@ -14,6 +21,7 @@ where
     pub e: Event,
 }
 
+/// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
 #[derive(Debug, Default)]
 pub struct ArenaTree<T>
 where
@@ -51,8 +59,6 @@ where
     {
         self.x = x;
     }
-
-
     pub fn get_vale(&mut self) -> &Event {
         &self.e
     }
@@ -62,6 +68,7 @@ where
     }
 }
 
+/// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
 impl<T> ArenaTree<T>
 where
     T: PartialEq
@@ -78,7 +85,8 @@ where
         self.arena.push(Node::new(idx, val));
         idx
     }
-    pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
+    // pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
+    pub fn new_node(&mut self, val: T) -> usize {
         //first see if it exists
         for node in &self.arena {
             if node.val == val {
@@ -88,11 +96,12 @@ where
         // Otherwise, add new node
         let idx = self.arena.len();
         self.arena.push(Node::new(idx, val));
-        Ok(idx)
+        // Ok(idx)
+        idx
     }
 }
 
-// enum des evenements possibles
+/// enum of the possible events in a gene tree
 #[derive(Debug, PartialEq)]
 pub enum Event {
     Speciation,
@@ -101,14 +110,13 @@ pub enum Event {
     Transfer,
     Undef,
 }
-// Pas de trait Default pour enum, donc
+/// There  is no Default pour enum, we define one.
 impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
-
+/// Fill an ArenaTree structure with the contents of a GeneralTaxonomy structure
 pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
-
     let children = &t.children(n).expect("Pas de fils");
     let name = t.from_internal_id(n).expect("Pas de nom");
     let parent = t.parent(n).expect("Pas de parent");
@@ -122,7 +130,7 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
     };
     let name = "N".to_owned()+&n.to_string()+"_"+name;
     let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
-    let name = tree.node(name.to_string()); // TRES DANGEREUX VERIFIER REDOND (CF NEW_NODE)
+    let name = tree.new_node(name.to_string());
     let parent = tree.node(parent_name.to_string());
     tree.arena[parent].children.push(name);
     tree.arena[name].parent = Some(parent);
