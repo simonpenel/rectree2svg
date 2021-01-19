@@ -10,6 +10,8 @@ where
     val: T,
     pub parent: Option<usize>,
     pub children: Vec<usize>,
+    pub x: f32,
+    pub e: Event,
 }
 
 #[derive(Debug, Default)]
@@ -30,8 +32,37 @@ where
             val,
             parent: None,
             children: vec![],
+            x: 0.0,
+            e: Event::Undef,
         }
     }
+    pub fn get_val(&mut self) -> &T {
+        &self.val
+    }
+    pub fn get_valx(&mut self) -> &f32 {
+        &self.x
+    }
+    pub fn set_valx(&mut self, x: &f32)
+    {
+        self.x = *x;
+    }
+
+    pub fn set_valxnoref(&mut self, x: f32)
+    {
+        self.x = x;
+    }
+
+
+    pub fn get_vale(&mut self) -> &Event {
+        &self.e
+    }
+    pub fn set_vale(&mut self, e: Event)
+    {
+        self.e = e;
+    }
+
+
+
 }
 
 impl<T> ArenaTree<T>
@@ -51,10 +82,13 @@ where
         idx
     }
     pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
+        println!("TEST IF EXISTST ");
         //first see if it exists
         for node in &self.arena {
             if node.val == val {
-                return Err("Ce noeud existe déjà")
+                    println!("OUI");
+                    panic!("Le noued existe dèja");
+                // return Err("Ce noeud existe déjà")
             }
         }
         // Otherwise, add new node
@@ -62,6 +96,20 @@ where
         self.arena.push(Node::new(idx, val));
         Ok(idx)
     }
+    // fn insert(&mut self, orbit: &str) {
+    //     // Init nodes
+    //     let split = orbit.split(')').collect::<Vec<&str>>();
+    //     let inner = self.node(split[0]);
+    //     let outer = self.node(split[1]);
+    //     // set orbit
+    //     match self.arena[outer].parent {
+    //         Some(_) => panic!("Attempt to overwrite existing orbit"),
+    //         None => self.arena[outer].parent = Some(inner),
+    //     }
+    //     // set parents
+    //     self.arena[inner].children.push(outer);
+    // }
+
 }
 
 // enum des evenements possibles
@@ -97,9 +145,44 @@ impl NoeudSVG {
         println!("Event =       {:?}",self.e);
     }
 
-    pub fn get_event (&mut self) -> &Event  {
+    pub fn get_event (& self) -> &Event  {
         &self.e
     }
 
+    pub fn set_x (&mut  self, x: f32)  {
+        self.x = x;
+    }
+    pub fn get_x (& self) -> f32 {
+        self.x
+    }
 
+
+
+}
+
+pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
+
+    let children = &t.children(n).expect("Pas de fils");
+    let name = t.from_internal_id(n).expect("Pas de nom");
+    let parent = t.parent(n).expect("Pas de parent");
+    let parent_name = match parent {
+        None => "root",
+        Some ((id, _dist)) => t.from_internal_id(id).expect("Pas de nom")
+    };
+    let parent_index = match parent {
+        None => 0,
+        Some ((id, _dist)) => id
+    };
+    // let name = "N".to_owned()+&it.to_string()+"_"+name;
+    let name = "N".to_owned()+&n.to_string()+"_"+name;
+     let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
+     let name = tree.node(name.to_string()); // TRES DANGEREUX VERIFIER REDOND (CF NEW_NODE)
+     let parent = tree.node(parent_name.to_string());
+     tree.arena[parent].children.push(name);
+     tree.arena[name].parent = Some(parent);
+
+
+     for child in children {
+        taxo2tree(& t,*child,  tree);
+        }
 }
