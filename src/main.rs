@@ -19,5 +19,5 @@ fn main() {
     let racine: &str = taxo.root();
     let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
     taxo2tree(& taxo,racine_tid,&mut tree);
-    println!("Arbre : {:?}",tree);
+    println!("Arbre Arena: {:?}",tree);
 }

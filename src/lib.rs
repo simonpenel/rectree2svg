@@ -60,9 +60,6 @@ where
     {
         self.e = e;
     }
-
-
-
 }
 
 impl<T> ArenaTree<T>
@@ -82,13 +79,10 @@ where
         idx
     }
     pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
-        println!("TEST IF EXISTST ");
         //first see if it exists
         for node in &self.arena {
             if node.val == val {
-                    println!("OUI");
-                    panic!("Le noued existe dèja");
-                // return Err("Ce noeud existe déjà")
+                    panic!("Le noeud existe dèja");
             }
         }
         // Otherwise, add new node
@@ -96,20 +90,6 @@ where
         self.arena.push(Node::new(idx, val));
         Ok(idx)
     }
-    // fn insert(&mut self, orbit: &str) {
-    //     // Init nodes
-    //     let split = orbit.split(')').collect::<Vec<&str>>();
-    //     let inner = self.node(split[0]);
-    //     let outer = self.node(split[1]);
-    //     // set orbit
-    //     match self.arena[outer].parent {
-    //         Some(_) => panic!("Attempt to overwrite existing orbit"),
-    //         None => self.arena[outer].parent = Some(inner),
-    //     }
-    //     // set parents
-    //     self.arena[inner].children.push(outer);
-    // }
-
 }
 
 // enum des evenements possibles
@@ -137,28 +117,6 @@ pub struct NoeudSVG
     pub e: Event,
 }
 
-impl NoeudSVG {
-    pub fn check (&mut self) {
-        println!("Name =        {}",self.name);
-        println!("Identifiant = {}",self.identifiant);
-        println!("Coordinates = {} {}",self.x,self.y);
-        println!("Event =       {:?}",self.e);
-    }
-
-    pub fn get_event (& self) -> &Event  {
-        &self.e
-    }
-
-    pub fn set_x (&mut  self, x: f32)  {
-        self.x = x;
-    }
-    pub fn get_x (& self) -> f32 {
-        self.x
-    }
-
-
-
-}
 
 pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
 
@@ -173,16 +131,13 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         None => 0,
         Some ((id, _dist)) => id
     };
-    // let name = "N".to_owned()+&it.to_string()+"_"+name;
     let name = "N".to_owned()+&n.to_string()+"_"+name;
-     let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
-     let name = tree.node(name.to_string()); // TRES DANGEREUX VERIFIER REDOND (CF NEW_NODE)
-     let parent = tree.node(parent_name.to_string());
-     tree.arena[parent].children.push(name);
-     tree.arena[name].parent = Some(parent);
-
-
-     for child in children {
+    let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
+    let name = tree.node(name.to_string()); // TRES DANGEREUX VERIFIER REDOND (CF NEW_NODE)
+    let parent = tree.node(parent_name.to_string());
+    tree.arena[parent].children.push(name);
+    tree.arena[name].parent = Some(parent);
+    for child in children {
         taxo2tree(& t,*child,  tree);
-        }
+    }
 }
