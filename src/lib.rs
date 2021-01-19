@@ -85,7 +85,6 @@ where
         self.arena.push(Node::new(idx, val));
         idx
     }
-    // pub fn new_node(&mut self, val: T) -> Result<usize, &'static str> {
     pub fn new_node(&mut self, val: T) -> usize {
         //first see if it exists
         for node in &self.arena {
