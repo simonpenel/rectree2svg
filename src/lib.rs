@@ -106,17 +106,6 @@ impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
-// NoeudSVG
-#[derive(Debug, Default,PartialEq)]
-pub struct NoeudSVG
-{
-    pub identifiant:usize,
-    pub name: String,
-    pub x: f32 ,
-    pub y: f32,
-    pub e: Event,
-}
-
 
 pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
 
