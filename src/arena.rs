@@ -9,9 +9,11 @@ where
 {
     idx: usize,
     val: T,
+    pub name: String,
     pub parent: Option<usize>,
     pub children: Vec<usize>,
     pub x: f32,
+    pub y: f32,
     pub e: Event,
 }
 /// Structure ArenaTree.
@@ -33,37 +35,53 @@ where
         Self {
             idx,
             val,
+            name :String::from("Undefined"),
             parent: None,
             children: vec![],
             x: 0.0,
+            y: 0.0,
             e: Event::Undef,
         }
     }
     pub fn get_val(&mut self) -> &T {
         &self.val
     }
-    pub fn get_valx(&mut self) -> &f32 {
+    pub fn get_x(&mut self) -> &f32 {
         &self.x
     }
-    pub fn set_valx(&mut self, x: &f32)
+    pub fn get_y(&mut self) -> &f32 {
+        &self.y
+    }
+    pub fn get_coords(&mut self) -> ( &f32, &f32) {
+        (&self.x,&self.y)
+    }
+
+    pub fn set_x(&mut self, x: &f32)
     {
         self.x = *x;
     }
-
-    pub fn set_valxnoref(&mut self, x: f32)
+    pub fn set_x_noref(&mut self, x: f32)
     {
         self.x = x;
     }
-    pub fn get_vale(&mut self) -> &Event {
+    pub fn set_y(&mut self, y: &f32)
+    {
+        self.y = *y;
+    }
+    pub fn set_y_noref(&mut self, y: f32)
+    {
+        self.y = y;
+    }
+    pub fn get_event(&mut self) -> &Event {
         &self.e
     }
-    pub fn set_vale(&mut self, e: Event)
+    pub fn set_event(&mut self, e: Event)
     {
         self.e = e;
     }
 }
 
-/// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
+/// Arena structure taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
 impl<T> ArenaTree<T>
 where
     T: PartialEq
@@ -93,6 +111,11 @@ where
         // Ok(idx)
         idx
     }
+    pub fn set_coords(&mut self)  {
+        let i = 10.0;
+
+    }
+
 }
 
 /// enum of the possible events in a gene tree
@@ -122,13 +145,31 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         None => 0,
         Some ((id, _dist)) => id
     };
+    let initial_name = name.clone();
     let name = "N".to_owned()+&n.to_string()+"_"+name;
     let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
     let name = tree.new_node(name.to_string());
     let parent = tree.node(parent_name.to_string());
     tree.arena[parent].children.push(name);
     tree.arena[name].parent = Some(parent);
+    tree.arena[name].name = initial_name.to_string();
     for child in children {
         taxo2tree(& t,*child,  tree);
     }
+}
+
+
+pub fn set_tree_coords( tree: &mut ArenaTree<String>) {
+let longueur = tree.arena.len();
+let mut count = 0usize;
+ loop {
+     // tree.arena[count].set_x_noref(10.0* (count as f32));
+      tree.arena[count].set_y_noref(15.0);
+     tree.arena[count].set_y_noref(15.0* (count as f32));
+    count += 1;
+
+    if count == longueur {
+        break;
+    }
+}
 }
