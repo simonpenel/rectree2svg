@@ -1,7 +1,10 @@
 use std::fs::File;
 use taxonomy::formats::newick;
 use taxonomy::Taxonomy;
-use tree2svg::*;
+mod arena;
+use crate::arena::ArenaTree;
+use crate::arena::taxo2tree;
+mod svg;
 
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
@@ -20,4 +23,5 @@ fn main() {
     let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
     taxo2tree(& taxo,racine_tid,&mut tree);
     println!("Arbre Arena: {:?}",tree);
+    svg::drw_tree(&mut tree);
 }
