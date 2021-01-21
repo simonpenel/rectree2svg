@@ -166,6 +166,7 @@ let mut count = 0usize;
      // tree.arena[count].set_x_noref(10.0* (count as f32));
       tree.arena[count].set_y_noref(15.0);
      tree.arena[count].set_y_noref(15.0* (count as f32));
+     tree.arena[count].set_x_noref(30.0* (count as f32));
     count += 1;
 
     if count == longueur {
