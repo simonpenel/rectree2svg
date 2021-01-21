@@ -8,8 +8,10 @@ pub use self::arena::Event;
 pub use self::arena::Node;
 pub use self::arena::ArenaTree;
 pub use self::arena::taxo2tree;
-
-
+pub use self::arena::set_tree_coords;
+mod drawing;
+pub use self::drawing::draw_tree;
+pub use self::drawing::get_carre;
 
 #[cfg(test)]
 mod tests {
