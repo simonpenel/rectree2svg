@@ -1,9 +1,10 @@
 
 use crate::arena::ArenaTree;
 use svg::Document;
+use svg::node::Comment;
 use svg::node::element::Path;
 use svg::node::element::Rectangle;
-use svg::node::element::Text;
+use svg::node::Text;
 use svg::node::element::Element;
 use svg::node::element::path::Data;
 use svg::Node;
@@ -23,10 +24,15 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
          let carre = get_carre(index.x,index.y,3.0);
          document.append(carre);
          let mut element = Element::new("text");
-         element.assign("x", index.x);
-         element.assign("y", index.y);
-         element.assign("c", "green");
-         element.append(Text::new());
+         element.assign("x", index.x*3.0);
+         element.assign("y", index.y*2.0);
+         element.assign("colour", "green");
+         let mut txt  = Comment::new("lol");
+         let mut txt  = Text::new(&index.name);
+         //txt.set("x","10");
+         //element.append(Text::new("ARF"));
+         element.append(txt);
+
          document.append(element);
      }
      svg::save("image.svg", &document).unwrap();
