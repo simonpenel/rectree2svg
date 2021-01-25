@@ -4,6 +4,7 @@ use svg::Document;
 use svg::node::Comment;
 use svg::node::element::Path;
 use svg::node::element::Rectangle;
+use svg::node::element::Style;
 use svg::node::Text;
 use svg::node::element::Element;
 use svg::node::element::path::Data;
@@ -18,7 +19,9 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
     //     .set("y", "54")
     //     .set("width", "200")
     //     .set("height", "35");
-
+//.Rrrrr { font: italic 40px serif; fill: red; }
+let mut style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+document.append(style);
     for  index in &tree.arena {
          println!("SVG {:?}",index.x);
          let carre = get_carre(index.x,index.y,3.0);
@@ -26,7 +29,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
          let mut element = Element::new("text");
          element.assign("x", index.x*3.0);
          element.assign("y", index.y*2.0);
-         element.assign("colour", "green");
+         element.assign("class", "vert");
          let mut txt  = Comment::new("lol");
          let mut txt  = Text::new(&index.name);
          //txt.set("x","10");
@@ -48,7 +51,7 @@ pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
 
     let path = Path::new()
     .set("fill", "none")
-    .set("stroke", "black")
+    .set("stroke", "red")
     .set("stroke-width", 3)
     .set("d", data);
 
