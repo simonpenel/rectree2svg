@@ -27,8 +27,8 @@ document.append(style);
          let carre = get_carre(index.x,index.y,3.0);
          document.append(carre);
          let mut element = Element::new("text");
-         element.assign("x", index.x*3.0);
-         element.assign("y", index.y*2.0);
+         element.assign("x", index.x);
+         element.assign("y", index.y);
          element.assign("class", "vert");
          let mut txt  = Comment::new("lol");
          let mut txt  = Text::new(&index.name);
@@ -43,7 +43,7 @@ document.append(style);
 
 pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
     let data = Data::new()
-    .move_to((x*3.0, y*2.0))
+    .move_to((x*1.0, y*1.0))
     .line_by((0, s))
     .line_by((s, 0))
     .line_by((0, -s))

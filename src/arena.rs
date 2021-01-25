@@ -145,13 +145,18 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         None => 0,
         Some ((id, _dist)) => id
     };
+    println!("N = {} Name={:?}  Parent Name={:?} Parent Index={}",n,name,parent_name,parent_index);
     let initial_name = name.clone();
+    let initial_parent_name = parent_name.clone();
     let name = "N".to_owned()+&n.to_string()+"_"+name;
     let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
     let name = tree.new_node(name.to_string());
+
     let parent = tree.node(parent_name.to_string());
+    tree.arena[parent].name = initial_parent_name.to_string();
     tree.arena[parent].children.push(name);
     tree.arena[name].parent = Some(parent);
+
     tree.arena[name].name = initial_name.to_string();
     for child in children {
         taxo2tree(& t,*child,  tree);
@@ -165,7 +170,7 @@ let mut count = 0usize;
  loop {
      // tree.arena[count].set_x_noref(10.0* (count as f32));
       tree.arena[count].set_y_noref(15.0);
-     tree.arena[count].set_y_noref(15.0* (count as f32));
+     tree.arena[count].set_y_noref(15.0* (count as f32)+30.0);
      tree.arena[count].set_x_noref(30.0* (count as f32));
     count += 1;
 

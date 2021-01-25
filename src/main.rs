@@ -22,7 +22,11 @@ fn main() {
     println!("Arbre  Taxo: {:?}",taxo);
     let racine: &str = taxo.root();
     let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
-    taxo2tree(& taxo,racine_tid,&mut tree);
+    let children = taxo.children(racine_tid).expect("Pas de fils");
+    for child in children {
+        taxo2tree(& taxo, child,  &mut tree);
+    }
+    //taxo2tree(& taxo,racine_tid,&mut tree);
     println!("Arbre Arena: {:?}",tree);
     set_tree_coords(&mut tree);
     drawing::draw_tree(&mut tree);
