@@ -193,12 +193,26 @@ let mut count = 0usize;
     }
 }
 }
-pub fn preset_tree_coords( tree: &mut ArenaTree<String>, index: &mut usize) {
-    let mut children  = & mut tree.arena[*index].children;
-    for idx in children {
-        println!("Fils de {} : {}",index,idx);
+pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
+    let x_father = tree.arena[index].x;
+    println!("Coords {} ",x_father);
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 0) {
+        let mut left = -1;
+        let son_left = children[0];
+        let son_right = children[1];
+        tree.arena[son_left].set_x_noref(x_father - 100.0);
+        tree.arena[son_right].set_x_noref(x_father + 100.0);
+        preset_child_coords( tree, son_left);
+        preset_child_coords( tree, son_right);
+    }
+
+//    for idx in children {
+//        println!("Fils de {} : {}",index,idx);
+        //println!("Coords {} ",& mut tree.arena[index].x);
         //tree.arena[*idx].set_x_noref(10.0);
         //preset_tree_coords( tree, *idx) ;
+//        left +=2;
 
-    }
+//    }
 }
