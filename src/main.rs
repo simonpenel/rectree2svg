@@ -5,6 +5,7 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::set_tree_coords;
+use crate::arena::preset_tree_coords;
 mod drawing;
 
 fn main() {
@@ -31,5 +32,8 @@ fn main() {
     set_tree_coords(&mut tree);
     drawing::draw_tree(&mut tree);
     println!("ARENA :{:?}",tree);
+    let mut root = tree.get_root();
+    println!("INDEX RACINE ={:?}",root);
+    preset_tree_coords(&mut tree,&mut root);
 
 }

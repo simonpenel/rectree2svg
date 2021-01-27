@@ -111,6 +111,20 @@ where
         // Ok(idx)
         idx
     }
+    //A AMELIORER : RENVOYER UN RESULTS
+    pub fn get_root(&mut self) -> usize {
+        //first see if it exists
+        for node in &self.arena {
+    //        match node.parent {
+    //            None => return node.idx,
+    //            Some (t) => 0,
+            if node.parent == None {
+                return node.idx
+             }
+
+            }
+        0
+    }
     pub fn set_coords(&mut self)  {
         let i = 10.0;
 
@@ -178,4 +192,13 @@ let mut count = 0usize;
         break;
     }
 }
+}
+pub fn preset_tree_coords( tree: &mut ArenaTree<String>, index: &mut usize) {
+    let mut children  = & mut tree.arena[*index].children;
+    for idx in children {
+        println!("Fils de {} : {}",index,idx);
+        //tree.arena[*idx].set_x_noref(10.0);
+        //preset_tree_coords( tree, *idx) ;
+
+    }
 }
