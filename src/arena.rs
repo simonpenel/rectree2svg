@@ -204,6 +204,11 @@ pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
         let son_right = children[1];
         tree.arena[son_left].set_x_noref(x_father - 90.0);
         tree.arena[son_right].set_x_noref(x_father + 90.0);
+        if (tree.arena[son_right].x <= tree.arena[son_left].x+90.0) {
+            tree.arena[son_left].set_x_noref(x_father - 120.0);
+            tree.arena[son_right].set_x_noref(x_father + 120.0);
+
+        }
         tree.arena[son_left].set_y_noref(y_father + 30.0);
         tree.arena[son_right].set_y_noref(y_father + 30.0);
         preset_child_coords( tree, son_left);
