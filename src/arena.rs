@@ -195,14 +195,17 @@ let mut count = 0usize;
 }
 pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
     let x_father = tree.arena[index].x;
+    let y_father = tree.arena[index].y;
     println!("Coords {} ",x_father);
     let children  = &mut  tree.arena[index].children;
     if (children.len() > 0) {
         let mut left = -1;
         let son_left = children[0];
         let son_right = children[1];
-        tree.arena[son_left].set_x_noref(x_father - 100.0);
-        tree.arena[son_right].set_x_noref(x_father + 100.0);
+        tree.arena[son_left].set_x_noref(x_father - 90.0);
+        tree.arena[son_right].set_x_noref(x_father + 90.0);
+        tree.arena[son_left].set_y_noref(y_father + 30.0);
+        tree.arena[son_right].set_y_noref(y_father + 30.0);
         preset_child_coords( tree, son_left);
         preset_child_coords( tree, son_right);
     }
