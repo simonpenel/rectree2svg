@@ -1,9 +1,9 @@
 use taxonomy::Taxonomy;
 
-/// Structure Node.
+/// Structure Noeud.
 ///
 #[derive(Debug)]
-pub struct Node<T>
+pub struct Noeud<T>
 where
     T: PartialEq
 {
@@ -24,10 +24,10 @@ pub struct ArenaTree<T>
 where
     T: PartialEq
 {
-    pub arena: Vec<Node<T>>,
+    pub arena: Vec<Noeud<T>>,
 }
 
-impl<T> Node<T>
+impl<T> Noeud<T>
 where
     T: PartialEq
 {
@@ -95,7 +95,7 @@ where
         }
         // Otherwise, add new node
         let idx = self.arena.len();
-        self.arena.push(Node::new(idx, val));
+        self.arena.push(Noeud::new(idx, val));
         idx
     }
     pub fn new_node(&mut self, val: T) -> usize {
@@ -107,7 +107,7 @@ where
         }
         // Otherwise, add new node
         let idx = self.arena.len();
-        self.arena.push(Node::new(idx, val));
+        self.arena.push(Noeud::new(idx, val));
         // Ok(idx)
         idx
     }
@@ -124,6 +124,12 @@ where
 
             }
         0
+    }
+    pub fn depth(&self, idx: usize) -> usize {
+        match self.arena[idx].parent {
+            Some(id) => 1 + self.depth(id),
+            None => 0,
+        }
     }
     pub fn set_coords(&mut self)  {
         let i = 10.0;
@@ -214,13 +220,52 @@ pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
         preset_child_coords( tree, son_left);
         preset_child_coords( tree, son_right);
     }
+}
+pub fn set_initial_y( tree: &mut ArenaTree<String>) {
+    let longueur = tree.arena.len();
+    let mut count = 0usize;
+    loop {
+        let  h = tree.depth(count);
+        println!("Hauteur du noud {} = {}", count,h);
+        tree.arena[count].set_y_noref(30.0* (h as f32));
+        count += 1;
 
-//    for idx in children {
-//        println!("Fils de {} : {}",index,idx);
-        //println!("Coords {} ",& mut tree.arena[index].x);
-        //tree.arena[*idx].set_x_noref(10.0);
-        //preset_tree_coords( tree, *idx) ;
-//        left +=2;
-
-//    }
+        if count == longueur {
+            break;
+        }
+    }
+}
+pub fn set_initial_x( tree: &mut ArenaTree<String>, index: usize) {
+    let initial_x_width = 150.0;
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 2) {
+        panic!("L'arbre doit être binaire")
+    }
+    if (children.len() > 0) {
+        let son_left = children[0];
+        let son_right = children[1];
+        tree.arena[son_left].set_x_noref(0.0);
+        tree.arena[son_right].set_x_noref(1.0*initial_x_width);
+        set_initial_x( tree, son_left);
+        set_initial_x( tree, son_right);
+    }
+}
+pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
+    let x_father = tree.arena[index].x;
+    println!("Adding {} ",x_father);
+    let children  = &mut  tree.arena[index].children;
+    println!("Chlidren {} ",children.len());
+    if (children.len() > 2) {
+        panic!("L'arbre doit être binaire")
+    }
+    if (children.len() > 0) {
+        let son_left = children[0];
+        let son_right = children[1];
+        let x_left = tree.arena[son_left].x;
+        tree.arena[son_left].set_x_noref(x_left + x_father);
+        let x_right = tree.arena[son_right].x;
+        tree.arena[son_right].set_x_noref(x_right + x_father);
+        shift_initial_x( tree, son_left);
+        shift_initial_x( tree, son_right);
+    }
 }
