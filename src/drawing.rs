@@ -1,5 +1,6 @@
 
 use crate::arena::ArenaTree;
+use crate::arena::Noeud;
 use svg::Document;
 use svg::node::Comment;
 use svg::node::element::Path;
@@ -26,6 +27,7 @@ document.append(style);
          println!("SVG {:?}",index.x);
          let carre = get_carre(index.x,index.y,3.0);
          document.append(carre);
+         // let path_to_father = get_path(index);
          let mut element = Element::new("text");
          element.assign("x", index.x);
          element.assign("y", index.y);
@@ -57,3 +59,28 @@ pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
 
     path
 }
+// pub fn get_path(n:& Noeud<String>) -> Path {
+//     let parent = n.parent;
+//     let x_parent =  match parent {
+//         Some(p) => p.x,
+//         None => 0,
+//     };
+//     let y_parent =  match parent {
+//         Some(p) => p.y,
+//         None => 0,
+//     };
+    // let data = Data::new()
+    // .move_to((x*1.0, y*1.0))
+    // .line_by((0, s))
+    // .line_by((s, 0))
+    // .line_by((0, -s))
+    // .close();
+    //
+    // let path = Path::new();
+    // // .set("fill", "none")
+    // // .set("stroke", "red")
+    // // .set("stroke-width", 3)
+    // // .set("d", data);
+    //
+    // path
+// }
