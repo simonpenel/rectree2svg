@@ -67,8 +67,7 @@ pub fn get_chemin (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let data = Data::new()
     .move_to((x1*1.0, y1*1.0))
     .line_to((x1*1.0, y2*1.0))
-    .line_to((x2*1.0, y2*1.0))
-    .close();
+    .line_to((x2*1.0, y2*1.0));
 
     let path = Path::new()
     .set("fill", "none")
