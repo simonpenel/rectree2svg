@@ -5,7 +5,10 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::set_tree_coords;
-use crate::arena::preset_child_coords;
+use crate::arena::set_initial_x;
+use crate::arena::set_initial_y;
+use crate::arena::shift_initial_x;
+use crate::arena::knuth_layout;
 mod drawing;
 
 fn main() {
@@ -29,10 +32,19 @@ fn main() {
     }
     //taxo2tree(& taxo,racine_tid,&mut tree);
     println!("Arbre Arena: {:?}",tree);
-    set_tree_coords(&mut tree);
+    // set_tree_coords(&mut tree);
+    let width = 700.0;
     let mut root = tree.get_root();
     println!("INDEX RACINE ={:?}",root);
-    preset_child_coords(&mut tree, root);
+
+    // set root coordinates
+    tree.arena[root].set_x_noref(150.0);
+    tree.arena[root].set_y_noref(0.0);
+    // preset_child_coords(&mut tree, root);
+    // set_initial_x(&mut tree, root);
+    // set_initial_y(&mut tree);
+    // shift_initial_x(&mut tree, root);
+    knuth_layout(&mut tree,root);
     drawing::draw_tree(&mut tree);
     println!("ARENA :{:?}",tree);
 
