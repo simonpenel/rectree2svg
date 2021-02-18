@@ -269,3 +269,19 @@ pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
         shift_initial_x( tree, son_right);
     }
 }
+pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize){
+    let longueur = tree.arena.len();
+    let mut count = 0usize;
+    loop {
+        let  h = tree.depth(count);
+        println!("Hauteur du noud {} = {}", count,h);
+        tree.arena[count].set_y_noref(30.0* (h as f32));
+        tree.arena[count].set_x_noref(30.0* (count as f32));
+        count += 1;
+
+        if count == longueur {
+            break;
+        }
+    }
+
+}
