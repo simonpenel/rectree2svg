@@ -43,6 +43,7 @@ fn main() {
     // find_leftest(&mut tree,root);
     postorder(&mut tree);
 
+
     // set root coordinates
     // tree.arena[root].set_x_noref(150.0);
     // tree.arena[root].set_y_noref(150.0);

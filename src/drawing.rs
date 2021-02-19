@@ -91,30 +91,3 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
     path
 }
-
-
-// pub fn get_path(n:& Noeud<String>) -> Path {
-//     let parent = n.parent;
-//     let x_parent =  match parent {
-//         Some(p) => p.x,
-//         None => 0,
-//     };
-//     let y_parent =  match parent {
-//         Some(p) => p.y,
-//         None => 0,
-//     };
-    // let data = Data::new()
-    // .move_to((x*1.0, y*1.0))
-    // .line_by((0, s))
-    // .line_by((s, 0))
-    // .line_by((0, -s))
-    // .close();
-    //
-    // let path = Path::new();
-    // // .set("fill", "none")
-    // // .set("stroke", "red")
-    // // .set("stroke-width", 3)
-    // // .set("d", data);
-    //
-    // path
-// }
