@@ -199,57 +199,57 @@ let mut count = 0usize;
     }
 }
 }
-pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
-    let x_father = tree.arena[index].x;
-    let y_father = tree.arena[index].y;
-    println!("Coords {} ",x_father);
-    let children  = &mut  tree.arena[index].children;
-    if (children.len() > 0) {
-        let mut left = -1;
-        let son_left = children[0];
-        let son_right = children[1];
-        tree.arena[son_left].set_x_noref(x_father - 90.0);
-        tree.arena[son_right].set_x_noref(x_father + 90.0);
-        if (tree.arena[son_right].x <= tree.arena[son_left].x+90.0) {
-            tree.arena[son_left].set_x_noref(x_father - 120.0);
-            tree.arena[son_right].set_x_noref(x_father + 120.0);
-
-        }
-        tree.arena[son_left].set_y_noref(y_father + 30.0);
-        tree.arena[son_right].set_y_noref(y_father + 30.0);
-        preset_child_coords( tree, son_left);
-        preset_child_coords( tree, son_right);
-    }
-}
-pub fn set_initial_y( tree: &mut ArenaTree<String>) {
-    let longueur = tree.arena.len();
-    let mut count = 0usize;
-    loop {
-        let  h = tree.depth(count);
-        println!("Hauteur du noud {} = {}", count,h);
-        tree.arena[count].set_y_noref(30.0* (h as f32));
-        count += 1;
-
-        if count == longueur {
-            break;
-        }
-    }
-}
-pub fn set_initial_x( tree: &mut ArenaTree<String>, index: usize) {
-    let initial_x_width = 150.0;
-    let children  = &mut  tree.arena[index].children;
-    if (children.len() > 2) {
-        panic!("L'arbre doit être binaire")
-    }
-    if (children.len() > 0) {
-        let son_left = children[0];
-        let son_right = children[1];
-        tree.arena[son_left].set_x_noref(0.0);
-        tree.arena[son_right].set_x_noref(1.0*initial_x_width);
-        set_initial_x( tree, son_left);
-        set_initial_x( tree, son_right);
-    }
-}
+// pub fn preset_child_coords( tree: &mut ArenaTree<String>, index: usize) {
+//     let x_father = tree.arena[index].x;
+//     let y_father = tree.arena[index].y;
+//     println!("Coords {} ",x_father);
+//     let children  = &mut  tree.arena[index].children;
+//     if (children.len() > 0) {
+//         let mut left = -1;
+//         let son_left = children[0];
+//         let son_right = children[1];
+//         tree.arena[son_left].set_x_noref(x_father - 90.0);
+//         tree.arena[son_right].set_x_noref(x_father + 90.0);
+//         if (tree.arena[son_right].x <= tree.arena[son_left].x+90.0) {
+//             tree.arena[son_left].set_x_noref(x_father - 120.0);
+//             tree.arena[son_right].set_x_noref(x_father + 120.0);
+//
+//         }
+//         tree.arena[son_left].set_y_noref(y_father + 30.0);
+//         tree.arena[son_right].set_y_noref(y_father + 30.0);
+//         preset_child_coords( tree, son_left);
+//         preset_child_coords( tree, son_right);
+//     }
+// }
+// pub fn set_initial_y( tree: &mut ArenaTree<String>) {
+//     let longueur = tree.arena.len();
+//     let mut count = 0usize;
+//     loop {
+//         let  h = tree.depth(count);
+//         println!("Hauteur du noud {} = {}", count,h);
+//         tree.arena[count].set_y_noref(30.0* (h as f32));
+//         count += 1;
+//
+//         if count == longueur {
+//             break;
+//         }
+//     }
+// }
+// pub fn set_initial_x( tree: &mut ArenaTree<String>, index: usize) {
+//     let initial_x_width = 150.0;
+//     let children  = &mut  tree.arena[index].children;
+//     if (children.len() > 2) {
+//         panic!("L'arbre doit être binaire")
+//     }
+//     if (children.len() > 0) {
+//         let son_left = children[0];
+//         let son_right = children[1];
+//         tree.arena[son_left].set_x_noref(0.0);
+//         tree.arena[son_right].set_x_noref(1.0*initial_x_width);
+//         set_initial_x( tree, son_left);
+//         set_initial_x( tree, son_right);
+//     }
+// }
 pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
     let x_father = tree.arena[index].x;
     println!("Adding {} ",x_father);
@@ -269,7 +269,7 @@ pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
         shift_initial_x( tree, son_right);
     }
 }
-pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize){
+pub fn  pseudo_knuth_layout(tree: &mut ArenaTree<String>,index: usize){
     let longueur = tree.arena.len();
     let mut count = 0usize;
     loop {
@@ -283,5 +283,107 @@ pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize){
             break;
         }
     }
+}
 
+pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
+    println!("Knuth before processing {:?}",tree.arena[index]);
+    tree.arena[index].set_y_noref(30.0* (*depth as f32));
+    println!("Knuth after processing {:?}",tree.arena[index]);
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 2) {
+        panic!("L'arbre doit être binaire")
+    }
+    // *depth += 1;
+    if (children.len() > 0) {
+        let son_left = children[0];
+        let son_right = children[1];
+        tree.arena[son_left].set_x_noref(0.0);
+        tree.arena[son_right].set_x_noref(60.0);
+        knuth_layout(tree,son_left,&mut(*depth+1));
+        knuth_layout(tree,son_right,&mut(*depth+1));
+    }
+}
+pub fn  set_father_between(tree: &mut ArenaTree<String>){
+
+}
+pub fn  postorder(tree: &mut ArenaTree<String>){
+    let mut root = tree.get_root();
+    explore_postorder(tree,root);
+    let mut leftest = find_leftest(tree,root);
+    println!("THE  LEFTEST IS  {:?}",tree.arena[leftest]);
+
+    // find_leftest(tree,root);
+}
+
+pub fn  explore_postorder(tree: &mut ArenaTree<String>,index:usize) {
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 0) {
+        let left = children[0];
+        let right = children[1];
+        explore_postorder(tree,left);
+        explore_postorder(tree,right);
+        // println!("POST-ORDER INT {:?} : DEPTH = {}",tree.arena[index],tree.depth(index));
+    }
+    else{
+        // println!("POST-ORDER LEAF {:?} : DEPTH = {}",tree.arena[index],tree.depth(index));
+    }
+}
+
+pub fn  set_x_postorder(tree: &mut ArenaTree<String>,index:usize, x_coords: &mut Vec<usize>) {
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 0) {
+        let left = children[0];
+        let right = children[1];
+
+        set_x_postorder(tree,left,x_coords);
+        set_x_postorder(tree,right,x_coords);
+        x_coords[tree.depth(index)] += 1;
+        println!("POST-ORDER INT {:?} : DEPTH = {} => {}",tree.arena[index],tree.depth(index),x_coords[tree.depth(index)]);
+        let posx = x_coords[tree.depth(index)];
+        println!("POST-ORDER INT {:?} : DEPTH = {} => {}",tree.arena[index],tree.depth(index),posx);
+        tree.arena[index].set_x_noref((posx as f32) * 30.0);
+    }
+    else{
+        x_coords[tree.depth(index)] += 1;
+        let posx = x_coords[tree.depth(index)];
+        println!("POST-ORDER LEAF {:?} : DEPTH = {} => {}",tree.arena[index],tree.depth(index),x_coords[tree.depth(index)]);
+        tree.arena[index].set_x_noref((posx as f32) * 30.0);
+    }
+}
+
+pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 0) {
+        let left = children[0];
+        let right = children[1];
+        let x_left = tree.arena[left].x;
+        let x_right = tree.arena[right].x;
+        let x_middle = ( x_right + x_left ) / 2.0 ;
+        // println!("POST-ORDER MODIF FATHER {:?} X = {}",tree.arena[index],tree.arena[index].x);
+        // println!("POST-ORDER MODIF FATHER  X LEFT = {} X RIGHT ={}",x_left, x_right);
+        tree.arena[index].set_x_noref(x_middle);
+        // println!("POST-ORDER MODIF FATHER {:?} NEW X = {}",tree.arena[index],tree.arena[index].x);
+
+        set_middle_postorder(tree,left);
+        set_middle_postorder(tree,right);
+        // tree.arena[index].set_x_noref(x_middle);
+        println!("POST-ORDER INT {:?}",tree.arena[index]);
+
+    }
+    else{
+        println!("POST-ORDER LEAF {:?}",tree.arena[index]);
+    }
+}
+
+
+pub fn  find_leftest(tree: &mut ArenaTree<String>,index:usize) -> usize {
+    println!("FIND LEFTEST: {:?}",tree.arena[index]);
+    let children  = &mut  tree.arena[index].children;
+    if (children.len() > 0) {
+        let left = children[0];
+        find_leftest(tree,left)
+    }
+    else {
+        index
+    }
 }
