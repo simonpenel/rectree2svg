@@ -5,10 +5,14 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::set_tree_coords;
-use crate::arena::set_initial_x;
-use crate::arena::set_initial_y;
+// use crate::arena::set_initial_x;
+// use crate::arena::set_initial_y;
 use crate::arena::shift_initial_x;
+use crate::arena::pseudo_knuth_layout;
 use crate::arena::knuth_layout;
+use crate::arena::postorder;
+use crate::arena::set_x_postorder;
+use crate::arena::set_middle_postorder;
 mod drawing;
 
 fn main() {
@@ -36,15 +40,24 @@ fn main() {
     let width = 700.0;
     let mut root = tree.get_root();
     println!("INDEX RACINE ={:?}",root);
+    // find_leftest(&mut tree,root);
+    postorder(&mut tree);
 
     // set root coordinates
-    tree.arena[root].set_x_noref(150.0);
-    tree.arena[root].set_y_noref(0.0);
+    // tree.arena[root].set_x_noref(150.0);
+    // tree.arena[root].set_y_noref(150.0);
     // preset_child_coords(&mut tree, root);
     // set_initial_x(&mut tree, root);
     // set_initial_y(&mut tree);
     // shift_initial_x(&mut tree, root);
-    knuth_layout(&mut tree,root);
+    knuth_layout(&mut tree,root, &mut 1);
+    let mut x_coords  = vec![0; tree.arena.len()];
+    set_x_postorder(&mut tree, root, &mut x_coords );
+    shift_initial_x(&mut tree, root);
+    // set_middle_postorder(&mut tree, root);
+    // set_middle_postorder(&mut tree, root);
+    // set_middle_postorder(&mut tree, root);
+    postorder(&mut tree);
     drawing::draw_tree(&mut tree);
     println!("ARENA :{:?}",tree);
 
