@@ -23,7 +23,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
                  println!("SVG Parent ={:?}",p);
                  let n = &tree.arena[p];
                  println!("SVG Chemin de {:?}  {:?}  a  {:?}   {:?}  ",index.x,index.y, n.x,n.y);
-                 let chemin = get_chemin(index.x,index.y,n.x,n.y);
+                 let chemin = get_chemin_simple(index.x,index.y,n.x,n.y);
                  document.append(chemin);
                  0
                 },
@@ -47,7 +47,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
 
 pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
     let data = Data::new()
-    .move_to((x*1.0, y*1.0))
+    .move_to((x*1.0 -s*0.5 , y*1.0 -s*0.5))
     .line_by((0, s))
     .line_by((s, 0))
     .line_by((0, -s))
@@ -77,6 +77,21 @@ pub fn get_chemin (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
     path
 }
+
+pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+    let data = Data::new()
+    .move_to((x1*1.0, y1*1.0))
+    .line_to((x2*1.0, y2*1.0));
+
+    let path = Path::new()
+    .set("fill", "none")
+    .set("stroke", "blue")
+    .set("stroke-width", 3)
+    .set("d", data);
+
+    path
+}
+
 
 // pub fn get_path(n:& Noeud<String>) -> Path {
 //     let parent = n.parent;
