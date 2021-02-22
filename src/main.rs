@@ -4,11 +4,7 @@ use taxonomy::Taxonomy;
 mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
-use crate::arena::set_tree_coords;
-// use crate::arena::set_initial_x;
-// use crate::arena::set_initial_y;
 use crate::arena::shift_initial_x;
-use crate::arena::pseudo_knuth_layout;
 use crate::arena::knuth_layout;
 use crate::arena::postorder;
 use crate::arena::set_x_postorder;
@@ -16,6 +12,14 @@ use crate::arena::set_middle_postorder;
 mod drawing;
 
 fn main() {
+    // Builder::new()
+    //     .parse(&env::var("MY_APP_LOG").unwrap_or_default())
+    //     .init();
+
+    // log::info!("informational message");
+    // log::warn!("warning message");
+    // log::error!("this is an error {}", "message");
+
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut f = File::open("newick.txt").expect("Impossible d'ouvrir le fichier");
     let taxo = newick::load_newick(&mut f);
@@ -37,11 +41,9 @@ fn main() {
     //taxo2tree(& taxo,racine_tid,&mut tree);
     println!("Arbre Arena: {:?}",tree);
     // set_tree_coords(&mut tree);
-    let width = 700.0;
-    let mut root = tree.get_root();
-    println!("INDEX RACINE ={:?}",root);
+    let  root = tree.get_root();
     // find_leftest(&mut tree,root);
-    postorder(&mut tree);
+    // postorder(&mut tree);
 
 
     // set root coordinates
@@ -54,7 +56,7 @@ fn main() {
     knuth_layout(&mut tree,root, &mut 1);
     let mut x_coords  = vec![0; tree.arena.len()];
     set_x_postorder(&mut tree, root, &mut x_coords );
-    shift_initial_x(&mut tree, root);
+    // shift_initial_x(&mut tree, root);
     // set_middle_postorder(&mut tree, root);
     // set_middle_postorder(&mut tree, root);
     // set_middle_postorder(&mut tree, root);

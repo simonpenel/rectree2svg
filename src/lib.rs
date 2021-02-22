@@ -8,7 +8,9 @@ pub use self::arena::Event;
 pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;
 pub use self::arena::taxo2tree;
-pub use self::arena::set_tree_coords;
+pub use self::arena::knuth_layout;
+pub use self::arena::postorder;
+pub use self::arena::set_x_postorder;
 mod drawing;
 pub use self::drawing::draw_tree;
 pub use self::drawing::get_carre;
@@ -35,9 +37,9 @@ mod tests {
         let copy = test.clone();
         let index = tree.new_node(test);
         let mut node = &mut tree.arena[index];
-        node.set_event(Event::Duplication);
+        node.set_event(Event::Undef);
         let event = node.get_event();
-        assert_eq!(*event,Event::Duplication);
+        assert_eq!(*event,Event::Undef);
     }
     #[test]
     fn  check_coords_noref() {

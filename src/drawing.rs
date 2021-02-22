@@ -1,10 +1,8 @@
 
 use crate::arena::ArenaTree;
-use crate::arena::Noeud;
+// use crate::arena::Noeud;
 use svg::Document;
-use svg::node::Comment;
 use svg::node::element::Path;
-use svg::node::element::Rectangle;
 use svg::node::element::Style;
 use svg::node::Text;
 use svg::node::element::Element;
@@ -14,10 +12,9 @@ use svg::Node;
 pub fn draw_tree (tree: &mut ArenaTree<String>) {
     let  mut document = Document::new()
     .set("viewBox", (0, 0, 700, 700));
-    let mut style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
     for  index in &tree.arena {
-         let parent = index.parent;
          let parent =  match index.parent {
              Some(p) => {
                  println!("SVG Parent ={:?}",p);
@@ -38,7 +35,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
          element.assign("x", index.x);
          element.assign("y", index.y);
          element.assign("class", "vert");
-         let mut txt  = Text::new(&index.name);
+         let txt  = Text::new(&index.name);
          element.append(txt);
          document.append(element);
      }
