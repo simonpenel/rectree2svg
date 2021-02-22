@@ -333,7 +333,12 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
     let mut depth_right_tr  = tree.depth(right_tree);
     get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr);
     let mut iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr);
-    println!("ITER = {:?}",iter);
+        println!("ITER = {:?}",iter);
+    for (x, y) in iter  {
+        println!(" ITER {:?}  {:?} ",x,y);
+
+    }
+    // println!("ITER = {:?}",iter);
 
     0.0
 }
