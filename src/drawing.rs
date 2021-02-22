@@ -17,25 +17,26 @@ pub fn draw_tree (tree: &mut ArenaTree<String>) {
     for  index in &tree.arena {
          let parent =  match index.parent {
              Some(p) => {
-                 println!("SVG Parent ={:?}",p);
+                 // println!("SVG Parent ={:?}",p);
                  let n = &tree.arena[p];
-                 println!("SVG Chemin de {:?}  {:?}  a  {:?}   {:?}  ",index.x,index.y, n.x,n.y);
+                 // println!("SVG Chemin de {:?}  {:?}  a  {:?}   {:?}  ",index.x,index.y, n.x,n.y);
                  let chemin = get_chemin_simple(index.x,index.y,n.x,n.y);
                  document.append(chemin);
                  0
                 },
              None => {
-                 println!("SVG Pas de Parent");
+                 // println!("SVG Pas de Parent");
                  -1},
          };
-         println!("SVG Parent={:?}",parent);
-         let carre = get_carre(index.x,index.y,10.0);
+         // println!("SVG Parent={:?}",parent);
+         let carre = get_carre(index.x,index.y,3.0);
          document.append(carre);
          let mut element = Element::new("text");
          element.assign("x", index.x);
          element.assign("y", index.y);
          element.assign("class", "vert");
          let txt  = Text::new(&index.name);
+         let txt  = Text::new(&index.x.to_string());
          element.append(txt);
          document.append(element);
      }
