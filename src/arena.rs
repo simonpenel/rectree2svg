@@ -168,7 +168,7 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         None => 0,
         Some ((id, _dist)) => id
     };
-    println!("N = {} Name={:?}  Parent Name={:?} Parent Index={}",n,name,parent_name,parent_index);
+    // println!("N = {} Name={:?}  Parent Name={:?} Parent Index={}",n,name,parent_name,parent_index);
     let initial_name = name.clone();
     let initial_parent_name = parent_name.clone();
     let name = "N".to_owned()+&n.to_string()+"_"+name;
@@ -205,9 +205,7 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
 
 pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
     let x_father = tree.arena[index].x;
-    println!("Adding {} ",x_father);
     let children  = &mut  tree.arena[index].children;
-    println!("Chlidren {} ",children.len());
     if children.len() > 2 {
         panic!("L'arbre doit être binaire")
     }
@@ -292,6 +290,54 @@ pub fn  set_x_postorder(tree: &mut ArenaTree<String>,index:usize, x_coords: &mut
         tree.arena[index].set_x_noref((posx as f32) * 30.0);
     }
 }
+
+pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_left: &mut Vec<f32>)  {
+    let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
+    if contour_left.len() <= local_depth {
+        contour_left.push(tree.arena[index].x);
+    }
+    if tree.arena[index].x <= contour_left[local_depth] {
+     contour_left[local_depth] = tree.arena[index].x;
+    }
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let left = children[0];
+        let right = children[1];
+        get_contour_left(tree,left,depth,contour_left);
+        get_contour_left(tree,right,depth,contour_left);
+    }
+}
+
+pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_right: &mut Vec<f32>)  {
+    let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
+    if contour_right.len() <= local_depth {
+        contour_right.push(tree.arena[index].x);
+    }
+    if tree.arena[index].x >= contour_right[local_depth] {
+     contour_right[local_depth] = tree.arena[index].x;
+    }
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let left = children[0];
+        let right = children[1];
+        get_contour_right(tree,left,depth,contour_right);
+        get_contour_right(tree,right,depth,contour_right);
+    }
+}
+
+pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize) -> f32 {
+    let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x]; //contour droit de l'arbre de gauche
+    let mut depth_left_tr  = tree.depth(left_tree);
+    get_contour_right(tree,left_tree,depth_left_tr,&mut right_co_of_left_tr);
+    let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x]; //contour droit de l'arbre de gauche
+    let mut depth_right_tr  = tree.depth(right_tree);
+    get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr);
+    let mut iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr);
+    println!("ITER = {:?}",iter);
+
+    0.0
+}
+
 
 pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
