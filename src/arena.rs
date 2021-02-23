@@ -14,6 +14,7 @@ where
     pub parent: Option<usize>,
     pub children: Vec<usize>,
     pub x: f32,
+    pub xmod: f32,
     pub y: f32,
     pub e: Event,
 }
@@ -40,6 +41,7 @@ where
             parent: None,
             children: vec![],
             x: 0.0,
+            xmod: 0.0,
             y: 0.0,
             e: Event::Undef,
         }
@@ -367,11 +369,11 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
         set_middle_postorder(tree,left);
         set_middle_postorder(tree,right);
         // tree.arena[index].set_x_noref(x_middle);
-        println!("POST-ORDER INT {:?}",tree.arena[index]);
+        // println!("POST-ORDER INT {:?}",tree.arena[index]);
 
     }
     else{
-        println!("POST-ORDER LEAF {:?}",tree.arena[index]);
+        // println!("POST-ORDER LEAF {:?}",tree.arena[index]);
     }
 }
 
