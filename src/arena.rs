@@ -360,18 +360,23 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
 pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
+
+        // println!("POST-ORDER MODIF FATHER {:?} NEW X = {}",tree.arena[index],tree.arena[index].x);
         let left = children[0];
         let right = children[1];
+        set_middle_postorder(tree,left);
+        set_middle_postorder(tree,right);
+        println!("SETTING MIDDLE  FOR NODE {:?}",index);
         let x_left = tree.arena[left].x;
         let x_right = tree.arena[right].x;
+        let x = tree.arena[index].x;
         let x_middle = ( x_right + x_left ) / 2.0 ;
         // println!("POST-ORDER MODIF FATHER {:?} X = {}",tree.arena[index],tree.arena[index].x);
         // println!("POST-ORDER MODIF FATHER  X LEFT = {} X RIGHT ={}",x_left, x_right);
         tree.arena[index].set_x_noref(x_middle);
-        // println!("POST-ORDER MODIF FATHER {:?} NEW X = {}",tree.arena[index],tree.arena[index].x);
-
-        set_middle_postorder(tree,left);
-        set_middle_postorder(tree,right);
+        let x_mod =  tree.arena[right].xmod;
+        let x_mod =  x_mod + x_middle - x;
+        tree.arena[index].set_xmod_noref(x_mod);
         // tree.arena[index].set_x_noref(x_middle);
         // println!("POST-ORDER INT {:?}",tree.arena[index]);
 
