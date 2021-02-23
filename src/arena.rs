@@ -67,6 +67,10 @@ where
     {
         self.x = x;
     }
+    pub fn set_xmod_noref(&mut self, xmod: f32)
+    {
+        self.xmod = xmod;
+    }
     pub fn set_y(&mut self, y: &f32)
     {
         self.y = *y;
