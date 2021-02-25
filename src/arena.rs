@@ -1,6 +1,5 @@
 use taxonomy::Taxonomy;
-use std::env;
-use log::{debug, error, log_enabled, info, Level};
+use log::{info};
 const BLOCK: f32 = 30.0;
 
 // Structures
@@ -41,27 +40,27 @@ where
             e: Event::Undef,
         }
     }
-
+    #[allow(dead_code)]
     pub fn get_val(&mut self) -> &T {
         &self.val
     }
-
+    #[allow(dead_code)]
     pub fn get_index(&mut self) -> &usize {
         &self.idx
     }
-
+    #[allow(dead_code)]
     pub fn get_x(&mut self) -> &f32 {
         &self.x
     }
-
+    #[allow(dead_code)]
     pub fn get_y(&mut self) -> &f32 {
         &self.y
     }
-
+    #[allow(dead_code)]
     pub fn get_coords(&mut self) -> ( &f32, &f32) {
         (&self.x,&self.y)
     }
-
+    #[allow(dead_code)]
     pub fn set_x(&mut self, x: &f32)
     {
         self.x = *x;
@@ -76,7 +75,7 @@ where
     {
         self.xmod = xmod;
     }
-
+    #[allow(dead_code)]
     pub fn set_y(&mut self, y: &f32)
     {
         self.y = *y;
@@ -86,11 +85,11 @@ where
     {
         self.y = y;
     }
-
+    #[allow(dead_code)]
     pub fn get_event(&mut self) -> &Event {
         &self.e
     }
-
+    #[allow(dead_code)]
     pub fn set_event(&mut self, e: Event)
     {
         self.e = e;
@@ -144,6 +143,7 @@ where
 
     //A AMELIORER : RENVOYER UN RESULTS
     /// Send the index of the root
+    #[allow(unreachable_code)]
     pub fn get_root(&mut self) -> usize {
         for node in &self.arena {
     //        match node.parent {
@@ -289,10 +289,10 @@ pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mu
 }
 
 /// Shift the  x values  of a node and its children according to the cumulated xmod values
-pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize,mut  xmod: &mut f32) {
+pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32) {
     info!("shift_mod_x: shifting {:?} xmod={}",tree.arena[index],xmod);
     let x_father = tree.arena[index].x;
-    let mut xmod_father = tree.arena[index].xmod;
+    let  xmod_father = tree.arena[index].xmod;
     let mut xmod = *xmod + xmod_father;
     tree.arena[index].set_x_noref(x_father+xmod);
     tree.arena[index].set_xmod_noref(xmod);
@@ -308,11 +308,14 @@ pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize,mut  xmod: &mut f
     }
 }
 
+#[allow(dead_code)]
 /// Traverse the tree using post-order traversal
 pub fn  postorder(tree: &mut ArenaTree<String>){
     let root = tree.get_root();
     explore_postorder(tree,root);
 }
+
+#[allow(dead_code)]
 /// Traverse the tree using post-order traversal starting from a given node  defined by its index
 pub fn  explore_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
@@ -398,14 +401,12 @@ pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,c
 /// in order to solve detected  conflicts.
 pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize) -> f32 {
     info!("push_right: compare right contour of {} and left contour of {}",left_tree, right_tree);
-    let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x]; //contour droit de l'arbre de gauche
     let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x+tree.arena[left_tree].xmod]; //contour droit de l'arbre de gauche
-    let mut depth_left_tr  = tree.depth(left_tree);
+    let depth_left_tr  = tree.depth(left_tree);
     get_contour_right(tree,left_tree,depth_left_tr,&mut right_co_of_left_tr,0.0);
     info!("push_right: right contour of {} = {:?}",left_tree,right_co_of_left_tr);
-    let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x]; //contour droit de l'arbre de gauche
     let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x+tree.arena[right_tree].xmod]; //contour droit de l'arbre de gauche
-    let mut depth_right_tr  = tree.depth(right_tree);
+    let depth_right_tr  = tree.depth(right_tree);
     get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr,0.0);
     info!("push_right: left contour of {} = {:?}",right_tree,left_co_of_right_tr);
     // Si on   a pas le meme longeur de contour on complete le plus petit
@@ -426,7 +427,7 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
         info!("push_right: Complete left contour with last value {}", last_val);
     }
     info!("push_right: comparing  ROL {:?} with LOR {:?} ",right_co_of_left_tr,left_co_of_right_tr);
-    let mut iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr).map(|(x, y )| (x-y));
+    let iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr).map(|(x, y )| (x-y));
     let shift = iter.min_by(|x, y| (*x as i64) .cmp(&(*y as i64 )));
     info!("push_right: distance max  = {:?}",shift);
     match shift {

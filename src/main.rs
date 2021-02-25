@@ -5,18 +5,16 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::knuth_layout;
-use crate::arena::postorder;
+// use crate::arena::postorder;
 use crate::arena::set_middle_postorder;
-use crate::arena::get_contour_left;
-use crate::arena::get_contour_right;
-use crate::arena::push_right;
+// use crate::arena::get_contour_left;
+// use crate::arena::get_contour_right;
+// use crate::arena::push_right;
 use crate::arena::shift_mod_x;
 use crate::arena::check_contour_postorder;
 use crate::arena::cladogramme;
 mod drawing;
-use log::{debug, error, log_enabled, info, Level};
-// use clap_verbosity_flag::Verbosity;
-// use structopt::StructOpt;
+use log::{info};
 
 fn main() {
     env_logger::init();

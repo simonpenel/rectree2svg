@@ -12,10 +12,10 @@ use svg::Node;
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     let mut largest_x = tree.get_largest_x() *1.2 ;
     let mut largest_y = tree.get_largest_y() *1.2 ;
-    if (largest_x < 700.0) {
+    if largest_x < 700.0 {
         largest_x = 700.0;
     }
-    if (largest_y < 700.0) {
+    if largest_y < 700.0 {
         largest_y = 700.0;
     }
     let  mut document = Document::new()
@@ -23,7 +23,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
     for  index in &tree.arena {
-         let parent =  match index.parent {
+         let _parent =  match index.parent {
              Some(p) => {
                  let n = &tree.arena[p];
                  let chemin = get_chemin_carre(index.x,index.y,n.x,n.y);
@@ -39,12 +39,11 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("x", index.x);
          element.assign("y", index.y);
          element.assign("class", "vert");
-         let txt  = Text::new(&index.name);
-         let txt  = Text::new(&index.x.to_string());
+         // let txt  = Text::new(&index.name);
+         // let txt  = Text::new(&index.x.to_string());
          let string = &index.x.to_string();
          let string2 = string.to_owned()+&"_".to_string();
          let string2 = string2.to_owned()+&index.idx.to_string();
-         // let txt  = Text::new(string.to_owned()+string2);
          let txt  = Text::new(string2);
          element.append(txt);
          document.append(element);
@@ -70,6 +69,7 @@ pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
     path
 }
 
+#[allow(dead_code)]
 /// Draw a semisquare path between x1,y1 ad x2,y2
 pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let data = Data::new()
@@ -102,6 +102,7 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     path
 }
 
+#[allow(dead_code)]
 /// Draw a direct path between x1,y1 ad x2,y2
 pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let data = Data::new()
