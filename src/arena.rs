@@ -8,7 +8,7 @@ pub struct Noeud<T>
 where
     T: PartialEq
 {
-    idx: usize,
+    pub idx: usize,
     val: T,
     pub name: String,
     pub parent: Option<usize>,
@@ -48,6 +48,9 @@ where
     }
     pub fn get_val(&mut self) -> &T {
         &self.val
+    }
+    pub fn get_index(&mut self) -> &usize {
+        &self.idx
     }
     pub fn get_x(&mut self) -> &f32 {
         &self.x
@@ -226,6 +229,95 @@ pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
         shift_initial_x( tree, son_right);
     }
 }
+pub fn shift_mod_x_ori( tree: &mut ArenaTree<String>, index: usize,mut  xmod: &mut f32) {
+    println!(">>>>>Shifting {:?} xmod={}",tree.arena[index],xmod);
+    let x_father = tree.arena[index].x;
+    let xmod_father = tree.arena[index].xmod;
+    let mut xmod = *xmod + xmod_father;
+    tree.arena[index].set_x_noref(x_father+xmod);
+    tree.arena[index].set_xmod_noref(xmod);
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 2 {
+        panic!("L'arbre doit être binaire")
+    }
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        shift_mod_x( tree, son_left, &mut xmod);
+        shift_mod_x( tree, son_right, &mut xmod);
+        // let x_father = tree.arena[index].x;
+        // let xmod_father = tree.arena[index].xmod;
+        // let mut xmod = *xmod + xmod_father;
+        // tree.arena[index].set_x_noref(x_father+xmod);
+
+    }
+}
+
+
+pub fn bottom_tree( tree: &mut ArenaTree<String>) {
+    let root = tree.get_root();
+    let mut  max_depth = get_maxdepth(tree,root,&mut 0);
+    println!("MAX DEPTH = {}",max_depth);
+    set_leaves_to_bottom(tree,root,&mut max_depth);
+}
+pub fn get_maxdepth( tree: &mut ArenaTree<String>, index:usize, max :&mut usize) -> usize {
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        if  tree.depth(son_left) > *max {
+            *max =  tree.depth(son_left);
+        }
+        if  tree.depth(son_right) > *max {
+            *max =  tree.depth(son_right);
+        }
+         get_maxdepth(tree,son_left,max);
+         get_maxdepth(tree,son_right,max);
+    }
+*max
+}
+
+pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mut  usize) {
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        set_leaves_to_bottom(tree,son_left,max);
+        set_leaves_to_bottom(tree,son_right,max);
+    }
+    else {
+        tree.arena[index].set_y_noref(60.0* (*max as f32 + 1.0));
+
+    }
+}
+
+
+
+
+pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize,mut  xmod: &mut f32) {
+    println!(">>>>>Shifting {:?} xmod={}",tree.arena[index],xmod);
+    let x_father = tree.arena[index].x;
+    let mut xmod_father = tree.arena[index].xmod;
+    let mut xmod = *xmod + xmod_father;
+    tree.arena[index].set_x_noref(x_father+xmod);
+    tree.arena[index].set_xmod_noref(xmod);
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 2 {
+        panic!("L'arbre doit être binaire")
+    }
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        shift_mod_x( tree, son_left, &mut xmod);
+        shift_mod_x( tree, son_right, &mut xmod);
+        // let x_father = tree.arena[index].x;
+        // let xmod_father = tree.arena[index].xmod;
+        // let mut xmod = *xmod + xmod_father;
+        // tree.arena[index].set_x_noref(x_father+xmod);
+
+    }
+}
+
 // pub fn  pseudo_knuth_layout(tree: &mut ArenaTree<String>,index: usize){
 //     let longueur = tree.arena.len();
 //     let mut count = 0usize;
@@ -244,7 +336,7 @@ pub fn shift_initial_x( tree: &mut ArenaTree<String>, index: usize) {
 
 /// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
-    tree.arena[index].set_y_noref(30.0* (*depth as f32));
+    tree.arena[index].set_y_noref(60.0* (*depth as f32));
     let children  = &mut  tree.arena[index].children;
     if children.len() > 2 {
         panic!("L'arbre doit être binaire")
@@ -277,6 +369,21 @@ pub fn  explore_postorder(tree: &mut ArenaTree<String>,index:usize) {
         println!("POST-ORDER TRAVERSAL : LEAF           {:?} / DEPTH = {}",tree.arena[index],tree.depth(index));
     }
 }
+
+pub fn  check_contour_postorder(tree: &mut ArenaTree<String>,index:usize) {
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let left = children[0];
+        let right = children[1];
+        // push_right(tree,left,right);
+        check_contour_postorder(tree,left);
+        check_contour_postorder(tree,right);
+        push_right(tree,left,right);
+    }
+    else{
+    }
+}
+
 /// Set x of nodes using post-order traversal: all the nodes of a given depth are given a
 ///different x value in order to avoid conflicts.
 pub fn  set_x_postorder(tree: &mut ArenaTree<String>,index:usize, x_coords: &mut Vec<usize>) {
@@ -288,60 +395,159 @@ pub fn  set_x_postorder(tree: &mut ArenaTree<String>,index:usize, x_coords: &mut
         set_x_postorder(tree,right,x_coords);
         x_coords[tree.depth(index)] += 1;
         let posx = x_coords[tree.depth(index)];
-        tree.arena[index].set_x_noref((posx as f32) * 30.0);
+        tree.arena[index].set_x_noref((posx as f32) * 60.0);
     }
     else{
         x_coords[tree.depth(index)] += 1;
         let posx = x_coords[tree.depth(index)];
-        tree.arena[index].set_x_noref((posx as f32) * 30.0);
+        tree.arena[index].set_x_noref((posx as f32) * 60.0);
     }
 }
 
-pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_left: &mut Vec<f32>)  {
+pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_left: &mut Vec<f32>,parent_xmod: f32)  {
+    println!(">>>>> GCL PROCESS NODE {:?}",tree.arena[index]);
     let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
     if contour_left.len() <= local_depth {
-        contour_left.push(tree.arena[index].x);
+        // contour_left.push(tree.arena[index].x);
+        if tree.arena[index].xmod > 0.0 {
+            println!("**** WARNING ***** {:?} xmod = {}",tree.arena[index],tree.arena[index].xmod);
+        }
+        if tree.arena[index].xmod < 0.0 {
+            panic!("erreur xmod");
+        }
+        contour_left.push(tree.arena[index].x+tree.arena[index].xmod+parent_xmod);
+        println!(">>>>> GCL INCREMENT CONTOUR IS NOW {:?}",contour_left);
     }
-    if tree.arena[index].x <= contour_left[local_depth] {
-     contour_left[local_depth] = tree.arena[index].x;
+    // if tree.arena[index].x <= contour_left[local_depth] {
+    //  contour_left[local_depth] = tree.arena[index].x;
+    // }
+    if tree.arena[index].xmod > 0.0 {
+        println!(">>>>> GCL  WARNING xmod = {}",tree.arena[index].xmod);
     }
+    if tree.arena[index].xmod < 0.0 {
+        panic!("erreur xmod");
+    }
+
+    println!(">>>>> GCL COMPARE  {} + {} + {} INFEQ CTL AT DEPTH {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_left[local_depth] );
+    if tree.arena[index].x + tree.arena[index].xmod + parent_xmod <= contour_left[local_depth] {
+     contour_left[local_depth] = tree.arena[index].x + tree.arena[index].xmod + parent_xmod;
+     println!(">>>>> GCL UPDATE CONTOUR IS NOW {:?}",contour_left);
+    }
+
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
         let left = children[0];
         let right = children[1];
-        get_contour_left(tree,left,depth,contour_left);
-        get_contour_left(tree,right,depth,contour_left);
+        get_contour_left(tree,left,depth,contour_left,tree.arena[index].xmod + parent_xmod );
+        // get_contour_left(tree,right,depth,contour_left,tree.arena[index].xmod);
     }
 }
 
-pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_right: &mut Vec<f32>)  {
+pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_right: &mut Vec<f32>,parent_xmod: f32)  {
+    println!(">>>>> GCR PROCESS NODE {:?}",tree.arena[index]);
     let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
     if contour_right.len() <= local_depth {
-        contour_right.push(tree.arena[index].x);
+        // contour_right.push(tree.arena[index].x);
+
+        if tree.arena[index].xmod > 0.0 {
+            println!("**** WARNING ***** {:?} xmod = {}",tree.arena[index],tree.arena[index].xmod);
+        }
+        if tree.arena[index].xmod < 0.0 {
+            panic!("erreur xmod");
+        }
+
+        contour_right.push(tree.arena[index].x+tree.arena[index].xmod+parent_xmod);
+        println!(">>>>> GCR INCREMENT CONTOUR IS NOW {:?}",contour_right);
     }
-    if tree.arena[index].x >= contour_right[local_depth] {
-     contour_right[local_depth] = tree.arena[index].x;
+    // if tree.arena[index].x >= contour_right[local_depth] {
+    //  contour_right[local_depth] = tree.arena[index].x;
+    // }
+    if tree.arena[index].xmod > 0.0 {
+        println!(">>>>> GCR  WARNING xmod = {}",tree.arena[index].xmod);
     }
+    if tree.arena[index].xmod < 0.0 {
+        panic!("erreur xmod");
+    }
+
+    println!(">>>>> GCR COMPARE  {} + {} + {} SUPEQ CTL AT DEPTH {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_right[local_depth] );
+
+    if tree.arena[index].x +  tree.arena[index].xmod + parent_xmod  >= contour_right[local_depth] {
+     contour_right[local_depth] = tree.arena[index].x +  tree.arena[index].xmod + parent_xmod ;
+     println!(">>>>> GCR UPDATE CONTOUR IS NOW {:?}",contour_right);
+    }
+
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
         let left = children[0];
         let right = children[1];
-        get_contour_right(tree,left,depth,contour_right);
-        get_contour_right(tree,right,depth,contour_right);
+        // get_contour_right(tree,left,depth,contour_right,tree.arena[index].xmod);
+        get_contour_right(tree,right,depth,contour_right,tree.arena[index].xmod + parent_xmod );
     }
 }
 
 pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize) -> f32 {
+    println!(">>>>>Compare right contour of {} and left contour of {}",left_tree, right_tree);
     let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x]; //contour droit de l'arbre de gauche
+    let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x+tree.arena[left_tree].xmod]; //contour droit de l'arbre de gauche
     let mut depth_left_tr  = tree.depth(left_tree);
-    get_contour_right(tree,left_tree,depth_left_tr,&mut right_co_of_left_tr);
+    get_contour_right(tree,left_tree,depth_left_tr,&mut right_co_of_left_tr,0.0);
+    println!(">>>>>Right contour of {} = {:?}",left_tree,right_co_of_left_tr);
     let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x]; //contour droit de l'arbre de gauche
+    let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x+tree.arena[right_tree].xmod]; //contour droit de l'arbre de gauche
     let mut depth_right_tr  = tree.depth(right_tree);
-    get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr);
+    get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr,0.0);
+    println!(">>>>>Left contour of {} = {:?}",right_tree,left_co_of_right_tr);
     // let mut iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr);
     //         println!("ITER = {:?}",iter);
+
+    // Si on   a pas le meme longeur de ocntour je comeple le plus petit
+    // en remplissant ce qui manque avec la derniere valeur, pour evoter
+    // qu'un sous arbre vosins se place sous une feuille
+    let right_len = right_co_of_left_tr.len();
+    let left_len = left_co_of_right_tr.len();
+    if left_len > right_len {
+        let last_val =  right_co_of_left_tr[right_len-1];
+        let last_vals =  vec![last_val;left_len-right_len];
+        right_co_of_left_tr.extend(last_vals.iter().copied());
+        println!(">>>>> Comeplete right contour with last value {}", last_val);
+    }
+    if left_len < right_len {
+        let last_val =  left_co_of_right_tr[left_len-1];
+        let last_vals =  vec![last_val;right_len - left_len];
+        left_co_of_right_tr.extend(last_vals.iter().copied());
+        println!(">>>>> Comeplete left contour with last value {}", last_val);
+    }
+
+    println!(">>>>>Comparing  ROL {:?} with LOR {:?} ",right_co_of_left_tr,left_co_of_right_tr);
+
     let mut iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr).map(|(x, y )| (x-y));
-        println!("ITER = {:?}",iter.max_by(|x, y| (*x as i64) .cmp(&(*y as i64 ))));
+
+    let shift = iter.min_by(|x, y| (*x as i64) .cmp(&(*y as i64 )));
+        // println!("ITER = {:?}",iter.min_by(|x, y| (*x as i64) .cmp(&(*y as i64 ))));
+    println!("ITER = {:?}",shift);
+    match shift {
+    Some(val) => {
+        println!("SHIFTED = {}",val);
+        if val <= 0.0 {// bidouilel
+            println!(">>>> ================CONFLIT==========");
+            println!(">>>> Modify node {:?}",tree.arena[right_tree]);
+            let x_mod =  tree.arena[right_tree].xmod;
+            println!("Initial x_mod = {}",x_mod);
+            // let x_mod =  x_mod - 1.0 *val + 60.0 ;
+                    let x_mod =  x_mod -1.0 *val + 60.0 ;//bidouille
+                    // let x_mod =  x_mod - 2.0 *val + 30.0 ;//bidouille
+                    // let x_mod =  x_mod - 1.0 *val + 60.0 ;//bidouille
+
+            println!("New x_mod = {}",x_mod);
+            tree.arena[right_tree].set_xmod_noref(x_mod);
+            println!(">>>> Updated node {:?}",tree.arena[right_tree]);
+            println!(">>>> ================CONFLIT==========");
+        }
+        },
+    None => {}
+    }
+
+
     // for (x, y) in iter  {
     //     println!(" ITER {:?}  {:?} ",x,y);
     //
@@ -360,8 +566,6 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
 pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
-
-        // println!("POST-ORDER MODIF FATHER {:?} NEW X = {}",tree.arena[index],tree.arena[index].x);
         let left = children[0];
         let right = children[1];
         set_middle_postorder(tree,left);
@@ -371,6 +575,7 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
         let x_right = tree.arena[right].x;
         let x = tree.arena[index].x;
         let x_middle = ( x_right + x_left ) / 2.0 ;
+        println!("POST-ORDER MODIF FATHER  X avant  = {} X apres  = {}",x,x_middle);
         // println!("POST-ORDER MODIF FATHER {:?} X = {}",tree.arena[index],tree.arena[index].x);
         // println!("POST-ORDER MODIF FATHER  X LEFT = {} X RIGHT ={}",x_left, x_right);
         tree.arena[index].set_x_noref(x_middle);

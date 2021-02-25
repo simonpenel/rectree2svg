@@ -12,6 +12,9 @@ use crate::arena::set_middle_postorder;
 use crate::arena::get_contour_left;
 use crate::arena::get_contour_right;
 use crate::arena::push_right;
+use crate::arena::shift_mod_x;
+use crate::arena::check_contour_postorder;
+use crate::arena::bottom_tree;
 mod drawing;
 // use clap_verbosity_flag::Verbosity;
 // use structopt::StructOpt;
@@ -58,35 +61,71 @@ fn main() {
     // set_initial_x(&mut tree, root);
     // set_initial_y(&mut tree);
     // shift_initial_x(&mut tree, root);
+
+
+    // 1ere etape : profondeur => Y, left => X= 0, right X=1
+    // ======================================================
     knuth_layout(&mut tree,root, &mut 1);
-    let mut x_coords  = vec![0; tree.arena.len()];
-    set_x_postorder(&mut tree, root, &mut x_coords );
-    shift_initial_x(&mut tree, root);
+    drawing::draw_tree(&mut tree,"knuth.svg".to_string());
 
-    let mut index_noeud = root;
-    let mut depth_noeud  = tree.depth(index_noeud);
-    let mut contour_right  = vec![tree.arena[index_noeud].x];
+    // Allonge l'arbre
+    // ============
+    bottom_tree(&mut tree);
 
-    let mut contour_left  = vec![tree.arena[index_noeud].x];
-    println!("CONTOUR LEFT = {:?}",contour_left);
-    get_contour_left(&mut tree,index_noeud,depth_noeud,&mut contour_left);
-    println!("CONTOUR LEFT = {:?}",contour_left);
 
-    println!("CONTOUR RIGHT = {:?}",contour_right);
-    get_contour_right(&mut tree,index_noeud,depth_noeud,&mut contour_right);
-    println!("CONTOUR RIGHT = {:?}",contour_right);
+    // Veifie les contours
+    // ===================
+     check_contour_postorder(&mut tree, root);
+     drawing::draw_tree(&mut tree,"contour.svg".to_string());
 
-    let mut index_noeud = 4;
-    let mut depth_noeud  = tree.depth(index_noeud);
-    let mut contour_right  = vec![tree.arena[index_noeud].x];
+    // let mut x_coords  = vec![0; tree.arena.len()];
+    ////////// set_x_postorder(&mut tree, root, &mut x_coords );
+    // shift_mod_x(&mut tree, root);
 
-    println!("CONTOUR RIGHT = {:?}",contour_right);
-    get_contour_right(&mut tree,index_noeud,depth_noeud,&mut contour_right);
-    println!("CONTOUR RIGHT = {:?}",contour_right);
-    // set_middle_postorder(&mut tree, root); ( ne marche pas)
+    // let mut index_noeud = root;
+    // let mut depth_noeud  = tree.depth(index_noeud);
+    // let mut contour_right  = vec![tree.arena[index_noeud].x];
+
+    // let mut contour_left  = vec![tree.arena[index_noeud].x];
+    // get_contour_left(&mut tree,index_noeud,depth_noeud,&mut contour_left);
+    // println!("CONTOUR LEFT = {:?}",contour_left);
+    //
+    // get_contour_right(&mut tree,index_noeud,depth_noeud,&mut contour_right);
+    // println!("CONTOUR RIGHT = {:?}",contour_right);
+    //
+    //
+    // let mut index_noeud = 3;
+    // let mut depth_noeud  = tree.depth(index_noeud);
+    // let mut contour_right  = vec![tree.arena[index_noeud].x];
+    // get_contour_right(&mut tree,index_noeud,depth_noeud,&mut contour_right);
+    // println!("CONTOUR RIGHT = {:?}",contour_right);
+    //
+    // let mut index_noeud = 4;
+    // let mut depth_noeud  = tree.depth(index_noeud);
+    // let mut contour_left  = vec![tree.arena[index_noeud].x];
+    // get_contour_left(&mut tree,index_noeud,depth_noeud,&mut contour_left);
+    // println!("CONTOUR LEFT = {:?}",contour_left);
+//////////set_middle_postorder(&mut tree, root);
+    //////// check_contour_postorder(&mut tree, root);
+    // set_middle_postorder(&mut tree, root);
+    // shift_mod_x(&mut tree, root, &mut 0.0);
+
+    //     set_middle_postorder(&mut tree, root);//( ne marche pas)
+    //         set_middle_postorder(&mut tree, root);//( ne marche pas)
     // postorder(&mut tree);
-    push_right(&mut tree,3,4);
-    drawing::draw_tree(&mut tree);
+    // //////// push_right(&mut tree,1,4);
+
+    // Decale toutes les valeurs de x en finction de xmod
+    shift_mod_x(&mut tree, root, &mut 0.0);
+    drawing::draw_tree(&mut tree,"shifted.svg".to_string());
+
+
+    set_middle_postorder(&mut tree, root);
+
+    drawing::draw_tree(&mut tree,"smiddle.svg".to_string());
+
     println!("ARENA :{:?}",tree);
+    // postorder(&mut tree);
+
 
 }
