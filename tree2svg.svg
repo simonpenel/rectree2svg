@@ -1,0 +1,79 @@
+<svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+<style>
+.vert { font: italic 12px serif; fill: green; }
+</style>
+<path d="M45,60 L45,30 L99.375,30" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M43.5,58.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="40" y="70">
+
+</text>
+<path d="M97.875,28.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="94.375" y="40">
+
+</text>
+<path d="M15,90 L15,60 L45,60" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M13.5,88.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="10" y="100">
+
+</text>
+<path d="M0,150 L0,90 L15,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M-1.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="-5" y="160">
+T
+</text>
+<path d="M30,150 L30,90 L15,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M28.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="25" y="160">
+R
+</text>
+<path d="M75,90 L75,60 L45,60" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M73.5,88.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="70" y="100">
+
+</text>
+<path d="M60,150 L60,90 L75,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M58.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="55" y="160">
+E
+</text>
+<path d="M90,150 L90,90 L75,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M88.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="85" y="160">
+E
+</text>
+<path d="M153.75,60 L153.75,30 L99.375,30" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M152.25,58.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="148.75" y="70">
+
+</text>
+<path d="M120,150 L120,60 L153.75,60" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M118.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="115" y="160">
+2
+</text>
+<path d="M187.5,90 L187.5,60 L153.75,60" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M186,88.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="182.5" y="100">
+
+</text>
+<path d="M165,120 L165,90 L187.5,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M163.5,118.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="160" y="130">
+
+</text>
+<path d="M150,150 L150,120 L165,120" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M148.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="145" y="160">
+S
+</text>
+<path d="M180,150 L180,120 L165,120" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M178.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="175" y="160">
+V
+</text>
+<path d="M210,150 L210,90 L187.5,90" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M208.5,148.5 l0,3 l3,0 l0,-3 z" fill="none" stroke="red" stroke-width="3"/>
+<text class="vert" x="205" y="160">
+G
+</text>
+</svg>
