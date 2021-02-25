@@ -10,10 +10,18 @@ pub use self::arena::ArenaTree;
 pub use self::arena::taxo2tree;
 pub use self::arena::knuth_layout;
 pub use self::arena::postorder;
-pub use self::arena::set_x_postorder;
+pub use self::arena::cladogramme;
+pub use self::arena::check_contour_postorder;
+pub use self::arena::push_right;
+pub use self::arena::get_contour_left;
+pub use self::arena::get_contour_right;
+pub use self::arena::shift_mod_x;
+pub use self::arena::set_middle_postorder;
+
 mod drawing;
 pub use self::drawing::draw_tree;
 pub use self::drawing::get_carre;
+pub use self::drawing::get_chemin_carre;
 
 #[cfg(test)]
 mod tests {
