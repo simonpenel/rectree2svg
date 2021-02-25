@@ -14,11 +14,13 @@ use crate::arena::shift_mod_x;
 use crate::arena::check_contour_postorder;
 use crate::arena::cladogramme;
 mod drawing;
+use log::{debug, error, log_enabled, info, Level};
 // use clap_verbosity_flag::Verbosity;
 // use structopt::StructOpt;
 
 fn main() {
-
+    env_logger::init();
+    info!("Verbosity set to Info");
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut f = File::open("newick.txt").expect("Impossible d'ouvrir le fichier");
     let taxo = newick::load_newick(&mut f);
