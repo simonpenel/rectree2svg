@@ -10,8 +10,16 @@ use svg::Node;
 
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
+    let mut largest_x = tree.get_largest_x() *1.2 ;
+    let mut largest_y = tree.get_largest_y() *1.2 ;
+    if (largest_x < 700.0) {
+        largest_x = 700.0;
+    }
+    if (largest_y < 700.0) {
+        largest_y = 700.0;
+    }
     let  mut document = Document::new()
-    .set("viewBox", (0, 0, 1000, 1000));
+    .set("viewBox", (0, 0, largest_x,largest_y));
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
     for  index in &tree.arena {

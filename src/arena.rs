@@ -1,5 +1,6 @@
 use taxonomy::Taxonomy;
-const BLOCK: f32 = 20.0;
+use std::env;
+const BLOCK: f32 = 30.0;
 
 // Structures
 // ==========
@@ -162,6 +163,24 @@ where
             Some(id) => 1 + self.depth(id),
             None => 0,
         }
+    }
+    pub fn get_largest_x(&mut self) -> f32 {
+        let mut max = 0.0;
+        for node in &self.arena {
+            if node.x > max {
+                max = node.x;
+             }
+            }
+        max
+    }
+    pub fn get_largest_y(&mut self) -> f32 {
+        let mut max = 0.0;
+        for node in &self.arena {
+            if node.y > max {
+                max = node.y;
+             }
+            }
+        max
     }
 }
 
