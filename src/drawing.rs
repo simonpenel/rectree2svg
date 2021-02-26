@@ -36,15 +36,17 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          let carre = get_carre(index.x,index.y,3.0);
          document.append(carre);
          let mut element = Element::new("text");
-         element.assign("x", index.x);
-         element.assign("y", index.y);
+         element.assign("x", index.x-5.0);
+         element.assign("y", index.y+10.0);
          element.assign("class", "vert");
-         // let txt  = Text::new(&index.name);
+         let txt  = Text::new(&index.name);
+
          // let txt  = Text::new(&index.x.to_string());
-         let string = &index.x.to_string();
-         let string2 = string.to_owned()+&"_".to_string();
-         let string2 = string2.to_owned()+&index.idx.to_string();
-         let txt  = Text::new(string2);
+
+         // let string = &index.x.to_string();
+         // let string2 = string.to_owned()+&"_".to_string();
+         // let string2 = string2.to_owned()+&index.idx.to_string();
+         // let txt  = Text::new(string2);
          element.append(txt);
          document.append(element);
      }
