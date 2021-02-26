@@ -185,13 +185,14 @@ where
     }
     #[allow(dead_code)]
     pub fn rotate(&mut self)  {
-        let xmax = self.get_largest_x();
-        let ymax = self.get_largest_y();
+        let root = self.get_root();
+        let x_0 = self.arena[root].x;
+        let y_0 = self.arena[root].y;
         for  node in &mut self.arena {
             let x = node.x;
             let y = node.y;
-            node.x = y - ymax;
-            node.y = -x + xmax + 50.0;
+            node.x = y + -y_0 + x_0;
+            node.y = -x + x_0 + y_0;
         }
     }
 }

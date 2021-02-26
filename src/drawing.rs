@@ -1,4 +1,5 @@
-
+use std::cmp;
+use log::{info};
 use crate::arena::ArenaTree;
 use svg::Document;
 use svg::node::element::Path;
@@ -10,16 +11,19 @@ use svg::Node;
 
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
-    let mut largest_x = tree.get_largest_x() *1.2 ;
-    let mut largest_y = tree.get_largest_y() *1.2 ;
-    if largest_x < 700.0 {
-        largest_x = 700.0;
-    }
-    if largest_y < 700.0 {
-        largest_y = 700.0;
-    }
+    let mut largest_x = tree.get_largest_x() + 200.0 ;
+    let mut largest_y = tree.get_largest_y() + 200.0 ;
+    // if largest_x < 700.0 {
+    //     largest_x = 700.0;
+    // }
+    // if largest_y < 700.0 {
+    //     largest_y = 700.0;
+    // }
+    let root = tree.get_root();
+    let x_0 = tree.arena[root].x;
+    let y_0 = tree.arena[root].y;
     let  mut document = Document::new()
-    .set("viewBox", (0, 0, largest_x,largest_y));
+    .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
     for  index in &tree.arena {
@@ -40,16 +44,20 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("y", index.y+10.0);
          element.assign("class", "vert");
          let txt  = Text::new(&index.name);
-
-         // let txt  = Text::new(&index.x.to_string());
-
-         // let string = &index.x.to_string();
-         // let string2 = string.to_owned()+&"_".to_string();
-         // let string2 = string2.to_owned()+&index.idx.to_string();
-         // let txt  = Text::new(string2);
          element.append(txt);
+         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
+     let largest = cmp::max(largest_x as i32, largest_y as i32);
+     let smallest = cmp::min(largest_x as i32, largest_y as i32);
+     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(" -");
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(")");
+     info!("draw_tree: svg transform = {}",transfo);
+     document.assign("transform",transfo);
+
      svg::save(name, &document).unwrap();
 }
 

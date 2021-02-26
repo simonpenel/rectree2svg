@@ -117,7 +117,6 @@ fn main()  {
     // =================================
     set_middle_postorder(&mut tree, root);
 
-    // tree.rotate();
     info!("Output filename is {}",outfile);
     drawing::draw_tree(&mut tree,outfile);
 
