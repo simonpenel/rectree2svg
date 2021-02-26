@@ -24,7 +24,7 @@ fn main() {
     let taxo = newick::load_newick(&mut f);
     let taxo = match taxo {
         Ok(taxo) => {
-            println!("Le fichier est correct");
+            info!("File is ok");
             taxo},
         Err(error) => {
                 panic!("Probleme lors de la lecture du fichier : {:?}", error);
@@ -61,6 +61,8 @@ fn main() {
     // Place le parent entre les enfants
     // =================================
     set_middle_postorder(&mut tree, root);
+
+    // tree.rotate();
     drawing::draw_tree(&mut tree,"smiddle.svg".to_string());
 
 }
