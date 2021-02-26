@@ -183,6 +183,17 @@ where
             }
         max
     }
+    #[allow(dead_code)]
+    pub fn rotate(&mut self)  {
+        let xmax = self.get_largest_x();
+        let ymax = self.get_largest_y();
+        for  node in &mut self.arena {
+            let x = node.x;
+            let y = node.y;
+            node.x = y - ymax;
+            node.y = -x + xmax + 50.0;
+        }
+    }
 }
 
 /// enum of the possible events in a gene tree
