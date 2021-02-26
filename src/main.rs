@@ -19,6 +19,11 @@ use log::{info};
 // Message d'erreur
 // ----------------
 fn display_help(programe_name:String) {
+    const VERSION: Option<&'static str> = option_env!("CARGO_PKG_VERSION");
+    const NAME: Option<&'static str> = option_env!("CARGO_PKG_NAME");
+// ...
+
+    println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("Usage:");
     println!("{} -f input file [-o output file][-v]",programe_name);
     println!("{} -h ",programe_name);
