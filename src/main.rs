@@ -28,12 +28,11 @@ fn display_help(programe_name:String) {
 fn main()  {
     // Gestion des arguments et des options
     // ------------------------------------
-    let mut args: Vec<String> = std::env::args().collect();
+    let args: Vec<String> = std::env::args().collect();
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
     let mut opts = getopt::Parser::new(&args, "f:o:hv");
-    let mut a_flag = false;
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     loop {
@@ -56,7 +55,7 @@ fn main()  {
     // Lecture du fichier au format newick
     // ------------------------------------
     let filename = &infile.clone();
-    info!("Filename is {}",filename);
+    info!("Input filename is {}",filename);
     let  f = File::open(filename);
     let  mut file = match f {
             Ok(file) => {
@@ -114,6 +113,7 @@ fn main()  {
     set_middle_postorder(&mut tree, root);
 
     // tree.rotate();
+    info!("Output filename is {}",outfile);
     drawing::draw_tree(&mut tree,outfile);
 
 }
