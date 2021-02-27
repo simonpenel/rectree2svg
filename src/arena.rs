@@ -436,9 +436,11 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
         let last_val =  left_co_of_right_tr[left_len-1];
         let last_vals =  vec![last_val;right_len - left_len];
         left_co_of_right_tr.extend(last_vals.iter().copied());
-        info!("push_right: Complete left contour with last value {}", last_val);
+        info!("push_right: complete left contour with last value {}", last_val);
     }
-    info!("push_right: comparing  ROL {:?} with LOR {:?} ",right_co_of_left_tr,left_co_of_right_tr);
+    info!("push_right: comparing  right cont. of left tree: {:?}",right_co_of_left_tr);
+    info!("push_right: with left cont. of right tree:       {:?} ",left_co_of_right_tr);
+
     let iter = left_co_of_right_tr.iter().zip(right_co_of_left_tr).map(|(x, y )| (x-y));
     let shift = iter.min_by(|x, y| (*x as i64) .cmp(&(*y as i64 )));
     info!("push_right: distance max  = {:?}",shift);
@@ -446,15 +448,15 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
         Some(val) => {
             info!("push_right: distance max  = {:?}",shift);
             if val <= 0.0 {// bidouilel
-                info!("push_right:  ================CONFLIT==========");
-                info!("push_right:  Modify node {:?}",tree.arena[right_tree]);
+                info!("push_right: ================CONFLIT==========");
+                info!("push_right: Modify node {:?}",tree.arena[right_tree]);
                 let x_mod =  tree.arena[right_tree].xmod;
                 info!("push_right: initial x_mod = {}",x_mod);
                 let x_mod =  x_mod -1.0 *val + BLOCK ;//bidouille
                 info!("push_right: new x_mod = {}",x_mod);
                 tree.arena[right_tree].set_xmod_noref(x_mod);
                 info!("push_right: updated node {:?}",tree.arena[right_tree]);
-                info!("push_right:  ================CONFLIT==========");
+                info!("push_right: ================CONFLIT==========");
             }
         },
         None => {}
