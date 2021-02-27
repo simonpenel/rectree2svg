@@ -25,8 +25,10 @@ fn display_help(programe_name:String) {
 
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-v]",programe_name);
-    println!("{} -h ",programe_name);
+    println!("{} -f input file [-o output file][-h][-c][-v]",programe_name);
+    println!("    -c : build a cladogram");
+    println!("    -h : help");
+    println!("    -v : verbose");
     process::exit(1);
 }
 
@@ -37,13 +39,15 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:hv");
+    let mut opts = getopt::Parser::new(&args, "f:o:hvc");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
+    let mut clado_flag = false;
     loop {
         match opts.next().transpose().expect("Unlnown option") {
             None => break,
             Some(opt) => match opt {
+                Opt('c', None) => clado_flag = true,
                 Opt('v', None) => {
                     env::set_var("RUST_LOG", "info");
                     env_logger::init();
@@ -67,7 +71,7 @@ fn main()  {
                 info!("File exists");
                 file},
             Err(error) => {
-                info!("Unable to read {}",filename);
+                eprintln!("Unable to read {}",filename);
                 eprintln!("Error: {}", error);
                 process::exit(1);
             }
@@ -102,7 +106,9 @@ fn main()  {
 
     // Cladogramme
     // ===========
-    cladogramme(&mut tree);
+    if clado_flag {
+        cladogramme(&mut tree);
+    }
 
     // Veifie les contours
     // ===================
