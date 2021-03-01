@@ -1,3 +1,6 @@
+// Temps de calcul en O(n^2) correct pour des arbres inferieur à  1500 feuilles
+// Au dela le calcul devient long et l'affichage illisible.
+
 use std::fs::File;
 use std::env;
 use std::process;
@@ -21,9 +24,11 @@ use log::{info};
 fn display_help(programe_name:String) {
     const VERSION: Option<&'static str> = option_env!("CARGO_PKG_VERSION");
     const NAME: Option<&'static str> = option_env!("CARGO_PKG_NAME");
+    const DESCRIPTION: Option<&'static str> = option_env!("CARGO_PKG_DESCRIPTION");
 // ...
 
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
+    println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
     println!("{} -f input file [-o output file][-h][-c][-v]",programe_name);
     println!("    -c : build a cladogram");
@@ -60,7 +65,9 @@ fn main()  {
             }
         }
     }
-
+    if args.len() == 1 {
+         display_help(args[0].to_string());
+    }
     // Lecture du fichier au format newick
     // ------------------------------------
     let filename = &infile.clone();
