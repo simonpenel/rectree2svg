@@ -48,8 +48,9 @@ fn main()  {
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = false;
+    let mut nb_args = 0;
     loop {
-        match opts.next().transpose().expect("Unlnown option") {
+        match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
                 Opt('c', None) => clado_flag = true,
@@ -58,7 +59,10 @@ fn main()  {
                     env_logger::init();
                     info!("Verbosity set to Info");
                     },
-                Opt('f', Some(string)) => infile = string.clone(),
+                Opt('f', Some(string)) => {
+                    infile = string.clone();
+                    nb_args += 1;
+                    },
                 Opt('o', Some(string)) => outfile = string.clone(),
                 Opt('h', None) => display_help(args[0].to_string()),
                 _ => unreachable!(),
@@ -66,6 +70,9 @@ fn main()  {
         }
     }
     if args.len() == 1 {
+         display_help(args[0].to_string());
+    }
+    if nb_args != 1 {
          display_help(args[0].to_string());
     }
     // Lecture du fichier au format newick
