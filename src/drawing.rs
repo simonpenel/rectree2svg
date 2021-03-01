@@ -11,17 +11,17 @@ use svg::Node;
 
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
-    let mut largest_x = tree.get_largest_x() + 200.0 ;
-    let mut largest_y = tree.get_largest_y() + 200.0 ;
+    let largest_x = tree.get_largest_x() + 200.0 ;
+    let largest_y = tree.get_largest_y() + 200.0 ;
     // if largest_x < 700.0 {
     //     largest_x = 700.0;
     // }
     // if largest_y < 700.0 {
     //     largest_y = 700.0;
     // }
-    let root = tree.get_root();
-    let x_0 = tree.arena[root].x;
-    let y_0 = tree.arena[root].y;
+    // let root = tree.get_root();
+    // let x_0 = tree.arena[root].x;
+    // let y_0 = tree.arena[root].y;
     let  mut document = Document::new()
     .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
@@ -48,7 +48,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
-     let largest = cmp::max(largest_x as i32, largest_y as i32);
+     // let largest = cmp::max(largest_x as i32, largest_y as i32);
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
      transfo.push_str(&(smallest/2).to_string());
