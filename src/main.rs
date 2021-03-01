@@ -76,7 +76,7 @@ fn main()  {
                 process::exit(1);
             }
     };
-    // Stocke l'arbre dans une structure Taxonomy
+    // Stocke l'arbre dans une structure GeneralTaxonomy
     let taxo = newick::load_newick(&mut file);
     let taxo = match taxo {
         Ok(taxo) => {
@@ -86,6 +86,7 @@ fn main()  {
                 panic!("Probleme lors de la lecture du fichier : {:?}", error);
             }
     };
+    info!("taxonomy : {:?}",taxo);
     // Stocke l'arbre dans une structure ArenaTree
     let racine: &str = taxo.root();
     let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
@@ -94,7 +95,7 @@ fn main()  {
     for child in children {
         taxo2tree(& taxo, child,  &mut tree);
     }
-
+    info!("tree : {:?}",tree);
     // Calcul des coordonees x y
     // =========================
 
@@ -104,23 +105,23 @@ fn main()  {
     knuth_layout(&mut tree,root, &mut 1);
     drawing::draw_tree(&mut tree,"knuth.svg".to_string());
 
-    // Cladogramme
-    // ===========
+    // Option : Cladogramme
+    // ====================
     if clado_flag {
         cladogramme(&mut tree);
     }
 
-    // Veifie les contours
-    // ===================
+    // 2eme etape : Verifie les contours
+    // ==================================
      check_contour_postorder(&mut tree, root);
 
-    // Decale toutes les valeurs de x en finction de xmod
-    // ===================================================
+    // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
+    // ===============================================================
     shift_mod_x(&mut tree, root, &mut 0.0);
     drawing::draw_tree(&mut tree,"shifted.svg".to_string());
 
-    // Place le parent entre les enfants
-    // =================================
+    // 4eme etape : Place le parent entre les enfants
+    // ==============================================
     set_middle_postorder(&mut tree, root);
 
     info!("Output filename is {}",outfile);
