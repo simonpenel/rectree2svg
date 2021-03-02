@@ -8,6 +8,7 @@ pub use self::arena::Event;
 pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;
 pub use self::arena::taxo2tree;
+pub use self::arena::xml2tree;
 pub use self::arena::knuth_layout;
 pub use self::arena::postorder;
 pub use self::arena::cladogramme;

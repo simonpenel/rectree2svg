@@ -1,15 +1,17 @@
 // Temps de calcul en O(n^2) correct pour des arbres inferieur à  1500 feuilles
 // Au dela le calcul devient long et l'affichage illisible.
-
+use std::fs;
 use std::fs::File;
 use std::env;
 use std::process;
 use getopt::Opt;
 use taxonomy::formats::newick;
+// use taxonomy::formats::phyloxml;
 use taxonomy::Taxonomy;
 mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
+use crate::arena::xml2tree;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_x;
@@ -35,6 +37,13 @@ fn display_help(programe_name:String) {
     println!("    -h : help");
     println!("    -v : verbose");
     process::exit(1);
+}
+
+#[derive(Debug)]
+enum  Format {
+    Newick,
+    Phyloxml,
+    Recphyloxml,
 }
 
 fn main()  {
@@ -75,10 +84,31 @@ fn main()  {
     if nb_args != 1 {
          display_help(args[0].to_string());
     }
-    // Lecture du fichier au format newick
-    // ------------------------------------
+
+    //  Determination du format
+    //  ------------------------
     let filename = &infile.clone();
     info!("Input filename is {}",filename);
+    let dot = filename.rfind('.');
+    let format = match dot {
+        None => Format::Newick,
+        Some(dot) => {
+            let suffix = &filename[dot..];
+            info!("File suffix is {:?}",suffix);
+            match suffix {
+                ".xml" => Format::Phyloxml,
+                ".phyloxml" => Format::Phyloxml,
+                ".recphyloxml" => Format::Recphyloxml,
+                ".recphylo" => Format::Recphyloxml,
+                _ => Format::Newick,
+            }
+            },
+    };
+    info!("Format = {:?}",format);
+
+
+    // Ouverture  du fichier
+    // ----------------------
     let  f = File::open(filename);
     let  mut file = match f {
             Ok(file) => {
@@ -90,26 +120,65 @@ fn main()  {
                 process::exit(1);
             }
     };
-    // Stocke l'arbre dans une structure GeneralTaxonomy
-    let taxo = newick::load_newick(&mut file);
-    let taxo = match taxo {
-        Ok(taxo) => {
-            info!("File is ok");
-            taxo},
-        Err(error) => {
-                panic!("Probleme lors de la lecture du fichier : {:?}", error);
-            }
-    };
-    info!("taxonomy : {:?}",taxo);
-    // Stocke l'arbre dans une structure ArenaTree
-    let racine: &str = taxo.root();
-    let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
-    let children = taxo.children(racine_tid).expect("Pas de fils");
+
+    // Creation de la structure ArenaTree
+    // ---------------------------------
     let mut tree: ArenaTree<String> = ArenaTree::default();
-    for child in children {
-        taxo2tree(& taxo, child,  &mut tree);
+
+    // Charge l'arbre selon le format de fichier
+    //  ----------------------------------------
+
+    match format {
+        // Phymxoml
+        Format::Phyloxml => {
+            let contents = fs::read_to_string(filename)
+                .expect("Something went wrong reading the phyloxml file");
+            let doc = roxmltree::Document::parse(&contents).unwrap();
+            let descendants = doc.root().descendants();
+            // Search for the first occurnce of clade tag
+            for node in descendants {
+                if node.has_tag_name("clade"){
+                    // node est la racine
+                    let mut index  = &mut 0;
+                    // Nom de la racine
+                    let name = "N".to_owned()+&index.to_string();
+                    // Cree le nouveau noeud et recupere son index
+                    let name = tree.new_node(name.to_string());
+                    // Appelle xlm2tree sur la racine
+                    xml2tree(node, name, &mut index, &mut tree);
+                    // on s'arrête la
+                    break;
+                }
+            }
+        },
+        // Newick
+        Format::Newick => {
+            // Stocke l'arbre dans une structure GeneralTaxonomy
+            let taxo = newick::load_newick(&mut file);
+            let taxo = match taxo {
+                Ok(taxo) => {
+                    info!("File is ok");
+                    taxo},
+                Err(error) => {
+                    panic!("Something went wrong reading the newick file : {:?}", error);
+                }
+            };
+            info!("taxonomy : {:?}",taxo);
+            // Stocke l'arbre dans une structure ArenaTree
+            let racine: &str = taxo.root();
+            let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
+            let children = taxo.children(racine_tid).expect("Pas de fils");
+            for child in children {
+                taxo2tree(& taxo, child,  &mut tree);
+            }
+        },
+        // Recphyloxml
+        Format::Recphyloxml => {
+            println!("This format is not yet supported");
+            process::exit(0);
+        },
     }
-    info!("tree : {:?}",tree);
+    info!("Tree : {:?}",tree);
     // Calcul des coordonees x y
     // =========================
 

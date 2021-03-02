@@ -3,7 +3,7 @@ name = "tree2svg"
 version = "0.1.0"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
-description ="Read a newick file and create a svg.\n"
+description ="Read a newick or phyloxml file and create a svg.\nFormat is guessed according to filename (default is newick)"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
@@ -13,3 +13,4 @@ log = "0.4.14"
 env_logger = "0.8.3"
 structopt = "0.3"
 getopt = "1.1.0"
+roxmltree = "0.14.0"

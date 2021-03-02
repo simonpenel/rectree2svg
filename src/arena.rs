@@ -244,6 +244,28 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
     }
 }
 
+pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, mut  tree: &mut ArenaTree<String>) {
+        // je cherche les fils
+        let children = node.children();
+         for child in children {
+            if child.has_tag_name("clade"){
+                    // increment le numero
+                    *numero += 1;
+                    // Nouveau nom
+                    let name = "N".to_owned()+&numero.to_string();
+                    //  index de ce nouveau nom
+                    let name = tree.new_node(name.to_string());
+                    //Ajoute ce noeud au parent
+                    tree.arena[parent].children.push(name);
+                    // Attribue un parent a ce noeud
+                    tree.arena[name].parent = Some(parent);
+                    // Explore le reste de l'arbre a partir de ce noeud
+                    xml2tree(child, name, &mut numero, &mut tree);
+
+            }
+
+    }
+}
 /// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
     tree.arena[index].set_y_noref(BLOCK* (*depth as f32));
