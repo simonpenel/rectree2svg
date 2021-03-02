@@ -243,7 +243,7 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         taxo2tree(& t,*child,  tree);
     }
 }
-/// Fill an ArenaTree structure with the contents of roxmltre::Node structure
+/// Fill an ArenaTree structure with the contents of a roxmltre::Node structure
 pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, mut  tree: &mut ArenaTree<String>) {
         // je cherche les fils
         let children = node.children();
