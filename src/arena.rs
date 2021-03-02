@@ -205,6 +205,7 @@ pub enum Event {
     Duplication,
     Loss,
     Transfer,
+    Leaf,
     Undef,
 }
 
@@ -279,6 +280,35 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                     None    => tree.arena[parent].name = "Unkwnown".to_string(),
                 };
             }
+            // Attribue l evenement
+            if child.has_tag_name("eventsRec"){
+                println!(">>>>>>>Event");
+                for evenement in child.children() {
+                        println!(" ==> = {:?}",evenement);
+                        if evenement.has_tag_name("loss"){
+                            tree.arena[parent].set_event(Event::Loss);
+                        }
+                        if evenement.has_tag_name("leaf"){
+                            tree.arena[parent].set_event(Event::Leaf);
+                        }
+                        if evenement.has_tag_name("speciation"){
+                            tree.arena[parent].set_event(Event::Speciation);
+                        }
+                        if evenement.has_tag_name("duplication"){
+                            tree.arena[parent].set_event(Event::Duplication);
+                        }
+
+
+
+                // match nom {
+                //     Some(text) => tree.arena[parent].name = text.to_string(),
+                //     None    => tree.arena[parent].name = "Unkwnown".to_string(),
+                // };
+            }
+                println!("<<<<<<<<<<<<<<Event");
+                // println!("Event = {:?}",evenement);
+            }
+
 
 
     }
