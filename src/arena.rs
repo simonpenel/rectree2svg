@@ -263,6 +263,23 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                     xml2tree(child, name, &mut numero, &mut tree);
 
             }
+            // Attribue le nom defini dans le tag id
+            if child.has_tag_name("id"){
+                let nom = child.first_child().unwrap().text();
+                match nom {
+                    Some(text) => tree.arena[parent].name = text.to_string(),
+                    None    => tree.arena[parent].name = "Unkwnown".to_string(),
+                };
+            }
+            // Attribue le nom defini dans le tag name
+            if child.has_tag_name("name"){
+                let nom = child.first_child().unwrap().text();
+                match nom {
+                    Some(text) => tree.arena[parent].name = text.to_string(),
+                    None    => tree.arena[parent].name = "Unkwnown".to_string(),
+                };
+            }
+
 
     }
 }
