@@ -2,7 +2,7 @@
 Build a svg phylogenetic tree with Rust
 
 Read a newick or phyloxml file and create a svg representation of the tree.
-When reading  phyloxml file, display events (loss, dulplication, speciation).
+When reading  phyloxml file, display events (loss, duplication, speciation).
 
 Currently under development.
 
