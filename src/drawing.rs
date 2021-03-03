@@ -1,8 +1,10 @@
 use std::cmp;
 use log::{info};
 use crate::arena::ArenaTree;
+use crate::arena::Event;
 use svg::Document;
 use svg::node::element::Path;
+use svg::node::element::Circle;
 use svg::node::element::Style;
 use svg::node::Text;
 use svg::node::element::Element;
@@ -37,8 +39,18 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
              None => {
                  -1},
          };
-         let carre = get_carre(index.x,index.y,3.0);
-         document.append(carre);
+         let  event = &index.e;
+         match event {
+              Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
+              Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
+              Event::Loss =>        {
+                                        let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
+                                        cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                                        document.append(cross);
+                                    },
+              _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+         };
+         // document.append(symbole);
          let mut element = Element::new("text");
          element.assign("x", index.x-5.0);
          element.assign("y", index.y+10.0);
@@ -62,7 +74,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
 }
 
 /// Draw a square  of size s at x,y
-pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
+pub fn get_carre (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
     .move_to((x*1.0 -s*0.5 , y*1.0 -s*0.5))
     .line_by((0, s))
@@ -70,11 +82,45 @@ pub fn get_carre (x: f32, y:f32,s:f32) -> Path {
     .line_by((0, -s))
     .close();
 
+    let fill = c.clone();
     let path = Path::new()
-    .set("fill", "none")
-    .set("stroke", "red")
+    .set("fill", fill)
+    .set("stroke", c)
     .set("stroke-width", 3)
     .set("d", data);
+
+    path
+}
+/// Draw a circle  of size s at x,y
+pub fn get_circle (x: f32, y:f32, r:f32, c:String) -> Circle {
+    let fill = c.clone();
+    let circle = Circle::new()
+    .set("cx", x)
+    .set("cy", y)
+    .set("r", r)
+    .set("fill", fill)
+    .set("stroke", c)
+    .set("stroke-width", 1);
+
+    circle
+
+}
+
+/// Draw a cross  of size s at x,y
+pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
+    let data = Data::new()
+    .move_to((x*1.0 , y*1.0 -s*2.0))
+    .line_by((0, s*4.0))
+    .move_to((x*1.0 -s*2.0, y*1.0 ))
+    .line_by((s*4.0, 0));
+
+    let fill = c.clone();
+    let path = Path::new()
+    .set("fill", fill)
+    .set("stroke", c)
+    .set("stroke-width", s*1.0)
+    .set("d", data);
+    // .assign("transform","rotate(90");
 
     path
 }

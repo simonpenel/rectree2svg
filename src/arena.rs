@@ -282,19 +282,22 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
             }
             // Attribue l evenement
             if child.has_tag_name("eventsRec"){
-                println!(">>>>>>>Event");
+                info!("xml2tree:Event detected");
                 for evenement in child.children() {
-                        println!(" ==> = {:?}",evenement);
                         if evenement.has_tag_name("loss"){
+                            info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Loss);
                         }
                         if evenement.has_tag_name("leaf"){
+                            info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Leaf);
                         }
                         if evenement.has_tag_name("speciation"){
+                            info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Speciation);
                         }
                         if evenement.has_tag_name("duplication"){
+                            info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Duplication);
                         }
 
@@ -305,7 +308,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                 //     None    => tree.arena[parent].name = "Unkwnown".to_string(),
                 // };
             }
-                println!("<<<<<<<<<<<<<<Event");
+                info!("xml2tree:Event closed");
                 // println!("Event = {:?}",evenement);
             }
 
@@ -365,7 +368,11 @@ pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mu
         set_leaves_to_bottom(tree,son_right,max);
     }
     else {
-        tree.arena[index].set_y_noref(BLOCK* (*max as f32 + 1.0));
+        match tree.arena[index].e {
+            Event::Loss => tree.arena[index].set_y_noref(BLOCK* (*max as f32 )),
+            _ => tree.arena[index].set_y_noref(BLOCK* (*max as f32 + 1.0)),
+        };
+        // tree.arena[index].set_y_noref(BLOCK* (*max as f32 + 1.0));
     }
 }
 
