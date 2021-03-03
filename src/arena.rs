@@ -39,7 +39,7 @@ where
             xmod: 0.0,
             y: 0.0,
             e: Event::Undef,
-            width: 0.0,
+            width: BLOCK / 4.0,
         }
     }
     #[allow(dead_code)]
