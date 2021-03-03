@@ -321,8 +321,8 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
 
 // Renvoie le NodeId du premier tag "clade"
-pub fn find_first_clade( mut doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
-    let mut descendants = doc.root().descendants();
+pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
+    let descendants = doc.root().descendants();
     // Search for the first occurnce of clade tag
     for  node in descendants {
         if node.has_tag_name("clade"){
@@ -333,8 +333,8 @@ pub fn find_first_clade( mut doc: &mut roxmltree::Document) -> Result < roxmltre
     Err(0)
 }
 // Renvoie le NodeId du premier tag "spTree"
-pub fn find_spTree( mut doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
-    let mut descendants = doc.root().descendants();
+pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
+    let descendants = doc.root().descendants();
     // Search for the first occurnce of clade spTree
     for  node in descendants {
         if node.has_tag_name("spTree"){
@@ -344,6 +344,20 @@ pub fn find_spTree( mut doc: &mut roxmltree::Document) -> Result < roxmltree::No
     }
     Err(0)
 }
+
+// Renvoie le NodeId du premier tag "regGeneTree"
+pub fn find_rgtree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
+    let descendants = doc.root().descendants();
+    // Search for the first occurnce of clade spTree
+    for  node in descendants {
+        if node.has_tag_name("recGeneTree"){
+            // return Ok(node.id().get())
+            return Ok(node.id())
+        }
+    }
+    Err(0)
+}
+
 
 //
 // pub fn find_first_tag( mut doc: &mut roxmltree::Document, tag: String) -> Result < roxmltree::NodeId, usize> {

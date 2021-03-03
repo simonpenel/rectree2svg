@@ -9,6 +9,9 @@ pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;
 pub use self::arena::taxo2tree;
 pub use self::arena::xml2tree;
+pub use self::arena::find_first_clade;
+pub use self::arena::find_sptree;
+pub use self::arena::find_rgtree;
 pub use self::arena::knuth_layout;
 pub use self::arena::postorder;
 pub use self::arena::cladogramme;
@@ -21,8 +24,10 @@ pub use self::arena::set_middle_postorder;
 
 mod drawing;
 pub use self::drawing::draw_tree;
+pub use self::drawing::draw_sptree;
 pub use self::drawing::get_carre;
 pub use self::drawing::get_chemin_carre;
+pub use self::drawing::get_chemin_sp;
 
 #[cfg(test)]
 mod tests {

@@ -227,7 +227,7 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
     path
 }
-/// Draw a square path between x1,y1 ad x2,y2
+/// Draw a square pipe path between x1,y1 ad x2,y2
 pub fn get_chemin_sp (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
     if x1 < x2 {
         let data = Data::new()

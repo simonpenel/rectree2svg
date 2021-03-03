@@ -13,7 +13,8 @@ use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
 use crate::arena::find_first_clade;
-use crate::arena::find_spTree;
+use crate::arena::find_sptree;
+use crate::arena::find_rgtree;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_x;
@@ -185,14 +186,13 @@ fn main()  {
             // ------------------------------------------------
             let mut sptree: ArenaTree<String> = ArenaTree::default();
 
-            // let mut gntrees: Vec<ArenaTree<String>> = ArenaTree::default();
 
             println!("This format is not yet supported");
             let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the recphyloxml file");
             let doc = &mut roxmltree::Document::parse(&contents).unwrap();
             // Recupere le NodeId associe au premiere element aavce un tag spTree
-            let spnode = find_spTree(doc).expect("No clade spTree has been found in xml");
+            let spnode = find_sptree(doc).expect("No clade spTree has been found in xml");
             // Recupere le Node associe grace ai NodeId
             let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
             println!("spTree Id : {:?}",spnode);
@@ -244,6 +244,22 @@ fn main()  {
 
             info!("Output filename is {}",outfile);
             drawing::draw_sptree(&mut sptree,outfile);
+
+            // Creation du vecteur de structure ArenaTree pour les genes
+            // ---------------------------------------------------------
+            // let mut geneTrees = Vec::new(<ArenaTree<String>>);
+            // let mut geneTree ArenaTree<String> = ArenaTree::default();
+
+            let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
+
+            let mut gene_tree: ArenaTree<String> = ArenaTree::default();
+
+            let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
+            // Recupere le Node associe grace ai NodeId
+            let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
+            println!("recGeneTree Id : {:?}",rgnode);
+
+            gene_trees.push(gene_tree);
 
             // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);
