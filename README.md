@@ -1,9 +1,10 @@
 # tree2svg
-Drawing phylogenetic trees with Rust
+Drawing a phylogenetic tree with Rust
 
-Read a newick file and create a svg representation of the tree.
+Read a newick or phyloxml  file and create a svg representation of the tree.
+When reading  phyloxml file, display events as loss, dulplication and speciation.
 
-Still under development.
+Currently under development.
 
 # Next steps
 - Passing from O(n^2) to O(n) complexity
