@@ -92,17 +92,17 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
              None => {
                  -1},
          };
-         let  event = &index.e;
-         match event {
-              Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
-              Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
-              Event::Loss =>        {
-                                        let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
-                                        cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
-                                        document.append(cross);
-                                    },
-              _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
-         };
+         // let  event = &index.e;
+         // match event {
+         //      Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
+         //      Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
+         //      Event::Loss =>        {
+         //                                let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
+         //                                cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+         //                                document.append(cross);
+         //                            },
+         //      _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+         // };
          // document.append(symbole);
          let mut element = Element::new("text");
          element.assign("x", index.x-5.0);
