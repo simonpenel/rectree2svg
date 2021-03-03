@@ -8,7 +8,8 @@ Currently under development.
 
 # Next steps
 - Reading recphyloxml
-- Drawing reconciliation (2 /3 levels)
+- Drawing reconciliation 
+- Allow 2/3 reconciliation levels (host/species/gene) 
 - Passing from O(n^2) to O(n) complexity (not really necessary :  huge trees will no be visible in svg) 
 
 # Instructions:
