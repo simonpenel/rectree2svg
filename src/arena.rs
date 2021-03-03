@@ -21,6 +21,7 @@ where
     pub xmod: f32,
     pub y: f32,
     pub e: Event,
+    pub width: f32,
 }
 
 impl<T> Noeud<T>
@@ -38,6 +39,7 @@ where
             xmod: 0.0,
             y: 0.0,
             e: Event::Undef,
+            width: 0.0,
         }
     }
     #[allow(dead_code)]
@@ -343,7 +345,7 @@ pub fn find_spTree( mut doc: &mut roxmltree::Document) -> Result < roxmltree::No
     Err(0)
 }
 
-// 
+//
 // pub fn find_first_tag( mut doc: &mut roxmltree::Document, tag: String) -> Result < roxmltree::NodeId, usize> {
 // let mut descendants = doc.root().descendants();
 // // Search for the first occurnce of clade tag
