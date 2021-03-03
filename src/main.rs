@@ -214,6 +214,36 @@ fn main()  {
                 }
             }
 
+            // Calcule les coordondees de l'arbre d'espece
+
+            // 1ere etape : profondeur => Y, left => X= 0, right X=1
+            // ======================================================
+            let  root = sptree.get_root();
+            knuth_layout(&mut sptree,root, &mut 1);
+            if verbose {
+                drawing::draw_tree(&mut sptree,"verbose-knuth.svg".to_string());
+            }
+
+            // Cladogramme
+            // ===========
+            cladogramme(&mut sptree);
+
+            // 2eme etape : Verifie les contours
+            // ==================================
+             check_contour_postorder(&mut sptree, root);
+
+             // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
+            // ===============================================================
+            shift_mod_x(&mut sptree, root, &mut 0.0);
+            if verbose {
+                drawing::draw_tree(&mut sptree,"verbose-shifted.svg".to_string());
+            }
+            // 4eme etape : Place le parent entre les enfants
+            // ==============================================
+            set_middle_postorder(&mut sptree, root);
+
+            info!("Output filename is {}",outfile);
+            drawing::draw_tree(&mut sptree,outfile);
 
             // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);
