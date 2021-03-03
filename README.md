@@ -7,9 +7,9 @@ When reading  phyloxml file, display events as loss, dulplication and speciation
 Currently under development.
 
 # Next steps
-- Passing from O(n^2) to O(n) complexity
 - Reading recphyloxml
 - Drawing reconciliation (2 /3 levels)
+- Passing from O(n^2) to O(n) complexity (not really necessary :  huge trees will no be visible in svg) 
 
 # Instructions:
 - cargo build
