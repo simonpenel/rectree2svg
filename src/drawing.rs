@@ -73,6 +73,60 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
      svg::save(name, &document).unwrap();
 }
 
+/// Draw a svg species tree
+pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
+    let largest_x = tree.get_largest_x() + 200.0 ;
+    let largest_y = tree.get_largest_y() + 200.0 ;
+    let  mut document = Document::new()
+    .set("viewBox", (-100, -100, largest_x,largest_y));
+    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    document.append(style);
+    for  index in &tree.arena {
+         let _parent =  match index.parent {
+             Some(p) => {
+                 let n = &tree.arena[p];
+                 let chemin = get_chemin_sp(index.x,index.y,index.width,n.x,n.y);
+                 document.append(chemin);
+                 0
+                },
+             None => {
+                 -1},
+         };
+         let  event = &index.e;
+         match event {
+              Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
+              Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
+              Event::Loss =>        {
+                                        let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
+                                        cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                                        document.append(cross);
+                                    },
+              _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+         };
+         // document.append(symbole);
+         let mut element = Element::new("text");
+         element.assign("x", index.x-5.0);
+         element.assign("y", index.y+10.0);
+         element.assign("class", "vert");
+         let txt  = Text::new(&index.name);
+         element.append(txt);
+         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+         document.append(element);
+     }
+     // let largest = cmp::max(largest_x as i32, largest_y as i32);
+     let smallest = cmp::min(largest_x as i32, largest_y as i32);
+     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(" -");
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(")");
+     info!("drawsp_tree: svg transform = {}",transfo);
+     document.assign("transform",transfo);
+
+     svg::save(name, &document).unwrap();
+}
+
+
 /// Draw a square  of size s at x,y
 pub fn get_carre (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
@@ -172,4 +226,42 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     .set("d", data);
 
     path
+}
+/// Draw a square path between x1,y1 ad x2,y2
+pub fn get_chemin_sp (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
+    if x1 < x2 {
+        let data = Data::new()
+        .move_to((x1 - width, y1 - width))
+        .line_to((x1 - width, y2 - width))
+        .line_to((x2 - width, y2 - width))
+        .move_to((x1 + width, y1 - width))
+        .line_to((x1 + width, y2 + width))
+        .line_to((x2, y2 + width));
+
+        let path = Path::new()
+        .set("fill", "none")
+        .set("stroke", "pink")
+        .set("stroke-width", 1)
+        .set("d", data);
+
+        path
+    }
+    else {
+        let data = Data::new()
+        .move_to((x1 + width, y1 - width))
+        .line_to((x1 + width, y2 - width))
+        .line_to((x2 + width, y2 - width))
+        .move_to((x1 - width, y1 - width))
+        .line_to((x1 - width, y2 + width))
+        .line_to((x2, y2 + width));
+
+        let path = Path::new()
+        .set("fill", "none")
+        .set("stroke", "pink")
+        .set("stroke-width", 1)
+        .set("d", data);
+
+        path
+
+    }
 }

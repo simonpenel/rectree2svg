@@ -243,7 +243,7 @@ fn main()  {
             set_middle_postorder(&mut sptree, root);
 
             info!("Output filename is {}",outfile);
-            drawing::draw_tree(&mut sptree,outfile);
+            drawing::draw_sptree(&mut sptree,outfile);
 
             // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);
