@@ -32,8 +32,8 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-h][-c][-v]",programe_name);
-    println!("    -c : build a cladogram");
+    println!("{} -f input file [-o output file][-h][-p][-v]",programe_name);
+    println!("    -p : build a phylogram");
     println!("    -h : help");
     println!("    -v : verbose");
     process::exit(1);
@@ -53,17 +53,19 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:hvc");
+    let mut opts = getopt::Parser::new(&args, "f:o:hvp");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
-    let mut clado_flag = false;
+    let mut clado_flag = true;
+    let mut verbose = false;
     let mut nb_args = 0;
     loop {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
-                Opt('c', None) => clado_flag = true,
+                Opt('p', None) => clado_flag = false,
                 Opt('v', None) => {
+                    verbose = true;
                     env::set_var("RUST_LOG", "info");
                     env_logger::init();
                     info!("Verbosity set to Info");
@@ -186,7 +188,9 @@ fn main()  {
     // ======================================================
     let  root = tree.get_root();
     knuth_layout(&mut tree,root, &mut 1);
-    drawing::draw_tree(&mut tree,"knuth.svg".to_string());
+    if verbose {
+        drawing::draw_tree(&mut tree,"verbose-knuth.svg".to_string());
+    }
 
     // Option : Cladogramme
     // ====================
@@ -201,8 +205,9 @@ fn main()  {
     // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
     // ===============================================================
     shift_mod_x(&mut tree, root, &mut 0.0);
-    drawing::draw_tree(&mut tree,"shifted.svg".to_string());
-
+    if verbose {
+        drawing::draw_tree(&mut tree,"verbose-shifted.svg".to_string());
+    }
     // 4eme etape : Place le parent entre les enfants
     // ==============================================
     set_middle_postorder(&mut tree, root);
