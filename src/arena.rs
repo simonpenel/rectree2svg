@@ -316,6 +316,48 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
     }
 }
+
+
+// Renvoie le NodeId du premier tag "clade"
+pub fn find_first_clade( mut doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
+    let mut descendants = doc.root().descendants();
+    // Search for the first occurnce of clade tag
+    for  node in descendants {
+        if node.has_tag_name("clade"){
+            // return Ok(node.id().get())
+            return Ok(node.id())
+        }
+    }
+    Err(0)
+}
+// Renvoie le NodeId du premier tag "spTree"
+pub fn find_spTree( mut doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
+    let mut descendants = doc.root().descendants();
+    // Search for the first occurnce of clade spTree
+    for  node in descendants {
+        if node.has_tag_name("spTree"){
+            // return Ok(node.id().get())
+            return Ok(node.id())
+        }
+    }
+    Err(0)
+}
+
+// 
+// pub fn find_first_tag( mut doc: &mut roxmltree::Document, tag: String) -> Result < roxmltree::NodeId, usize> {
+// let mut descendants = doc.root().descendants();
+// // Search for the first occurnce of clade tag
+// for  node in descendants {
+//     if node.has_tag_name(tag){
+//         // return Ok(node.id().get())
+//         return Ok(node.id())
+//     }
+// }
+// Err(0)
+// }
+
+
+
 /// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
     tree.arena[index].set_y_noref(BLOCK* (*depth as f32));

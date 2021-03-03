@@ -12,6 +12,8 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
+use crate::arena::find_first_clade;
+use crate::arena::find_spTree;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_x;
@@ -176,7 +178,44 @@ fn main()  {
         },
         // Recphyloxml
         Format::Recphyloxml => {
+            // Attention dance cas, on cree une structure Arena pour l'arbre d'espece
+            // et un vecteur de  structures Arena poru le(s) arbres de gènes
+
+            // Creation de la structure ArenaTree pour l'espece
+            // ------------------------------------------------
+            let mut sptree: ArenaTree<String> = ArenaTree::default();
+
+            // let mut gntrees: Vec<ArenaTree<String>> = ArenaTree::default();
+
             println!("This format is not yet supported");
+            let contents = fs::read_to_string(filename)
+                .expect("Something went wrong reading the recphyloxml file");
+            let doc = &mut roxmltree::Document::parse(&contents).unwrap();
+            // Recupere le NodeId associe au premiere element aavce un tag spTree
+            let spnode = find_spTree(doc).expect("No clade spTree has been found in xml");
+            // Recupere le Node associe grace ai NodeId
+            let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
+            println!("spTree Id : {:?}",spnode);
+
+            let descendants = spnode.descendants();
+            // Search for the first occurnce of clade tag
+            for node in descendants {
+                if node.has_tag_name("clade"){
+                    // node est la racine
+                    let mut index  = &mut 0;
+                    // Nom de la racine
+                    let name = "N".to_owned()+&index.to_string();
+                    // Cree le nouveau noeud et recupere son index
+                    let name = sptree.new_node(name.to_string());
+                    // Appelle xlm2tree sur la racine
+                    xml2tree(node, name, &mut index, &mut sptree);
+                    // on s'arrête la
+                    break;
+                }
+            }
+
+
+            // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);
         },
     }
