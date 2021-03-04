@@ -184,7 +184,7 @@ fn main()  {
 
             // Creation de la structure ArenaTree pour l'espece
             // ------------------------------------------------
-            let mut sptree: ArenaTree<String> = ArenaTree::default();
+            let mut sp_tree: ArenaTree<String> = ArenaTree::default();
 
 
             println!("This format is not yet supported");
@@ -206,9 +206,9 @@ fn main()  {
                     // Nom de la racine
                     let name = "N".to_owned()+&index.to_string();
                     // Cree le nouveau noeud et recupere son index
-                    let name = sptree.new_node(name.to_string());
+                    let name = sp_tree.new_node(name.to_string());
                     // Appelle xlm2tree sur la racine
-                    xml2tree(node, name, &mut index, &mut sptree);
+                    xml2tree(node, name, &mut index, &mut sp_tree);
                     // on s'arrête la
                     break;
                 }
@@ -218,48 +218,63 @@ fn main()  {
 
             // 1ere etape : profondeur => Y, left => X= 0, right X=1
             // ======================================================
-            let  root = sptree.get_root();
-            knuth_layout(&mut sptree,root, &mut 1);
+            let  root = sp_tree.get_root();
+            knuth_layout(&mut sp_tree,root, &mut 1);
             if verbose {
-                drawing::draw_tree(&mut sptree,"verbose-knuth.svg".to_string());
+                drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
             }
 
             // Cladogramme
             // ===========
-            cladogramme(&mut sptree);
+            cladogramme(&mut sp_tree);
 
             // 2eme etape : Verifie les contours
             // ==================================
-             check_contour_postorder(&mut sptree, root);
+             check_contour_postorder(&mut sp_tree, root);
 
              // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
             // ===============================================================
-            shift_mod_x(&mut sptree, root, &mut 0.0);
+            shift_mod_x(&mut sp_tree, root, &mut 0.0);
             if verbose {
-                drawing::draw_tree(&mut sptree,"verbose-shifted.svg".to_string());
+                drawing::draw_tree(&mut sp_tree,"verbose-shifted.svg".to_string());
             }
             // 4eme etape : Place le parent entre les enfants
             // ==============================================
-            set_middle_postorder(&mut sptree, root);
+            set_middle_postorder(&mut sp_tree, root);
 
             info!("Output filename is {}",outfile);
-            drawing::draw_sptree(&mut sptree,outfile);
+            drawing::draw_sptree(&mut sp_tree,outfile);
 
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
-            // let mut geneTrees = Vec::new(<ArenaTree<String>>);
-            // let mut geneTree ArenaTree<String> = ArenaTree::default();
-
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
-
             let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-
             let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
             // Recupere le Node associe grace ai NodeId
             let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
             println!("recGeneTree Id : {:?}",rgnode);
+            // Search for the first gene trees
+            let descendants = rgnode.descendants();
+            // Search for the first occurnce of clade tag
+            for node in descendants {
+                if node.has_tag_name("clade"){
+                    // node est la racine
+                    let mut index  = &mut 0;
+                    // Nom de la racine
+                    let name = "N".to_owned()+&index.to_string();
+                    // Cree le nouveau noeud et recupere son index
+                    let name = gene_tree.new_node(name.to_string());
+                    // Appelle xlm2tree sur la racine
+                    xml2tree(node, name, &mut index, &mut gene_tree);
+                    // on s'arrête la
+                    break;
+                }
+            }
+
 
             gene_trees.push(gene_tree);
+            println!("Species tree  : {:?}",sp_tree);
+            println!("Gene trees : {:?}",gene_trees);
 
             // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);

@@ -12,16 +12,16 @@ pub struct Noeud<T>
 where
     T: PartialEq
 {
-    pub idx: usize,
-    val: T,
-    pub name: String,
-    pub parent: Option<usize>,
-    pub children: Vec<usize>,
-    pub x: f32,
-    pub xmod: f32,
-    pub y: f32,
-    pub e: Event,
-    pub width: f32,
+    pub idx: usize,             // index dans la structure
+    val: T,                     // valeur unique dans la structure
+    pub name: String,           // nom du noeud ou de la feuille
+    pub parent: Option<usize>,  // index du parent
+    pub children: Vec<usize>,   // indexes des enfants
+    pub x: f32,                 // coordonnee x (avant rotation 90 svg)
+    pub xmod: f32,              // decalage x a ajouter a x
+    pub y: f32,                 // coordonnee y (avant rotation 90 svg)
+    pub e: Event,               // evenement (dans le cas d'arbre de gene) Duplication, Loss, etc.
+    pub width: f32,             // largeur du tuyeau (dans le cas d'anrte d'espece)
 }
 
 impl<T> Noeud<T>
