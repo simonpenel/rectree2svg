@@ -113,6 +113,87 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
+
+
+
+
+     // let largest = cmp::max(largest_x as i32, largest_y as i32);
+     let smallest = cmp::min(largest_x as i32, largest_y as i32);
+     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(" -");
+     transfo.push_str(&(smallest/2).to_string());
+     transfo.push_str(")");
+     info!("drawsp_tree: svg transform = {}",transfo);
+     document.assign("transform",transfo);
+
+     svg::save(name, &document).unwrap();
+}
+
+/// Draw a svg species tree
+pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut ArenaTree<String>, name: String) {
+    let largest_x = sp_tree.get_largest_x() + 200.0 ;
+    let largest_y = sp_tree.get_largest_y() + 200.0 ;
+    let  mut document = Document::new()
+    .set("viewBox", (-100, -100, largest_x,largest_y));
+    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    document.append(style);
+    let style = Style::new(".jaune { font: italic 8px serif; fill: orange; }");
+    document.append(style);
+    for  index in &sp_tree.arena {
+         let _parent =  match index.parent {
+             Some(p) => {
+                 let n = &sp_tree.arena[p];
+                 let chemin = get_chemin_sp(index.x,index.y,index.width,n.x,n.y);
+                 document.append(chemin);
+                 0
+                },
+             None => {
+                 -1},
+         };
+         let mut element = Element::new("text");
+         element.assign("x", index.x+15.0);
+         element.assign("y", index.y+20.0);
+         element.assign("class", "jaune");
+         let txt  = Text::new(&index.name);
+         element.append(txt);
+         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+         document.append(element);
+     }
+
+     for  index in &gene_tree.arena {
+          let _parent =  match index.parent {
+              Some(p) => {
+                  let n = &gene_tree.arena[p];
+                  let chemin = get_chemin_carre(index.x,index.y,n.x,n.y);
+                  document.append(chemin);
+                  0
+                 },
+              None => {
+                  -1},
+          };
+          let  event = &index.e;
+          match event {
+               Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
+               Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
+               Event::Loss =>        {
+                                         let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
+                                         cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                                         document.append(cross);
+                                     },
+               _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+          };
+          // document.append(symbole);
+          let mut element = Element::new("text");
+          element.assign("x", index.x-5.0);
+          element.assign("y", index.y+10.0);
+          element.assign("class", "vert");
+          let txt  = Text::new(&index.name);
+          element.append(txt);
+          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+          document.append(element);
+      }
+
      // let largest = cmp::max(largest_x as i32, largest_y as i32);
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();

@@ -21,6 +21,7 @@ where
     pub xmod: f32,              // decalage x a ajouter a x
     pub y: f32,                 // coordonnee y (avant rotation 90 svg)
     pub e: Event,               // evenement (dans le cas d'arbre de gene) Duplication, Loss, etc.
+    pub location: String,         // SpeciesLocaton associe evenement (dans le cas d'arbre de gene)
     pub width: f32,             // largeur du tuyeau (dans le cas d'anrte d'espece)
 }
 
@@ -32,13 +33,14 @@ where
         Self {
             idx,
             val,
-            name :String::from("Undefined"),
+            name: String::from("Undefined"),
             parent: None,
             children: vec![],
             x: 0.0,
             xmod: 0.0,
             y: 0.0,
             e: Event::Undef,
+            location: String::from("Undefined"),
             width: BLOCK / 4.0,
         }
     }
@@ -289,18 +291,39 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         if evenement.has_tag_name("loss"){
                             info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Loss);
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            let location = evenement.attributes()[0].value();
+                            tree.arena[parent].location = location.to_string();
                         }
                         if evenement.has_tag_name("leaf"){
                             info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Leaf);
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            let location = evenement.attributes()[0].value();
+                            tree.arena[parent].location = location.to_string();
                         }
                         if evenement.has_tag_name("speciation"){
                             info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Speciation);
+                            println!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            println!("==> {:?}",evenement.attributes()[0].name());
+                            let location = evenement.attributes()[0].value();
+                            println!(">>>>>>LOCATION = {}",location);
+                            tree.arena[parent].location = location.to_string();
+
+
                         }
                         if evenement.has_tag_name("duplication"){
                             info!("xml2tree:{:?}",evenement);
                             tree.arena[parent].set_event(Event::Duplication);
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            let location = evenement.attributes()[0].value();
+                            tree.arena[parent].location = location.to_string();
                         }
 
 
@@ -318,7 +341,25 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
     }
 }
+pub fn map_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
 
+    for  index in &mut gene_tree.arena {
+        println!("MAP {:?}  {:?}",index.e,index.location);
+        for spindex in  &mut sp_tree.arena {
+            if  index.location == spindex.name {
+                println!("MAP GENE NODE {:?} WITH SPECIES NODE {:?}",index,spindex);
+                let x = spindex.x;
+                index.x = x;
+                let y = spindex.y;
+                index.y = y;
+                // sp_tree.arena[idx].set_x_noref(x);
+
+            }
+
+        }
+    }
+
+}
 
 // Renvoie le NodeId du premier tag "clade"
 pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {

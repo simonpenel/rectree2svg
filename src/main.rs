@@ -12,6 +12,7 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
+use crate::arena::map_tree;
 use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
 use crate::arena::find_rgtree;
@@ -242,8 +243,7 @@ fn main()  {
             // ==============================================
             set_middle_postorder(&mut sp_tree, root);
 
-            info!("Output filename is {}",outfile);
-            drawing::draw_sptree(&mut sp_tree,outfile);
+
 
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
@@ -272,9 +272,14 @@ fn main()  {
             }
 
 
-            gene_trees.push(gene_tree);
+            // gene_trees.push(&gene_tree);
             println!("Species tree  : {:?}",sp_tree);
             println!("Gene trees : {:?}",gene_trees);
+            println!("Gene tree : {:?}",gene_tree);
+            map_tree(&mut sp_tree,&mut gene_tree);
+
+            info!("Output filename is {}",outfile);
+            drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
 
             // On s'arrete la, lereste du programme concerne les autres formats
             process::exit(0);
