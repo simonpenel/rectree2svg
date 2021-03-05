@@ -223,10 +223,12 @@ fn main()  {
                 drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
             }
 
-            // Cladogramme
-            // ===========
-            cladogramme(&mut sp_tree);
-
+            // Option : Cladogramme
+            // ====================
+            if clado_flag {
+                cladogramme(&mut sp_tree);
+            }
+            
             // 2eme etape : Verifie les contours
             // ==================================
              check_contour_postorder(&mut sp_tree, root);
