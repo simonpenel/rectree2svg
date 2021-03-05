@@ -1,6 +1,7 @@
 use taxonomy::Taxonomy;
 use log::{info};
-const BLOCK: f32 = 30.0;
+const BLOCK: f32 = 60.0;
+const PIPEBLOCK: f32 = BLOCK / 4.0;
 
 // Structures
 // ==========
@@ -41,7 +42,7 @@ where
             y: 0.0,
             e: Event::Undef,
             location: String::from("Undefined"),
-            width: BLOCK / 4.0,
+            width: PIPEBLOCK ,
         }
     }
     #[allow(dead_code)]
@@ -487,14 +488,85 @@ pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32) 
     if children.len() > 2 {
         panic!("L'arbre doit être binaire")
     }
-    if children.len() > 0 {
+    if children.len() > 1 {
         let son_left = children[0];
         let son_right = children[1];
         shift_mod_x( tree, son_left, &mut xmod);
         shift_mod_x( tree, son_right, &mut xmod);
     }
+
 }
 
+pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
+    let is_dupli = match tree.arena[index].e {
+         Event::Duplication => true,
+         _                  => false,
+    };
+    let is_loss = match tree.arena[index].e {
+         Event::Loss => true,
+         _           => false,
+    };
+    if is_loss {
+        // Les noeud Loss sont affiches juste 1 cran en dessous de leur parent
+        let p = tree.arena[index].parent;
+        match p {
+            Some(p) => {
+                let y = tree.arena[p].y;
+                let y = y + BLOCK  ;
+                tree.arena[index].set_y_noref(y);
+                },
+            None => {
+                panic!("This Loss node has no parent {:?}",tree.arena[index]);
+                },
+        }
+    }
+    let children  =  &mut tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        if is_dupli {
+            let p = tree.arena[index].parent;
+            // Un noeud Duplication est initialement positioné en y  comme
+            // le noeud de l'espèce associée. On le positione un peu moins
+            // d'un cran en dessous du parent  pour permettre la visualisation
+            match p {
+                Some(p) => {
+                    let y = tree.arena[p].y;
+                    let y = y + BLOCK  - PIPEBLOCK;
+                    tree.arena[index].set_y_noref(y);
+                    } ,
+                None => {},
+            }
+            // On décale en x à gauche et à droite les noeuds issus de la duplication
+            let  xmod = tree.arena[son_left].xmod;
+            let  xmod = xmod  - PIPEBLOCK / 2.0 ;
+            tree.arena[son_left].set_xmod_noref(xmod);
+            let  xmod = tree.arena[son_right].xmod;
+            let  xmod = xmod  + PIPEBLOCK / 2.0 ;
+            tree.arena[son_right].set_xmod_noref(xmod);
+            // Si le noeud  droit n'est pas une feuille on le decale en y
+            // TODO a améliorer : feuille a gauche et noeud interne  a droite?
+            let is_leaf = match tree.arena[son_right].e {
+                 Event::Leaf => true,
+                 _           => false,
+            };
+            if  !is_leaf {
+                let y = tree.arena[son_right].y;
+                let y = y  + PIPEBLOCK / 2.0 ;
+                tree.arena[son_right].set_y_noref(y);
+            }
+        }
+        shift_duplicated_and_loss( tree, son_left);
+        shift_duplicated_and_loss( tree, son_right);
+    }
+
+    //     match event {
+    //             Event::Duplication => { println!("Shifting suplicated")},
+    //             _ => {},
+    //     };
+    // }
+
+}
 #[allow(dead_code)]
 /// Traverse the tree using post-order traversal
 pub fn  postorder(tree: &mut ArenaTree<String>){
