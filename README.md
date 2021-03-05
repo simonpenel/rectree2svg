@@ -1,13 +1,13 @@
 # rectree2svg
-Build a svg phylogenetic tree with Rust
+Build a svg phylogenetic reconcilated tree with Rust
 
-Read a newick or phyloxml file and create a svg representation of the tree.
-When reading  phyloxml file, display events (loss, duplication, speciation).
+Read a recphyloxml file:  create a svg representation of the  gene trees and species tree with events (loss, duplication, speciation, transfer).
+Read a newick or phyloxml file:  and create a svg representation of the tree.
 
 Currently under development.
 
-# Next steps
-- Reading recphyloxml
+# Under development:
+- Reading recphyloxml 
 - Drawing reconciliation 
 - Drawing gene transfer
 - Allow 2/3 reconciliation levels (host/species/gene) 
