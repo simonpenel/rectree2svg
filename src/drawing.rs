@@ -165,7 +165,10 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           let _parent =  match index.parent {
               Some(p) => {
                   let n = &gene_tree.arena[p];
-                  let chemin = get_chemin_carre(index.x,index.y,n.x,n.y);
+                  let chemin = match index.e {
+                      Event::TransferBack   => get_chemin_transfer(index.x,index.y,n.x,n.y),
+                      _                     => get_chemin_carre(index.x,index.y,n.x,n.y),
+                  };
                   document.append(chemin);
                   0
                  },
@@ -293,6 +296,22 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     .set("fill", "none")
     .set("stroke", "blue")
     .set("stroke-width", 1)
+    .set("d", data);
+
+    path
+}
+
+/// Draw a transfer path between x1,y1 ad x2,y2
+pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+    let data = Data::new()
+    .move_to((x1*1.0, y1*1.0))
+    .line_to((x2*1.0, y2*1.0));
+
+    let path = Path::new()
+    .set("fill", "none")
+    .set("stroke", "pink")
+    .set("stroke-width", 0.5)
+    .set("stroke-dasharray","2, 1")
     .set("d", data);
 
     path
