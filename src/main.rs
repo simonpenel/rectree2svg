@@ -13,6 +13,7 @@ use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
 use crate::arena::map_tree;
+use crate::arena::shift_duplicated_and_loss;
 use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
 use crate::arena::find_rgtree;
@@ -105,6 +106,7 @@ fn main()  {
                 ".xml" => Format::Phyloxml,
                 ".phyloxml" => Format::Phyloxml,
                 ".recphyloxml" => Format::Recphyloxml,
+                ".recPhyloXML" => Format::Recphyloxml,
                 ".recphylo" => Format::Recphyloxml,
                 _ => Format::Newick,
             }
@@ -278,6 +280,9 @@ fn main()  {
             println!("Gene tree : {:?}",gene_tree);
             map_tree(&mut sp_tree,&mut gene_tree);
 
+            let  groot = gene_tree.get_root();
+            shift_duplicated_and_loss(&mut gene_tree, groot);
+            shift_mod_x(&mut gene_tree, groot, &mut 0.0);
             info!("Output filename is {}",outfile);
             drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
 
