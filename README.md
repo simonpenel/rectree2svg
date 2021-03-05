@@ -1,4 +1,4 @@
-# tree2svg
+# rectree2svg
 Build a svg phylogenetic tree with Rust
 
 Read a newick or phyloxml file and create a svg representation of the tree.
