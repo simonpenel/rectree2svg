@@ -41,10 +41,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          };
          let  event = &index.e;
          match event {
-              Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
-              Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
-              Event::Loss =>        {
-                                        let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
+             Event::Leaf        =>  document.append(get_carre(index.x,index.y,2.0,"red".to_string())),
+             Event::Duplication =>  document.append(get_carre(index.x,index.y,2.0,"blue".to_string())),
+             Event::Loss =>        {
+                                        let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
                                         cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
                                         document.append(cross);
                                     },
@@ -136,7 +136,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
     let largest_y = sp_tree.get_largest_y() + 200.0 ;
     let  mut document = Document::new()
     .set("viewBox", (-100, -100, largest_x,largest_y));
-    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    let style = Style::new(".vert { font:  8px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 8px serif; fill: orange; }");
     document.append(style);
@@ -174,13 +174,18 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           };
           let  event = &index.e;
           match event {
-               Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
-               Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
+               Event::Leaf        =>  document.append(get_carre(index.x,index.y,1.0,"red".to_string())),
+               Event::Duplication =>  document.append(get_carre(index.x,index.y,2.0,"blue".to_string())),
                Event::Loss =>        {
-                                         let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
-                                         cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
-                                         document.append(cross);
-                                     },
+                   let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
+                   cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                   document.append(cross);
+                },
+                Event::TransferBack => {
+                    let mut diamond = get_carre(index.x,index.y,4.0,"green".to_string());
+                    diamond.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                    document.append(diamond);
+                },
                _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
           };
           // document.append(symbole);
