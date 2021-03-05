@@ -15,15 +15,6 @@ use svg::Node;
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     let largest_x = tree.get_largest_x() + 200.0 ;
     let largest_y = tree.get_largest_y() + 200.0 ;
-    // if largest_x < 700.0 {
-    //     largest_x = 700.0;
-    // }
-    // if largest_y < 700.0 {
-    //     largest_y = 700.0;
-    // }
-    // let root = tree.get_root();
-    // let x_0 = tree.arena[root].x;
-    // let y_0 = tree.arena[root].y;
     let  mut document = Document::new()
     .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
@@ -60,7 +51,6 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
-     // let largest = cmp::max(largest_x as i32, largest_y as i32);
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
      transfo.push_str(&(smallest/2).to_string());
@@ -69,7 +59,6 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
      transfo.push_str(")");
      info!("draw_tree: svg transform = {}",transfo);
      document.assign("transform",transfo);
-
      svg::save(name, &document).unwrap();
 }
 
@@ -92,18 +81,6 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
              None => {
                  -1},
          };
-         // let  event = &index.e;
-         // match event {
-         //      Event::Leaf        =>  document.append(get_carre(index.x,index.y,3.0,"red".to_string())),
-         //      Event::Duplication =>  document.append(get_carre(index.x,index.y,5.0,"blue".to_string())),
-         //      Event::Loss =>        {
-         //                                let mut cross = get_cross(index.x,index.y,3.0,"blue".to_string());
-         //                                cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
-         //                                document.append(cross);
-         //                            },
-         //      _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
-         // };
-         // document.append(symbole);
          let mut element = Element::new("text");
          element.assign("x", index.x-5.0);
          element.assign("y", index.y+10.0);
@@ -113,11 +90,6 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
-
-
-
-
-     // let largest = cmp::max(largest_x as i32, largest_y as i32);
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
      transfo.push_str(&(smallest/2).to_string());
@@ -126,7 +98,6 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
      transfo.push_str(")");
      info!("drawsp_tree: svg transform = {}",transfo);
      document.assign("transform",transfo);
-
      svg::save(name, &document).unwrap();
 }
 
@@ -160,7 +131,6 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          document.append(element);
      }
-
      for  index in &gene_tree.arena {
           let _parent =  match index.parent {
               Some(p) => {
@@ -185,13 +155,17 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                    document.append(cross);
                 },
                 Event::TransferBack => {
-                    let mut diamond = get_carre(index.x,index.y,4.0,"green".to_string());
-                    diamond.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
-                    document.append(diamond);
+                    let _parent =  match index.parent {
+                        Some(p) => {
+                            let n = &gene_tree.arena[p];
+                            let mut diamond = get_carre(n.x,n.y,4.0,"green".to_string());
+                            diamond.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
+                            document.append(diamond);},
+                        None =>{panic!("The TransferBack Node as no father {:?}",index)},
+                    };
                 },
                _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
           };
-          // document.append(symbole);
           let mut element = Element::new("text");
           element.assign("x", index.x-5.0);
           element.assign("y", index.y+10.0);
@@ -201,8 +175,6 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
           document.append(element);
       }
-
-     // let largest = cmp::max(largest_x as i32, largest_y as i32);
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
      transfo.push_str(&(smallest/2).to_string());
@@ -211,11 +183,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
      transfo.push_str(")");
      info!("drawsp_tree: svg transform = {}",transfo);
      document.assign("transform",transfo);
-
      svg::save(name, &document).unwrap();
 }
-
-
 /// Draw a square  of size s at x,y
 pub fn get_carre (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
@@ -248,7 +217,6 @@ pub fn get_circle (x: f32, y:f32, r:f32, c:String) -> Circle {
     circle
 
 }
-
 /// Draw a cross  of size s at x,y
 pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
@@ -267,7 +235,6 @@ pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
 
     path
 }
-
 #[allow(dead_code)]
 /// Draw a semisquare path between x1,y1 ad x2,y2
 pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
@@ -300,7 +267,6 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
     path
 }
-
 /// Draw a transfer path between x1,y1 ad x2,y2
 pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     // Courbure de la courbe de Bezier
@@ -322,7 +288,6 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
     path
 }
-
 #[allow(dead_code)]
 /// Draw a direct path between x1,y1 ad x2,y2
 pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {

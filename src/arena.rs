@@ -100,7 +100,6 @@ where
         self.e = e;
     }
 }
-
 /// Structure ArenaTree.
 ///
 /// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
@@ -201,7 +200,6 @@ where
         }
     }
 }
-
 /// enum of the possible events in a gene tree
 #[allow(dead_code)]
 #[derive(Debug, PartialEq)]
@@ -216,7 +214,6 @@ pub enum Event {
     Leaf,
     Undef,
 }
-
 /// There  is no Default pour enum, we define one.
 impl Default for Event {
     fn default() -> Self { Event::Undef }
@@ -305,14 +302,16 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         if evenement.has_tag_name("leaf"){
                             event_num += 1;
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                            // TODO
                             if event_num == 1 {
                                 tree.arena[parent].set_event(Event::Leaf);
+                            }
                                 info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                                 assert!(evenement.has_attribute("speciesLocation"));
                                 assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                                 let location = evenement.attributes()[0].value();
                                 tree.arena[parent].location = location.to_string();
-                            }
+
                         }
                         if evenement.has_tag_name("speciation"){
                             event_num += 1;
@@ -326,8 +325,6 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                                 info!("xml2tree: set location = {}",location);
                                 tree.arena[parent].location = location.to_string();
                             }
-
-
                         }
                         if evenement.has_tag_name("duplication"){
                             event_num += 1;
@@ -359,10 +356,10 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                             println!("TRANSFER BACK AVANT {:?}",tree.arena[parent]);
                             tree.arena[parent].set_event(Event::TransferBack);
                             println!("TRANSFER BACK APRES {:?}",tree.arena[parent]);
-
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("destinationSpecies"));
                             assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
+                            // TODO non car ca ecraserait la valuer definir precdemment
                             let location = evenement.attributes()[0].value();
                             info!("xml2tree: set destinationSpecies = {}",location);
                             tree.arena[parent].location = location.to_string();

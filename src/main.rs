@@ -114,7 +114,6 @@ fn main()  {
     };
     info!("Format = {:?}",format);
 
-
     // Ouverture  du fichier
     // ----------------------
     let  f = File::open(filename);
@@ -188,8 +187,6 @@ fn main()  {
             // Creation de la structure ArenaTree pour l'espece
             // ------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
-
-
             println!("This format is not yet supported");
             let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the recphyloxml file");
@@ -216,7 +213,6 @@ fn main()  {
                     break;
                 }
             }
-
             // Calcule les coordondees de l'arbre d'espece
 
             // 1ere etape : profondeur => Y, left => X= 0, right X=1
@@ -245,8 +241,6 @@ fn main()  {
             // ==============================================
             set_middle_postorder(&mut sp_tree, root);
 
-
-
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
@@ -272,14 +266,11 @@ fn main()  {
                     break;
                 }
             }
-
-
             // gene_trees.push(&gene_tree);
             println!("Species tree  : {:?}",sp_tree);
             println!("Gene trees : {:?}",gene_trees);
             println!("Gene tree : {:?}",gene_tree);
             map_tree(&mut sp_tree,&mut gene_tree);
-
             let  groot = gene_tree.get_root();
             shift_duplicated_and_loss(&mut gene_tree, groot);
             shift_mod_x(&mut gene_tree, groot, &mut 0.0);
