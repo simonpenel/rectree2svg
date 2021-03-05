@@ -303,16 +303,22 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
 /// Draw a transfer path between x1,y1 ad x2,y2
 pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+    // Courbure de la courbe de Bezier
+    // let bez_y = BLOCK; TO DO
+    let bez_y = 20.0;
+    // Point de controle de la courbe de Bezier
+    let controle_x = (x1 + x2) / 2.0 ;
+    let controle_y = (y1 + y2) / 2.0 - bez_y ;
     let data = Data::new()
-    .move_to((x1*1.0, y1*1.0))
-    .line_to((x2*1.0, y2*1.0));
-
+    .move_to((x1, y1))
+    .line_to((x2, y2));
+    let data = "M".to_owned()+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", "pink")
     .set("stroke-width", 0.5)
     .set("stroke-dasharray","2, 1")
-    .set("d", data);
+    .set("d",data);
 
     path
 }
