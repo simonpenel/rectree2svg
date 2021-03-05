@@ -272,7 +272,7 @@ pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", "blue")
-    .set("stroke-width", 3)
+    .set("stroke-width", 1)
     .set("d", data);
 
     path
@@ -287,7 +287,7 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", "blue")
-    .set("stroke-width", 3)
+    .set("stroke-width", 1)
     .set("d", data);
 
     path
@@ -303,7 +303,7 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", "blue")
-    .set("stroke-width", 3)
+    .set("stroke-width", 1)
     .set("d", data);
 
     path
