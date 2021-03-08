@@ -48,7 +48,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          element.assign("class", "vert");
          let txt  = Text::new(&index.name);
          element.append(txt);
-         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+         element.assign("transform","rotate(90 ".to_owned()+&(index.x - 5.0).to_string()+","+&(index.y + 10.0).to_string()+")");
          document.append(element);
      }
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
