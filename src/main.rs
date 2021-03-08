@@ -191,7 +191,7 @@ fn main()  {
             // Creation de la structure ArenaTree pour l'espece
             // ------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
-            println!("This format is not yet supported");
+            println!("The handling of this format is still under development");
             let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the recphyloxml file");
             let doc = &mut roxmltree::Document::parse(&contents).unwrap();
@@ -199,7 +199,7 @@ fn main()  {
             let spnode = find_sptree(doc).expect("No clade spTree has been found in xml");
             // Recupere le Node associe grace ai NodeId
             let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
-            println!("spTree Id : {:?}",spnode);
+            info!("spTree Id: {:?}",spnode);
 
             let descendants = spnode.descendants();
             // Search for the first occurnce of clade tag
@@ -255,7 +255,7 @@ fn main()  {
             let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
             // Recupere le Node associe grace ai NodeId
             let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
-            println!("recGeneTree Id : {:?}",rgnode);
+            info!("recGeneTree Id: {:?}",rgnode);
             // Search for the first gene trees
             let descendants = rgnode.descendants();
             // Search for the first occurnce of clade tag
@@ -274,14 +274,14 @@ fn main()  {
                 }
             }
             // gene_trees.push(&gene_tree);
-            println!("Species tree  : {:?}",sp_tree);
-            println!("Gene trees : {:?}",gene_trees);
-            println!("Gene tree : {:?}",gene_tree);
+            info!("Species tree  : {:?}",sp_tree);
+            info!("Gene trees : {:?}",gene_trees);
+            info!("Gene tree : {:?}",gene_tree);
             map_tree(&mut sp_tree,&mut gene_tree);
             let  groot = gene_tree.get_root();
             shift_duplicated_and_loss(&mut gene_tree, groot);
             shift_mod_x(&mut gene_tree, groot, &mut 0.0);
-            info!("Output filename is {}",outfile);
+            println!("Output filename is {}",outfile);
             drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
 
             // On s'arrete la, lereste du programme concerne les autres formats
