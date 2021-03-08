@@ -177,6 +177,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                         None =>{panic!("The TransferBack Node as no father {:?}",index)},
                     };
                 },
+                Event::BranchingOut  =>  document.append(get_carre(index.x,index.y,1.0,"pink".to_string())),
+                Event::BifurcationOut  =>  document.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
                _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
           };
           let mut element = Element::new("text");
