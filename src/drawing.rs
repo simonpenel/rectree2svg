@@ -157,6 +157,18 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                 Event::TransferBack => {
                     let _parent =  match index.parent {
                         Some(p) => {
+                            // Attention, ici on place le symbole a l'emplacement du pere du noeud.
+                            // Rappel sur le xml des ev.transferBack : il est toujours suivi d'un
+                            // autre evenement:
+                            // <eventsRec>
+                            //   <transferBack destinationSpecies="5"></transferBack>
+                            //   <branchingOut speciesLocation="5"></branchingOut>
+                            // </eventsRec>
+                            //
+                            // <eventsRec>
+                            //   <transferBack destinationSpecies="10"></transferBack>
+                            //   <speciation speciesLocation="10"></speciation>
+                            // </eventsRec>
                             let n = &gene_tree.arena[p];
                             let mut diamond = get_carre(n.x,n.y,4.0,"green".to_string());
                             diamond.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
