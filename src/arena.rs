@@ -354,8 +354,8 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                             // Ici on plusieurs evenements
                             // Par exemple
                             // <eventsRec>
-                            // <transferBack destinationSpecies="10"></transferBack>
-                            // <speciation speciesLocation="10"></speciation>
+                            // <transferBack destinationSpecies="5"></transferBack>
+                            // <branchingOut speciesLocation="5"></branchingOut>
                             // </eventsRec>
                             // ou
                             // <eventsRec>
