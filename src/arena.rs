@@ -288,7 +288,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
             // Attribue l evenement
             if child.has_tag_name("eventsRec"){
                 info!("xml2tree:Event detected");
-                let mut event_num = 0;
+                let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
                 for evenement in child.children() {
                         if evenement.has_tag_name("loss"){
                             event_num += 1;
@@ -303,6 +303,16 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                             event_num += 1;
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                             // TODO
+                            // C'est une feuille seulement si c'est le preier evenement:
+                            // <eventsRec>
+                            //   <leaf speciesLocation="5"></leaf>
+                            // </eventsRec>
+                            //  mais pas dans les autres cas
+                            // <eventsRec>
+                            //   <transferBack destinationSpecies="4"></transferBack>
+                            //   <leaf speciesLocation="4"></leaf>
+                            // </eventsRec>
+                            
                             if event_num == 1 {
                                 tree.arena[parent].set_event(Event::Leaf);
                             }
