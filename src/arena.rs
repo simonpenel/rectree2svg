@@ -312,15 +312,16 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                             //   <transferBack destinationSpecies="4"></transferBack>
                             //   <leaf speciesLocation="4"></leaf>
                             // </eventsRec>
-                            
+
                             if event_num == 1 {
                                 tree.arena[parent].set_event(Event::Leaf);
-                            }
+
                                 info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                                 assert!(evenement.has_attribute("speciesLocation"));
                                 assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                                 let location = evenement.attributes()[0].value();
                                 tree.arena[parent].location = location.to_string();
+                            }
 
                         }
                         if evenement.has_tag_name("speciation"){
