@@ -135,6 +135,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           let _parent =  match index.parent {
               Some(p) => {
                   let n = &gene_tree.arena[p];
+                  // La forme du chemin depend de l'evenement
                   let chemin = match index.e {
                       Event::TransferBack   => get_chemin_transfer(index.x,index.y,n.x,n.y),
                       _                     => get_chemin_carre(index.x,index.y,n.x,n.y),
