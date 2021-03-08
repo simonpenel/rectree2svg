@@ -22,6 +22,7 @@ use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_x;
 use crate::arena::check_contour_postorder;
 use crate::arena::cladogramme;
+use crate::arena::real_length;
 mod drawing;
 use log::{info};
 
@@ -37,8 +38,9 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-h][-p][-v]",programe_name);
+    println!("{} -f input file [-o output file][-h][-p][-l][-v]",programe_name);
     println!("    -p : build a phylogram");
+    println!("    -l : use branch length");
     println!("    -h : help");
     println!("    -v : verbose");
     process::exit(1);
@@ -58,10 +60,11 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:hvp");
+    let mut opts = getopt::Parser::new(&args, "f:o:hvpl");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
+    let mut real_length_flag = false;
     let mut verbose = false;
     let mut nb_args = 0;
     loop {
@@ -69,6 +72,7 @@ fn main()  {
             None => break,
             Some(opt) => match opt {
                 Opt('p', None) => clado_flag = false,
+                Opt('l', None) => real_length_flag = true,
                 Opt('v', None) => {
                     verbose = true;
                     env::set_var("RUST_LOG", "info");
@@ -228,7 +232,8 @@ fn main()  {
             if clado_flag {
                 cladogramme(&mut sp_tree);
             }
-            
+
+
             // 2eme etape : Verifie les contours
             // ==================================
              check_contour_postorder(&mut sp_tree, root);
@@ -301,6 +306,7 @@ fn main()  {
         cladogramme(&mut tree);
     }
 
+
     // 2eme etape : Verifie les contours
     // ==================================
      check_contour_postorder(&mut tree, root);
@@ -314,6 +320,12 @@ fn main()  {
     // 4eme etape : Place le parent entre les enfants
     // ==============================================
     set_middle_postorder(&mut tree, root);
+
+    // Option : real_length
+    // ====================
+    if real_length_flag {
+        real_length(&mut tree, root, &mut 0.0);
+    }
 
     info!("Output filename is {}",outfile);
     drawing::draw_tree(&mut tree,outfile);

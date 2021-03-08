@@ -21,6 +21,7 @@ where
     pub x: f32,                 // coordonnee x (avant rotation 90 svg)
     pub xmod: f32,              // decalage x a ajouter a x
     pub y: f32,                 // coordonnee y (avant rotation 90 svg)
+    pub l: f32,                 // longueur de branche lue dans le fichier
     pub e: Event,               // evenement (dans le cas d'arbre de gene) Duplication, Loss, etc.
     pub location: String,         // SpeciesLocaton associe evenement (dans le cas d'arbre de gene)
     pub width: f32,             // largeur du tuyeau (dans le cas d'anrte d'espece)
@@ -40,6 +41,7 @@ where
             x: 0.0,
             xmod: 0.0,
             y: 0.0,
+            l: 0.0,
             e: Event::Undef,
             location: String::from("Undefined"),
             width: PIPEBLOCK ,
@@ -231,6 +233,12 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         None => "root",
         Some ((id, _dist)) => t.from_internal_id(id).expect("Pas de nom")
     };
+    let parent_dist = match parent {
+        None => -1.0,
+        Some ((_id, dist)) => {
+            dist
+        },
+    };
     let parent_index = match parent {
         None => 0,
         Some ((id, _dist)) => id
@@ -244,6 +252,7 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
     tree.arena[parent].name = initial_parent_name.to_string();
     tree.arena[parent].children.push(name);
     tree.arena[name].parent = Some(parent);
+    tree.arena[name].l = parent_dist;
     tree.arena[name].name = initial_name.to_string();
     for child in children {
         taxo2tree(& t,*child,  tree);
@@ -536,6 +545,21 @@ pub fn cladogramme( tree: &mut ArenaTree<String>) {
     set_leaves_to_bottom(tree,root,&mut max_depth);
 }
 
+/// Transforms the tree into real branch  length representation
+pub fn real_length( tree: &mut ArenaTree<String>, index: usize, dist: &mut f32) {
+    let  dist_father = tree.arena[index].l;
+    let mut dist = *dist + dist_father;
+    tree.arena[index].set_y_noref(dist * BLOCK);
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 1 {
+        let son_left = children[0];
+        let son_right = children[1];
+        real_length( tree, son_left, &mut dist);
+        real_length( tree, son_right, &mut dist);
+    }
+
+}
+
 /// Get the depth of the tree
 pub fn get_maxdepth( tree: &mut ArenaTree<String>, index:usize, max :&mut usize) -> usize {
     let children  = &mut  tree.arena[index].children;
@@ -639,7 +663,6 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
         }
     }
     if is_brout {
-        // Les noeud Loss sont affiches juste 1 cran en dessous de leur parent
         let p = tree.arena[index].parent;
         match p {
             Some(p) => {
