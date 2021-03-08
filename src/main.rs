@@ -116,7 +116,7 @@ fn main()  {
             }
             },
     };
-    info!("Format = {:?}",format);
+    println!("Assume that format is {:?}",format);
 
     // Ouverture  du fichier
     // ----------------------
@@ -327,7 +327,7 @@ fn main()  {
         real_length(&mut tree, root, &mut 0.0);
     }
 
-    info!("Output filename is {}",outfile);
+    println!("Output filename is {}",outfile);
     drawing::draw_tree(&mut tree,outfile);
 
 }
