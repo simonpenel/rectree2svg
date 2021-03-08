@@ -351,15 +351,26 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         // TODO
                         // a verifier
                         if evenement.has_tag_name("transferBack"){
+                            // Ici on plusieurs evenements
+                            // Par exemple
+                            // <eventsRec>
+                            // <transferBack destinationSpecies="10"></transferBack>
+                            // <speciation speciesLocation="10"></speciation>
+                            // </eventsRec>
+                            // ou
+                            // <eventsRec>
+                            // <transferBack destinationSpecies="10"></transferBack>
+                            // <speciation speciesLocation="10"></speciation>
+                            // </eventsRec>
+                            // Le destinationSpecies est donc l'emplacement ou doit etre
+                            // le noeud représentant l'arivee du transfert
+                            // le point de depart du transfer etant le pere de ce noeud
                             event_num += 1;
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            println!("TRANSFER BACK AVANT {:?}",tree.arena[parent]);
                             tree.arena[parent].set_event(Event::TransferBack);
-                            println!("TRANSFER BACK APRES {:?}",tree.arena[parent]);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("destinationSpecies"));
                             assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
-                            // TODO non car ca ecraserait la valuer definir precdemment
                             let location = evenement.attributes()[0].value();
                             info!("xml2tree: set destinationSpecies = {}",location);
                             tree.arena[parent].location = location.to_string();
