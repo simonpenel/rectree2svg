@@ -42,14 +42,19 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
               _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
          };
          // document.append(symbole);
-         let mut element = Element::new("text");
-         element.assign("x", index.x-5.0);
-         element.assign("y", index.y+10.0);
-         element.assign("class", "vert");
-         let txt  = Text::new(&index.name);
-         element.append(txt);
-         element.assign("transform","rotate(90 ".to_owned()+&(index.x - 5.0).to_string()+","+&(index.y + 10.0).to_string()+")");
-         document.append(element);
+         // match event {
+         //     Event::Leaf => {
+                 let mut element = Element::new("text");
+                 element.assign("x", index.x-5.0);
+                 element.assign("y", index.y+10.0);
+                 element.assign("class", "vert");
+                 let txt  = Text::new(&index.name);
+                 element.append(txt);
+                 element.assign("transform","rotate(90 ".to_owned()+&(index.x - 5.0).to_string()+","+&(index.y + 10.0).to_string()+")");
+                 document.append(element);
+         //     },
+         //     _           =>  {},
+         // }
      }
      let smallest = cmp::min(largest_x as i32, largest_y as i32);
      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
