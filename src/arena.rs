@@ -1,8 +1,9 @@
 use taxonomy::Taxonomy;
 use log::{info};
-const BLOCK: f32 = 30.0;
-const PIPEBLOCK: f32 = BLOCK / 4.0;
-
+// const BLOCK: f32 = 30.0;
+const BLOCK: f32 = 100.0;
+// const PIPEBLOCK: f32 = BLOCK / 4.0;
+const PIPEBLOCK: f32 = BLOCK / 8.0;
 // Structures
 // ==========
 
@@ -21,10 +22,13 @@ where
     pub x: f32,                 // coordonnee x (avant rotation 90 svg)
     pub xmod: f32,              // decalage x a ajouter a x
     pub y: f32,                 // coordonnee y (avant rotation 90 svg)
+    pub ymod: f32,              // decalage y a ajouter a y (pour les arbres reconcilies)
     pub l: f32,                 // longueur de branche lue dans le fichier
     pub e: Event,               // evenement (dans le cas d'arbre de gene) Duplication, Loss, etc.
-    pub location: String,         // SpeciesLocaton associe evenement (dans le cas d'arbre de gene)
-    pub width: f32,             // largeur du tuyeau (dans le cas d'anrte d'espece)
+    pub location: String,       // SpeciesLocaton associe evenement (dans le cas d'arbre de gene)
+    pub width: f32,             // largeur du tuyeau (dans le cas d'arbre d'espece)
+    pub height: f32,            // hauteur du tuyeau (dans le cas d'arbre d'espece)
+    pub nbg: usize,             // nombre de noeud  d'arbre de genes associcés à ce noeud  (dans le cas d'arbre d'espece)
 }
 
 impl<T> Noeud<T>
@@ -41,10 +45,13 @@ where
             x: 0.0,
             xmod: 0.0,
             y: 0.0,
+            ymod: 0.0,
             l: 0.0,
             e: Event::Undef,
             location: String::from("Undefined"),
             width: PIPEBLOCK ,
+            height: PIPEBLOCK ,
+            nbg: 0,
         }
     }
     #[allow(dead_code)]
@@ -82,6 +89,11 @@ where
     {
         self.xmod = xmod;
     }
+    pub fn set_ymod_noref(&mut self, ymod: f32)
+    {
+        self.ymod = ymod;
+    }
+
     #[allow(dead_code)]
     pub fn set_y(&mut self, y: &f32)
     {
@@ -450,15 +462,17 @@ pub fn map_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTr
         let mut mapped = false;
         // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
         for spindex in  &mut sp_tree.arena {
-            // println!("MAP Test {:?} === {:?}",index.location,index.name );
             if  index.location == spindex.name {
                 mapped = true;
-                // println!("MAP GENE NODE {:?} WITH SPECIES NODE {:?}",index,spindex);
                 let x = spindex.x;
                 index.x = x;
                 let y = spindex.y;
                 index.y = y;
-                // sp_tree.arena[idx].set_x_noref(x);
+                let mut nbg = spindex.nbg;
+                nbg = nbg + 1 ;
+                spindex.nbg = nbg;
+                spindex.width = nbg as f32 * PIPEBLOCK;
+                info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
             }
         }
         if !mapped {
@@ -597,13 +611,39 @@ pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mu
 }
 
 /// Shift the  x values  of a node and its children according to the cumulated xmod values
-pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32) {
-    info!("shift_mod_x: shifting {:?} xmod={}",tree.arena[index],xmod);
+// pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32) {
+//     info!("shift_mod_x: shifting {:?} xmod={}",tree.arena[index],xmod);
+//     let x_father = tree.arena[index].x;
+//     let  xmod_father = tree.arena[index].xmod;
+//     let mut xmod = *xmod + xmod_father;
+//     tree.arena[index].set_x_noref(x_father+xmod);
+//     tree.arena[index].set_xmod_noref(xmod);
+//     let children  = &mut  tree.arena[index].children;
+//     if children.len() > 2 {
+//         panic!("L'arbre doit être binaire")
+//     }
+//     if children.len() > 1 {
+//         let son_left = children[0];
+//         let son_right = children[1];
+//         shift_mod_x( tree, son_left, &mut xmod);
+//         shift_mod_x( tree, son_right, &mut xmod);
+//     }
+//
+// }
+
+/// Shift the  x values  of a node and its children according to the cumulated xmod values
+pub fn shift_mod_xy( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32, ymod: &mut f32) {
+    info!("shift_mod_xy: shifting {:?} xmod={} ymod={}",tree.arena[index],xmod,ymod);
     let x_father = tree.arena[index].x;
     let  xmod_father = tree.arena[index].xmod;
     let mut xmod = *xmod + xmod_father;
     tree.arena[index].set_x_noref(x_father+xmod);
     tree.arena[index].set_xmod_noref(xmod);
+    let y_father = tree.arena[index].y;
+    let  ymod_father = tree.arena[index].ymod;
+    let mut ymod = *ymod + ymod_father;
+    tree.arena[index].set_y_noref(y_father+ymod);
+    tree.arena[index].set_ymod_noref(ymod);
     let children  = &mut  tree.arena[index].children;
     if children.len() > 2 {
         panic!("L'arbre doit être binaire")
@@ -611,13 +651,16 @@ pub fn shift_mod_x( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32) 
     if children.len() > 1 {
         let son_left = children[0];
         let son_right = children[1];
-        shift_mod_x( tree, son_left, &mut xmod);
-        shift_mod_x( tree, son_right, &mut xmod);
+        shift_mod_xy( tree, son_left, &mut xmod, &mut ymod);
+        shift_mod_xy( tree, son_right, &mut xmod, &mut ymod);
     }
 
 }
 
+
+
 pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
+    //  Evenement associe au noeud courant:
     let is_dupli = match tree.arena[index].e {
          Event::Duplication => true,
          _                  => false,
@@ -634,14 +677,25 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
          Event::BranchingOut => true,
          _           => false,
     };
+    let is_trback = match tree.arena[index].e {
+         Event::TransferBack => true,
+         _           => false,
+    };
+
     if is_bifu {
         // Les noeud bifurcationOut sont affiches juste 1 cran en dessous de leur parent
+        //  Et decale en x
         let p = tree.arena[index].parent;
         match p {
             Some(p) => {
                 let y = tree.arena[p].y;
                 let y = y + BLOCK  ;
                 tree.arena[index].set_y_noref(y);
+                // TODO
+                // x et pas modx car on decal pas les decsendants
+                let x = tree.arena[p].x;
+                let x = x + PIPEBLOCK/2.0  ;
+                tree.arena[index].set_x_noref(x);
                 },
             None => {
                 panic!("This BifurcationOut node has no parent {:?}",tree.arena[index]);
@@ -680,23 +734,55 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
     if children.len() > 0 {
         let son_left = children[0];
         let son_right = children[1];
-        if is_dupli || is_bifu{
+        if is_dupli || is_bifu  {
             let p = tree.arena[index].parent;
             // Un noeud Duplication est initialement positioné en y  comme
             // le noeud de l'espèce associée. On le positione un peu moins
             // d'un cran en dessous du parent  pour permettre la visualisation
             match p {
                 Some(p) => {
-                    let y = tree.arena[p].y;
-                    let y = y + BLOCK  - PIPEBLOCK;
-                    tree.arena[index].set_y_noref(y);
+                    // en fait ca fou la merde quand plusieur dupli
+                    // let y = tree.arena[p].y;
+                    // let y = y + BLOCK  - PIPEBLOCK;
+                    // tree.arena[index].set_y_noref(y);
+
+                    // je vais plutot baisser les fils
+                    // let y = tree.arena[index].y;
+                    // let y = y  - PIPEBLOCK;
+                    // tree.arena[index].set_y_noref(y);
+
+
                     } ,
-                None => {},
+                None => {
+                     // Sinon je relece ub peu
+                                         // je vais plutot baisser les fils
+                    // let y = tree.arena[index].y;
+                    // let y = y  - PIPEBLOCK;
+                    // tree.arena[index].set_y_noref(y);
+                },
             }
+            // Je decale en y versle bas pour me detacher du noeud de dupli
+            let  y = tree.arena[son_right].y;
+            let  y = y  + PIPEBLOCK / 2.0 ;
+            tree.arena[son_right].set_y_noref(y);
+            let  y = tree.arena[son_left].y;
+            let  y = y  + PIPEBLOCK / 2.0 ;
+            tree.arena[son_left].set_y_noref(y);
+
+
+            // let  ymod = tree.arena[son_right].ymod;
+            // let  ymod = ymod  + PIPEBLOCK / 2.0 ;
+            // tree.arena[son_right].set_ymod_noref(ymod);
+            // let  ymod = tree.arena[son_left].ymod;
+            // let  ymod = ymod  + PIPEBLOCK / 2.0 ;
+            // tree.arena[son_left].set_ymod_noref(ymod);
+
+
             // On décale en x à gauche et à droite les noeuds issus de la duplication
-            let  xmod = tree.arena[son_left].xmod;
-            let  xmod = xmod  - PIPEBLOCK / 2.0 ;
-            tree.arena[son_left].set_xmod_noref(xmod);
+            // Attention je ne mdofie plus le fils de gauche
+            // let  xmod = tree.arena[son_left].xmod;
+            // let  xmod = xmod  - PIPEBLOCK / 2.0 ;
+            // tree.arena[son_left].set_xmod_noref(xmod);
             let  xmod = tree.arena[son_right].xmod;
             let  xmod = xmod  + PIPEBLOCK / 2.0 ;
             tree.arena[son_right].set_xmod_noref(xmod);
@@ -707,9 +793,16 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
                  _           => false,
             };
             if  !is_leaf {
-                let y = tree.arena[son_right].y;
-                let y = y  + PIPEBLOCK / 2.0 ;
-                tree.arena[son_right].set_y_noref(y);
+                // let y = tree.arena[son_right].y;
+                // let y = y  + PIPEBLOCK / 2.0 ;
+                // tree.arena[son_right].set_y_noref(y);
+
+                //  On veut diffuser ce decalage y a tout l'arbre
+
+                let ymod = tree.arena[son_right].ymod;
+                let ymod = ymod  + PIPEBLOCK / 2.0 ;
+                tree.arena[son_right].set_ymod_noref(ymod);
+
             }
         }
         shift_duplicated_and_loss( tree, son_left);
@@ -768,15 +861,15 @@ pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,co
         if tree.arena[index].xmod < 0.0 {
             panic!("error: negative xmod");
         }
-        contour_left.push(tree.arena[index].x+tree.arena[index].xmod+parent_xmod);
+        contour_left.push(tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod);
         info!("get_contour_left: increment contour is now {:?}",contour_left);
     }
     if tree.arena[index].xmod < 0.0 {
         panic!("erreur: negative  xmod");
     }
     info!("get_contour_left: compare  {} + {} + {} infeq ctl at depth {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_left[local_depth] );
-    if tree.arena[index].x + tree.arena[index].xmod + parent_xmod <= contour_left[local_depth] {
-        contour_left[local_depth] = tree.arena[index].x + tree.arena[index].xmod + parent_xmod;
+    if tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod <= contour_left[local_depth] {
+        contour_left[local_depth] = tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK  + parent_xmod;
         info!("get_contour_left: contour is now {:?}",contour_left);
     }
     let children  = &mut  tree.arena[index].children;
@@ -794,15 +887,15 @@ pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,c
         if tree.arena[index].xmod < 0.0 {
             panic!("erreur: negative xmod");
         }
-        contour_right.push(tree.arena[index].x+tree.arena[index].xmod+parent_xmod);
+        contour_right.push(tree.arena[index].x+tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod);
             info!("get_contour_right: increment contour is now {:?}",contour_right);
     }
     if tree.arena[index].xmod < 0.0 {
         panic!("erreur: negative xmod");
     }
     info!("get_contour_right: compare  {} + {} + {} infeq ctl at depth {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_right[local_depth] );
-    if tree.arena[index].x +  tree.arena[index].xmod + parent_xmod  >= contour_right[local_depth] {
-        contour_right[local_depth] = tree.arena[index].x +  tree.arena[index].xmod + parent_xmod ;
+    if tree.arena[index].x +  tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK  + parent_xmod  >= contour_right[local_depth] {
+        contour_right[local_depth] = tree.arena[index].x +  tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod ;
             info!("get_contour_right: contour is now {:?}",contour_right);
     }
     let children  = &mut  tree.arena[index].children;
@@ -816,11 +909,11 @@ pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,c
 /// in order to solve detected  conflicts.
 pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize) -> f32 {
     info!("push_right: compare right contour of {} and left contour of {}",left_tree, right_tree);
-    let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x+tree.arena[left_tree].xmod]; //contour droit de l'arbre de gauche
+    let mut right_co_of_left_tr  = vec![tree.arena[left_tree].x+tree.arena[left_tree].xmod + tree.arena[left_tree].nbg as f32 *PIPEBLOCK]; //contour droit de l'arbre de gauche
     let depth_left_tr  = tree.depth(left_tree);
     get_contour_right(tree,left_tree,depth_left_tr,&mut right_co_of_left_tr,0.0);
     info!("push_right: right contour of {} = {:?}",left_tree,right_co_of_left_tr);
-    let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x+tree.arena[right_tree].xmod]; //contour droit de l'arbre de gauche
+    let mut left_co_of_right_tr  = vec![tree.arena[right_tree].x+tree.arena[right_tree].xmod - tree.arena[right_tree].nbg as f32 *PIPEBLOCK]; //contour droit de l'arbre de gauche
     let depth_right_tr  = tree.depth(right_tree);
     get_contour_left(tree,right_tree,depth_right_tr,&mut left_co_of_right_tr,0.0);
     info!("push_right: left contour of {} = {:?}",right_tree,left_co_of_right_tr);

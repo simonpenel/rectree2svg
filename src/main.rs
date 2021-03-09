@@ -19,7 +19,7 @@ use crate::arena::find_sptree;
 use crate::arena::find_rgtree;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
-use crate::arena::shift_mod_x;
+use crate::arena::shift_mod_xy;
 use crate::arena::check_contour_postorder;
 use crate::arena::cladogramme;
 use crate::arena::real_length;
@@ -217,36 +217,6 @@ fn main()  {
                     break;
                 }
             }
-            // Calcule les coordondees de l'arbre d'espece
-
-            // 1ere etape : profondeur => Y, left => X= 0, right X=1
-            // ======================================================
-            let  root = sp_tree.get_root();
-            knuth_layout(&mut sp_tree,root, &mut 1);
-            if verbose {
-                drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
-            }
-
-            // Option : Cladogramme
-            // ====================
-            if clado_flag {
-                cladogramme(&mut sp_tree);
-            }
-
-
-            // 2eme etape : Verifie les contours
-            // ==================================
-             check_contour_postorder(&mut sp_tree, root);
-
-             // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
-            // ===============================================================
-            shift_mod_x(&mut sp_tree, root, &mut 0.0);
-            if verbose {
-                drawing::draw_tree(&mut sp_tree,"verbose-shifted.svg".to_string());
-            }
-            // 4eme etape : Place le parent entre les enfants
-            // ==============================================
-            set_middle_postorder(&mut sp_tree, root);
 
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
@@ -277,10 +247,77 @@ fn main()  {
             info!("Species tree  : {:?}",sp_tree);
             info!("Gene trees : {:?}",gene_trees);
             info!("Gene tree : {:?}",gene_tree);
+
+            // Calcule les coordondees de l'arbre d'espece
+
+            // 1ere etape : profondeur => Y, left => X= 0, right X=1
+            // ======================================================
+            let  root = sp_tree.get_root();
+            knuth_layout(&mut sp_tree,root, &mut 1);
+            if verbose {
+                drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
+            }
+
+            // Option : Cladogramme
+            // ====================
+            if clado_flag {
+                cladogramme(&mut sp_tree);
+            }
+            // 2eme etape :  mapping
+            // ==================================
+
             map_tree(&mut sp_tree,&mut gene_tree);
+
+            // 3eme etape : Verifie les contours
+            // ==================================
+             check_contour_postorder(&mut sp_tree, root);
+
+             // 4eme etape : Decale toutes les valeurs de x en fonction de xmod
+            // ===============================================================
+            shift_mod_xy(&mut sp_tree, root, &mut 0.0, &mut 0.0);
+            if verbose {
+                drawing::draw_tree(&mut sp_tree,"verbose-shifted.svg".to_string());
+            }
+            // 4eme etape : Place le parent entre les enfants
+            // ==============================================
+            set_middle_postorder(&mut sp_tree, root);
+
+// nouveau map poyr les genes
+                        map_tree(&mut sp_tree,&mut gene_tree);
+
+            // // Creation du vecteur de structure ArenaTree pour les genes
+            // // ---------------------------------------------------------
+            // let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
+            // let mut gene_tree: ArenaTree<String> = ArenaTree::default();
+            // let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
+            // // Recupere le Node associe grace ai NodeId
+            // let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
+            // info!("recGeneTree Id: {:?}",rgnode);
+            // // Search for the first gene trees
+            // let descendants = rgnode.descendants();
+            // // Search for the first occurnce of clade tag
+            // for node in descendants {
+            //     if node.has_tag_name("clade"){
+            //         // node est la racine
+            //         let mut index  = &mut 0;
+            //         // Nom de la racine
+            //         let name = "N".to_owned()+&index.to_string();
+            //         // Cree le nouveau noeud et recupere son index
+            //         let name = gene_tree.new_node(name.to_string());
+            //         // Appelle xlm2tree sur la racine
+            //         xml2tree(node, name, &mut index, &mut gene_tree);
+            //         // on s'arrête la
+            //         break;
+            //     }
+            // }
+            // // gene_trees.push(&gene_tree);
+            // info!("Species tree  : {:?}",sp_tree);
+            // info!("Gene trees : {:?}",gene_trees);
+            // info!("Gene tree : {:?}",gene_tree);
+            // map_tree(&mut sp_tree,&mut gene_tree);
             let  groot = gene_tree.get_root();
             shift_duplicated_and_loss(&mut gene_tree, groot);
-            shift_mod_x(&mut gene_tree, groot, &mut 0.0);
+            shift_mod_xy(&mut gene_tree, groot, &mut 0.0, &mut 0.0);
             println!("Output filename is {}",outfile);
             drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
 
@@ -313,7 +350,7 @@ fn main()  {
 
     // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
     // ===============================================================
-    shift_mod_x(&mut tree, root, &mut 0.0);
+    shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
     if verbose {
         drawing::draw_tree(&mut tree,"verbose-shifted.svg".to_string());
     }

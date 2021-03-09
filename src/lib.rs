@@ -19,7 +19,7 @@ pub use self::arena::check_contour_postorder;
 pub use self::arena::push_right;
 pub use self::arena::get_contour_left;
 pub use self::arena::get_contour_right;
-pub use self::arena::shift_mod_x;
+pub use self::arena::shift_mod_xy;
 pub use self::arena::set_middle_postorder;
 
 mod drawing;

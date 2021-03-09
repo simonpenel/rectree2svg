@@ -16,6 +16,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     let largest_x = tree.get_largest_x() + 200.0 ;
     let largest_y = tree.get_largest_y() + 200.0 ;
     let  mut document = Document::new()
+    .set("width", largest_x)
     .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
@@ -79,7 +80,7 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
          let _parent =  match index.parent {
              Some(p) => {
                  let n = &tree.arena[p];
-                 let chemin = get_chemin_sp(index.x,index.y,index.width,n.x,n.y);
+                 let chemin = get_chemin_sp(index.x,index.y,index.width,index.height,n.x,n.y,n.width,n.height);
                  document.append(chemin);
                  0
                 },
@@ -111,7 +112,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
     let largest_x = sp_tree.get_largest_x() + 200.0 ;
     let largest_y = sp_tree.get_largest_y() + 200.0 ;
     let  mut document = Document::new()
-    .set("viewBox", (-100, -100, largest_x,largest_y));
+        .set("viewBox", (-100, -0, largest_x,largest_y));
+    // .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font:  8px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 8px serif; fill: orange; }");
@@ -120,7 +122,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
          let _parent =  match index.parent {
              Some(p) => {
                  let n = &sp_tree.arena[p];
-                 let chemin = get_chemin_sp(index.x,index.y,index.width,n.x,n.y);
+                 let chemin = get_chemin_sp(index.x, index.y, index.width, index.height, n.x, n.y,n.width,n.height);
                  document.append(chemin);
                  0
                 },
@@ -202,7 +204,11 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
      transfo.push_str(&(smallest/2).to_string());
      transfo.push_str(")");
      info!("drawsp_tree: svg transform = {}",transfo);
-     document.assign("transform",transfo);
+     // Pivote de -90
+     // document.assign("transform",transfo);
+
+     // let mut translate: String = "translate( 00 )".to_owned();
+     //  document.assign("transform",translate);
      svg::save(name, &document).unwrap();
 }
 /// Draw a square  of size s at x,y
@@ -324,7 +330,7 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     path
 }
 /// Draw a square pipe path between x1,y1 ad x2,y2
-pub fn get_chemin_sp (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
+pub fn get_chemin_sp_old (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
     if x1 < x2 {
         let data = Data::new()
         .move_to((x1 - width, y1 - width))
@@ -337,7 +343,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
-        .set("stroke-width", 1)
+        .set("stroke-width", 4)
         .set("d", data);
 
         path
@@ -354,7 +360,46 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
-        .set("stroke-width", 1)
+        .set("stroke-width", 4)
+        .set("d", data);
+
+        path
+
+    }
+}
+
+/// Draw a square pipe path between x1,y1 ad x2,y2
+pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32, width2:f32, height2:f32 ) -> Path {
+    if x1 < x2 {
+        let data = Data::new()
+        .move_to((x1 - width1, y1 - height1))
+        .line_to((x1 - width1, y2 - height2))
+        .line_to((x2 - width2, y2 - height2))
+        .move_to((x1 + width1, y1 - height1))
+        .line_to((x1 + width1, y2 + height2))
+        .line_to((x2, y2 + height2));
+
+        let path = Path::new()
+        .set("fill", "none")
+        .set("stroke", "pink")
+        .set("stroke-width", 4)
+        .set("d", data);
+
+        path
+    }
+    else {
+        let data = Data::new()
+        .move_to((x1 + width1, y1 - height1))
+        .line_to((x1 + width1, y2 - height2))
+        .line_to((x2 + width2, y2 - height2))
+        .move_to((x1 - width1, y1 - height1))
+        .line_to((x1 - width1, y2 + height2))
+        .line_to((x2, y2 + height2));
+
+        let path = Path::new()
+        .set("fill", "none")
+        .set("stroke", "pink")
+        .set("stroke-width", 4)
         .set("d", data);
 
         path
