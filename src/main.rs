@@ -12,7 +12,9 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
-use crate::arena::map_tree;
+use crate::arena::map_gene_tree;
+use crate::arena::map_species_tree;
+use crate::arena::set_species_width;
 use crate::arena::shift_duplicated_and_loss;
 use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
@@ -21,6 +23,7 @@ use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_xy;
 use crate::arena::check_contour_postorder;
+use crate::arena::check_vertical_contour_postorder;
 use crate::arena::cladogramme;
 use crate::arena::real_length;
 mod drawing;
@@ -266,7 +269,7 @@ fn main()  {
             // 2eme etape :  mapping
             // ==================================
 
-            map_tree(&mut sp_tree,&mut gene_tree);
+            map_species_tree(&mut sp_tree,&mut gene_tree);
 
             // 3eme etape : Verifie les contours
             // ==================================
@@ -283,7 +286,12 @@ fn main()  {
             set_middle_postorder(&mut sp_tree, root);
 
 // nouveau map poyr les genes
-                        map_tree(&mut sp_tree,&mut gene_tree);
+            set_species_width(&mut sp_tree);
+
+            check_vertical_contour_postorder(&mut sp_tree, root, 0.0);
+
+// setr coord genes
+            map_gene_tree(&mut sp_tree,&mut gene_tree);
 
             // // Creation du vecteur de structure ArenaTree pour les genes
             // // ---------------------------------------------------------

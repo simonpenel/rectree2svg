@@ -80,7 +80,7 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
          let _parent =  match index.parent {
              Some(p) => {
                  let n = &tree.arena[p];
-                 let chemin = get_chemin_sp(index.x,index.y,index.width,index.height,n.x,n.y,n.width,n.height);
+                 let chemin = get_chemin_sp(index.x,index.y,index.width/2.0,index.height/2.0,n.x,n.y,n.width/2.0,n.height/2.0);
                  document.append(chemin);
                  0
                 },
@@ -109,20 +109,21 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
 
 /// Draw a svg species tree
 pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut ArenaTree<String>, name: String) {
-    let largest_x = sp_tree.get_largest_x() + 200.0 ;
-    let largest_y = sp_tree.get_largest_y() + 200.0 ;
+    let largest_x = sp_tree.get_largest_x() * 1.0 + 200.0 ;
+    let largest_y = sp_tree.get_largest_y() * 1.0 + 200.0 ;
     let  mut document = Document::new()
+        .set("width",largest_x)
         .set("viewBox", (-100, -0, largest_x,largest_y));
     // .set("viewBox", (-100, -100, largest_x,largest_y));
     let style = Style::new(".vert { font:  8px serif; fill: green; }");
     document.append(style);
-    let style = Style::new(".jaune { font: italic 8px serif; fill: orange; }");
+    let style = Style::new(".jaune { font: italic 58px serif; fill: orange; }");
     document.append(style);
     for  index in &sp_tree.arena {
          let _parent =  match index.parent {
              Some(p) => {
                  let n = &sp_tree.arena[p];
-                 let chemin = get_chemin_sp(index.x, index.y, index.width, index.height, n.x, n.y,n.width,n.height);
+                 let chemin = get_chemin_sp(index.x, index.y, index.width/2.0, index.height/2.0, n.x, n.y,n.width/2.0,n.height/2.0);
                  document.append(chemin);
                  0
                 },

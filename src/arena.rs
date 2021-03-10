@@ -3,7 +3,8 @@ use log::{info};
 // const BLOCK: f32 = 30.0;
 const BLOCK: f32 = 100.0;
 // const PIPEBLOCK: f32 = BLOCK / 4.0;
-const PIPEBLOCK: f32 = BLOCK / 8.0;
+const PIPEBLOCK: f32 = BLOCK / 4.0;
+const MINWIDTH: f32 = BLOCK / 4.0;
 // Structures
 // ==========
 
@@ -457,7 +458,8 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
     }
 }
-pub fn map_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
+/// Set the coordinates of the gene tree according to species tree coordinates
+pub fn map_gene_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
     for  index in &mut gene_tree.arena {
         let mut mapped = false;
         // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
@@ -468,15 +470,44 @@ pub fn map_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTr
                 index.x = x;
                 let y = spindex.y;
                 index.y = y;
-                let mut nbg = spindex.nbg;
-                nbg = nbg + 1 ;
-                spindex.nbg = nbg;
-                spindex.width = nbg as f32 * PIPEBLOCK;
                 info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
             }
         }
         if !mapped {
             panic!("Unable to map Node {:?}",index);
+        }
+    }
+}
+/// Determine the number of gene nodes associated to a species node
+pub fn map_species_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
+    for  index in &mut gene_tree.arena {
+        let mut mapped = false;
+        // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
+        for spindex in  &mut sp_tree.arena {
+            if  index.location == spindex.name {
+                mapped = true;
+                let mut nbg = spindex.nbg;
+                nbg = nbg + 1 ;
+                spindex.nbg = nbg;
+                info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
+            }
+        }
+        if !mapped {
+            panic!("Unable to map Node {:?}",index);
+        }
+    }
+}
+
+pub fn set_species_width(mut sp_tree: &mut ArenaTree<String>) {
+    for spindex in  &mut sp_tree.arena {
+        let  nbg = spindex.nbg;
+        if nbg > 0 {
+            spindex.width =  nbg as f32 * PIPEBLOCK;
+            spindex.height = nbg as f32 * PIPEBLOCK;
+        }
+        else {
+            spindex.width =   PIPEBLOCK;
+            spindex.height =  PIPEBLOCK;
         }
     }
 }
@@ -638,12 +669,12 @@ pub fn shift_mod_xy( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32,
     let  xmod_father = tree.arena[index].xmod;
     let mut xmod = *xmod + xmod_father;
     tree.arena[index].set_x_noref(x_father+xmod);
-    tree.arena[index].set_xmod_noref(xmod);
+    // tree.arena[index].set_xmod_noref(xmod);inutile
     let y_father = tree.arena[index].y;
     let  ymod_father = tree.arena[index].ymod;
     let mut ymod = *ymod + ymod_father;
     tree.arena[index].set_y_noref(y_father+ymod);
-    tree.arena[index].set_ymod_noref(ymod);
+    // tree.arena[index].set_ymod_noref(ymod);inutile
     let children  = &mut  tree.arena[index].children;
     if children.len() > 2 {
         panic!("L'arbre doit être binaire")
@@ -840,6 +871,65 @@ pub fn  explore_postorder(tree: &mut ArenaTree<String>,index:usize) {
 }
 
 /// Solve the conflicts between the left subtree and the right subtree
+pub fn  check_vertical_contour_postorder(tree: &mut ArenaTree<String>,index:usize, ymod: f32) {
+    let children  = &mut  tree.arena[index].children;
+    if children.len() > 0 {
+        let left = children[0];
+        let right = children[1];
+        println!("check_vertical_contour_postorder: Father = {} (ymod = {} ) , Left = {}, Right = {}",tree.arena[index].name,tree.arena[index].ymod,tree.arena[left].name,tree.arena[right].name,);
+        // push_down(tree,index, left,right,tree.arena[index].ymod);
+                push_down(tree,index, left,right,0.0);
+        check_vertical_contour_postorder(tree,left,tree.arena[left].ymod + 0.0 *  ymod);
+        check_vertical_contour_postorder(tree,right,tree.arena[right].ymod + 0.0 * ymod);
+    }
+}
+
+pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, right: usize, ymod: f32) {
+    let node_parent_down_pos = node_ypos(tree,parent,ymod,1);
+    let node_left_up_pos = node_ypos(tree,left,ymod,-1);
+    let node_right_up_pos = node_ypos(tree,right,ymod,-1);
+    if (node_left_up_pos <=  node_parent_down_pos) || (node_right_up_pos <=  node_parent_down_pos) {
+        let shift_left = node_parent_down_pos - node_left_up_pos ;
+        let shift_right = node_parent_down_pos - node_right_up_pos ;
+        let mut shift_down = match shift_left > shift_right {
+            true => shift_left,
+            false => shift_right,
+        };
+        if shift_down < PIPEBLOCK {
+            shift_down = PIPEBLOCK;
+
+        }
+        println!("CONFLIT AT SPEC NODE {}: parent y = {} ymod = {} down = {} left up = {} right up = {} => shift = {}",tree.arena[parent].name,tree.arena[parent].y,tree.arena[parent].ymod,node_parent_down_pos,node_left_up_pos,node_right_up_pos,shift_down);
+        println!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
+        println!("Initial left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
+        let y = tree.arena[left].y;
+        // let y = y + shift_down + 1.0 * PIPEBLOCK;
+            let y = y + shift_down ;
+        tree.arena[left].set_y_noref(y);
+
+        let ymod = tree.arena[left].ymod;
+        // let ymod = ymod + shift_down + 1.0 * PIPEBLOCK;
+                let ymod = ymod + shift_down;
+        tree.arena[left].set_ymod_noref(ymod);
+        println!("Final left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
+
+        println!("Initial right : y = {}, ymod = {}",tree.arena[right].y,tree.arena[right].ymod);
+        let y = tree.arena[right].y;
+        // let y = y +shift_down + 1.0 * PIPEBLOCK;
+                let y = y +shift_down ;
+        tree.arena[right].set_y_noref(y);
+
+        let ymod = tree.arena[right].ymod;
+        // let ymod = ymod +  shift_down + 1.0 * PIPEBLOCK;
+                let ymod = ymod +  shift_down ;
+        tree.arena[right].set_ymod_noref(ymod);
+        println!("Final right : y = {}, ymod = {}",tree.arena[right].y,tree.arena[right].ymod);
+
+    }
+
+}
+
+/// Solve the conflicts between the left subtree and the right subtree
 pub fn  check_contour_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
@@ -852,24 +942,37 @@ pub fn  check_contour_postorder(tree: &mut ArenaTree<String>,index:usize) {
     else{
     }
 }
-
+pub fn node_xpos(tree: &mut ArenaTree<String>, index: usize, xmod: f32, operator : i32) -> f32 {
+    tree.arena[index].x + tree.arena[index].xmod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK + xmod
+    // TODO quand la valeur ng est 0, ca peut etre un noeud  d'arbre de gene mais aussi un noeud
+    // d'arbre d'espece sans noeud abre de gene associé et du coup la position extreme n'est pas exacte... Verfier su
+    // il y a des conflits ( un noud d'arbre d'espexe sans gene a la meme epaissuer qu'un noeud d'arbre d'espece avec 1 gene)
+}
+pub fn node_ypos(tree: &mut ArenaTree<String>, index: usize, ymod: f32, operator : i32) -> f32 {
+    println!("node_ypos: y ({}) + ymod ({}) +/ nbg ({})/2 x PIPEBLOCK",tree.arena[index].y, tree.arena[index].ymod, tree.arena[index].nbg );
+    tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK
+    // tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK + ymod
+    // TODO quand la valeur ng est 0, ca peut etre un noeud  d'arbre de gene mais aussi un noeud
+    // d'arbre d'espece sans noeud abre de gene associé et du coup la position extreme n'est pas exacte... Verfier su
+    // il y a des conflits ( un noud d'arbre d'espexe sans gene a la meme epaissuer qu'un noeud d'arbre d'espece avec 1 gene)
+}
 /// Get the left 'contout' of a sub tree
 pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_left: &mut Vec<f32>,parent_xmod: f32)  {
     info!("get_contour_left: process node {:?}",tree.arena[index]);
     let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
+    let node_left_pos = node_xpos(tree,index,parent_xmod,-1);
     if contour_left.len() <= local_depth {
         if tree.arena[index].xmod < 0.0 {
             panic!("error: negative xmod");
         }
-        contour_left.push(tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod);
+        contour_left.push(node_left_pos);
         info!("get_contour_left: increment contour is now {:?}",contour_left);
     }
     if tree.arena[index].xmod < 0.0 {
         panic!("erreur: negative  xmod");
     }
-    info!("get_contour_left: compare  {} + {} + {} infeq ctl at depth {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_left[local_depth] );
-    if tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod <= contour_left[local_depth] {
-        contour_left[local_depth] = tree.arena[index].x + tree.arena[index].xmod - tree.arena[index].nbg as f32 *PIPEBLOCK  + parent_xmod;
+    if node_left_pos <= contour_left[local_depth] {
+        contour_left[local_depth] = node_left_pos;
         info!("get_contour_left: contour is now {:?}",contour_left);
     }
     let children  = &mut  tree.arena[index].children;
@@ -883,19 +986,19 @@ pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,co
 pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,contour_right: &mut Vec<f32>,parent_xmod: f32)  {
     info!("get_contour_right: process node {:?}",tree.arena[index]);
     let local_depth = tree.depth(index)-depth; // Profondeur du noeud pa rapport a noeud de depart
+    let node_right_pos = node_xpos(tree,index,parent_xmod,1);
     if contour_right.len() <= local_depth {
         if tree.arena[index].xmod < 0.0 {
             panic!("erreur: negative xmod");
         }
-        contour_right.push(tree.arena[index].x+tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod);
+        contour_right.push(node_right_pos);
             info!("get_contour_right: increment contour is now {:?}",contour_right);
     }
     if tree.arena[index].xmod < 0.0 {
         panic!("erreur: negative xmod");
     }
-    info!("get_contour_right: compare  {} + {} + {} infeq ctl at depth {} : {} ",tree.arena[index].x, tree.arena[index].xmod,parent_xmod,local_depth, contour_right[local_depth] );
-    if tree.arena[index].x +  tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK  + parent_xmod  >= contour_right[local_depth] {
-        contour_right[local_depth] = tree.arena[index].x +  tree.arena[index].xmod + tree.arena[index].nbg as f32 *PIPEBLOCK + parent_xmod ;
+    if node_right_pos >= contour_right[local_depth] {
+        contour_right[local_depth] = node_right_pos ;
             info!("get_contour_right: contour is now {:?}",contour_right);
     }
     let children  = &mut  tree.arena[index].children;
