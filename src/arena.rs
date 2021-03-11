@@ -30,6 +30,7 @@ where
     pub width: f32,             // largeur du tuyeau (dans le cas d'arbre d'espece)
     pub height: f32,            // hauteur du tuyeau (dans le cas d'arbre d'espece)
     pub nbg: usize,             // nombre de noeud  d'arbre de genes associcés à ce noeud  (dans le cas d'arbre d'espece)
+    pub nodes: Vec<usize>,      // gene nodes associes (dans le cas d'arbre d'espece)
 }
 
 impl<T> Noeud<T>
@@ -53,6 +54,7 @@ where
             width: PIPEBLOCK ,
             height: PIPEBLOCK ,
             nbg: 0,
+            nodes: vec![],
         }
     }
     #[allow(dead_code)]
@@ -175,6 +177,14 @@ where
             }
         panic!("Unable to get root of the tree");
         0
+    }
+
+    /// is leaf
+    pub fn is_leaf(&self, idx: usize) -> bool {
+        match self.arena[idx].children.len() {
+        0 => true,
+        _ => false,
+        }
     }
 
     /// Send the depth of the tree
@@ -339,10 +349,20 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                                 tree.arena[parent].set_event(Event::Leaf);
 
                                 info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                                let nb_att = evenement.attributes().len();
+                                info!("Number of attributes  = {}",nb_att);
                                 assert!(evenement.has_attribute("speciesLocation"));
-                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                let location = evenement.attributes()[0].value();
-                                tree.arena[parent].location = location.to_string();
+                                if nb_att == 1 {
+                                    assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                                    let location = evenement.attributes()[0].value();
+                                    tree.arena[parent].location = location.to_string();
+                                }
+                                else {
+                                    // TODO tres sale
+                                    assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
+                                    let location = evenement.attributes()[1].value();
+                                    tree.arena[parent].location = location.to_string();
+                                }
                             }
 
                         }
@@ -489,12 +509,80 @@ pub fn map_species_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut
                 let mut nbg = spindex.nbg;
                 nbg = nbg + 1 ;
                 spindex.nbg = nbg;
+                spindex.nodes.push(index.idx);
                 info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
             }
         }
         if !mapped {
             panic!("Unable to map Node {:?}",index);
         }
+    }
+}
+
+pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
+    println!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
+        let  mut shift = 0.0;
+        for node in &sp_tree.arena[index].nodes {
+            println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
+            match  gene_tree.arena[*node].e {
+                Event::Duplication => {
+                    let y = gene_tree.arena[*node].y;
+                    let y = y - PIPEBLOCK / 2.0;
+                    gene_tree.arena[*node].set_y_noref(y);
+                    // TO DO ou pas:
+                    let x = gene_tree.arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_x_noref(x);
+                },
+                Event::Speciation => {
+                    let x = gene_tree.arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_x_noref(x);
+
+                    let y = gene_tree.arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_y_noref(y);
+
+                    shift = shift + 1.0;
+
+
+                },
+                Event::Leaf => {
+                    let x = gene_tree.arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_x_noref(x);
+
+                    // let y = gene_tree.arena[*node].y;
+                    // let y = y + PIPEBLOCK*shift;
+                    // gene_tree.arena[*node].set_y_noref(y);
+
+                    shift = shift + 1.0;
+
+
+                },
+                Event::Loss => {
+                    let x = gene_tree.arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_x_noref(x);
+
+                    let y = gene_tree.arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / 2.0;
+                    gene_tree.arena[*node].set_y_noref(y);
+
+                    shift = shift + 1.0;
+
+
+                },
+                _=> {},
+            }
+        }
+    let mut children =  &mut  sp_tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+         bilan_mapping( sp_tree, gene_tree,son_left);
+         bilan_mapping( sp_tree, gene_tree,son_right);
+         // bilan_mapping(&mut sp_tree, &mut gene_tree,children[1]);
     }
 }
 
@@ -793,12 +881,12 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
                 },
             }
             // Je decale en y versle bas pour me detacher du noeud de dupli
-            let  y = tree.arena[son_right].y;
-            let  y = y  + PIPEBLOCK / 2.0 ;
-            tree.arena[son_right].set_y_noref(y);
-            let  y = tree.arena[son_left].y;
-            let  y = y  + PIPEBLOCK / 2.0 ;
-            tree.arena[son_left].set_y_noref(y);
+            // let  y = tree.arena[son_right].y;
+            // let  y = y  + PIPEBLOCK / 2.0 ;
+            // tree.arena[son_right].set_y_noref(y);
+            // let  y = tree.arena[son_left].y;
+            // let  y = y  + PIPEBLOCK / 1.0 ;
+            // tree.arena[son_left].set_y_noref(y);
 
 
             // let  ymod = tree.arena[son_right].ymod;
@@ -823,18 +911,27 @@ pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
                  Event::Leaf => true,
                  _           => false,
             };
-            if  !is_leaf {
+            // if  !is_leaf {
+
+
+
+                // let y = tree.arena[son_left].y;
+                // let y = y  + PIPEBLOCK / 1.0 ;
+                // tree.arena[son_left].set_y_noref(y);
                 // let y = tree.arena[son_right].y;
                 // let y = y  + PIPEBLOCK / 2.0 ;
                 // tree.arena[son_right].set_y_noref(y);
 
-                //  On veut diffuser ce decalage y a tout l'arbre
-
+                // Si on veut trsnamettre le decalage vertical!
+                let ymod = tree.arena[son_left].ymod;
+                let ymod = ymod  + PIPEBLOCK / 1.0 ;
+                tree.arena[son_left].set_ymod_noref(ymod);
                 let ymod = tree.arena[son_right].ymod;
                 let ymod = ymod  + PIPEBLOCK / 2.0 ;
                 tree.arena[son_right].set_ymod_noref(ymod);
 
-            }
+
+            // }
         }
         shift_duplicated_and_loss( tree, son_left);
         shift_duplicated_and_loss( tree, son_right);
