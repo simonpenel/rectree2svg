@@ -111,13 +111,18 @@ pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
 pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut ArenaTree<String>, name: String) {
     let largest_x = sp_tree.get_largest_x() * 1.0 + 200.0 ;
     let largest_y = sp_tree.get_largest_y() * 1.0 + 200.0 ;
+    let largest  = match largest_x > largest_y {
+        true => largest_x,
+        false => largest_y,
+    };
     let  mut document = Document::new()
-        .set("width",largest_x)
-        .set("viewBox", (-100, -0, largest_x,largest_y));
+        .set("width",largest)
+        .set("height",largest)
+        .set("viewBox", (-100, -0, largest,largest));
     // .set("viewBox", (-100, -100, largest_x,largest_y));
-    let style = Style::new(".vert { font:  8px serif; fill: green; }");
+    let style = Style::new(".vert { font:  18px serif; fill: green; }");
     document.append(style);
-    let style = Style::new(".jaune { font: italic 58px serif; fill: orange; }");
+    let style = Style::new(".jaune { font: italic 18px serif; fill: orange; }");
     document.append(style);
     for  index in &sp_tree.arena {
          let _parent =  match index.parent {
@@ -161,7 +166,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           let  event = &index.e;
           match event {
                Event::Leaf        =>  document.append(get_carre(index.x,index.y,1.0,"red".to_string())),
-               Event::Duplication =>  document.append(get_carre(index.x,index.y,2.0,"blue".to_string())),
+               Event::Duplication =>  document.append(get_carre(index.x,index.y,3.0,"yellow".to_string())),
                Event::Loss =>        {
                    let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
                    cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
@@ -193,27 +198,29 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                 Event::BifurcationOut  =>  document.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
                _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
           };
-          let mut element = Element::new("text");
-          element.assign("x", index.x-5.0);
-          element.assign("y", index.y+10.0);
-          element.assign("class", "vert");
-          let txt  = Text::new(&index.name);
-          element.append(txt);
-          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-          document.append(element);
+          match event {
+               Event::Leaf        => {
+                   let mut element = Element::new("text");
+                   element.assign("x", index.x-5.0);
+                   element.assign("y", index.y+10.0);
+                   element.assign("class", "vert");
+                   let txt  = Text::new(&index.name);
+                   element.append(txt);
+                   element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+                   document.append(element);
+                },
+                _ => {},
+            }
       }
-     let smallest = cmp::min(largest_x as i32, largest_y as i32);
-     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
-     transfo.push_str(&(smallest/2).to_string());
-     transfo.push_str(" -");
-     transfo.push_str(&(smallest/2).to_string());
+
+     let mut transfo: String = "rotate(-90 ".to_owned();
+     transfo.push_str(&(largest / 2.0 ).to_string());
+     transfo.push_str(" ");
+     transfo.push_str(&(largest / 2.0 ).to_string());
      transfo.push_str(")");
      info!("drawsp_tree: svg transform = {}",transfo);
      // Pivote de -90
-     // document.assign("transform",transfo);
-
-     // let mut translate: String = "translate( 00 )".to_owned();
-     //  document.assign("transform",translate);
+     document.assign("transform",transfo);
      svg::save(name, &document).unwrap();
 }
 /// Draw a square  of size s at x,y
