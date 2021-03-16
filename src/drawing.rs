@@ -151,8 +151,19 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                  -1},
          };
          let mut element = Element::new("text");
-         element.assign("x", index.x+15.0);
-         element.assign("y", index.y+20.0);
+         match sp_tree.is_leaf(index.idx) {
+            true => {
+                 element.assign("x", index.x-15.0);
+                 element.assign("y", index.y - index.width /2.0 - 10.0);
+            },
+            false => {
+                    element.assign("x", index.x+15.0);
+                    element.assign("y", index.y+20.0);
+                },
+            };
+
+         // element.assign("x", index.x+15.0);
+         // element.assign("y", index.y+20.0);
          element.assign("class", "jaune");
          let txt  = Text::new(&index.name);
          element.append(txt);
