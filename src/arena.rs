@@ -550,7 +550,7 @@ pub fn map_species_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut
 
 pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
     println!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
-        let ratio = 1.5 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
+        let ratio = 2.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
         for node in &sp_tree.arena[index].nodes {
             println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
@@ -560,9 +560,35 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                     let y = y - PIPEBLOCK / ratio;
                     gene_tree.arena[*node].set_y_noref(y);
                     // TO DO ou pas:
-                    let x = gene_tree.arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_x_noref(x);
+                    // let x = gene_tree.arena[*node].x;
+                    // let x = x + PIPEBLOCK*shift / ratio;
+                    // gene_tree.arena[*node].set_x_noref(x);
+                    shift = shift + 1.0;
+
+                    let mut children =  &mut  gene_tree.arena[*node].children;
+                    if children.len() > 0 {
+                        let son_left = children[0];
+                        let son_right = children[1];
+
+                        let  xmod = gene_tree.arena[son_left].xmod;
+                        let  xmod = xmod  - PIPEBLOCK / ratio ;
+                        gene_tree.arena[son_left].set_xmod_noref(xmod);
+                    // Si le noeud  droit n'est pas une feuille on le decale en y
+                    // TODO a améliorer : feuille a gauche et noeud interne  a droite?
+                    let is_leaf = match gene_tree.arena[son_right].e {
+                         Event::Leaf => true,
+                         _           => false,
+                    };
+
+                        let ymod =gene_tree.arena[son_left].ymod;
+                        let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
+                        gene_tree.arena[son_left].set_ymod_noref(ymod);
+                        let ymod = gene_tree.arena[son_right].ymod;
+                        let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
+                        gene_tree.arena[son_right].set_ymod_noref(ymod);
+                    }
+
+
                 },
                 Event::Speciation => {
                     let x = gene_tree.arena[*node].x;
