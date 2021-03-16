@@ -224,7 +224,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
             }
       }
 
-     g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,1.0,"red".to_string()));
+     // g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,1.0,"red".to_string()));
      let mut transfo: String = "translate(  ".to_owned();
      transfo.push_str(&(-BLOCK / 2.0 ).to_string());
      transfo.push_str(" ");
