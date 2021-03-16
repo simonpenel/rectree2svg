@@ -197,8 +197,8 @@ where
     pub fn get_largest_x(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
-            if node.x > max {
-                max = node.x;
+            if node.x + node.width > max {
+                max = node.x + node.width;
              }
             }
         max
@@ -206,12 +206,41 @@ where
     pub fn get_largest_y(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
-            if node.y > max {
-                max = node.y;
+            if node.y + node.height > max {
+                max = node.y + node.height ;
              }
             }
         max
     }
+
+    pub fn get_smallest_x(&mut self) -> f32 {
+        let mut min = 1000000.0;
+        for node in &self.arena {
+            if node.x - node.width < min {
+                min = node.x - node.width;
+             }
+            }
+        min
+    }
+
+    pub fn get_smallest_y(&mut self) -> f32 {
+        let mut min = 1000000.0;
+        for node in &self.arena {
+            if node.y - node.height < min {
+                min = node.y - node.height;
+             }
+            }
+        min
+    }
+    // pub fn get_largest_y(&mut self) -> f32 {
+    //     let mut max = 0.0;
+    //     for node in &self.arena {
+    //         if node.y + node.height > max {
+    //             max = node.y;
+    //          }
+    //         }
+    //     max
+    // }
     #[allow(dead_code)]
     pub fn rotate(&mut self)  {
         let root = self.get_root();
