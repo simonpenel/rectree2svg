@@ -1,7 +1,7 @@
 use taxonomy::Taxonomy;
 use log::{info};
 // const BLOCK: f32 = 30.0;
-const BLOCK: f32 = 100.0;
+pub const BLOCK: f32 = 100.0;
 // const PIPEBLOCK: f32 = BLOCK / 4.0;
 const PIPEBLOCK: f32 = BLOCK / 4.0;
 const MINWIDTH: f32 = BLOCK / 4.0;
@@ -550,26 +550,27 @@ pub fn map_species_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut
 
 pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
     println!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
+        let ratio = 1.5 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
         for node in &sp_tree.arena[index].nodes {
             println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
             match  gene_tree.arena[*node].e {
                 Event::Duplication => {
                     let y = gene_tree.arena[*node].y;
-                    let y = y - PIPEBLOCK / 2.0;
+                    let y = y - PIPEBLOCK / ratio;
                     gene_tree.arena[*node].set_y_noref(y);
                     // TO DO ou pas:
                     let x = gene_tree.arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / 2.0;
+                    let x = x + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_x_noref(x);
                 },
                 Event::Speciation => {
                     let x = gene_tree.arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / 2.0;
+                    let x = x + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_x_noref(x);
 
                     let y = gene_tree.arena[*node].y;
-                    let y = y + PIPEBLOCK*shift / 2.0;
+                    let y = y + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
@@ -578,7 +579,7 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                 },
                 Event::Leaf => {
                     let x = gene_tree.arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / 2.0;
+                    let x = x + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_x_noref(x);
 
                     // let y = gene_tree.arena[*node].y;
@@ -591,11 +592,11 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                 },
                 Event::Loss => {
                     let x = gene_tree.arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / 2.0;
+                    let x = x + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_x_noref(x);
 
                     let y = gene_tree.arena[*node].y;
-                    let y = y + PIPEBLOCK*shift / 2.0;
+                    let y = y + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
