@@ -13,11 +13,17 @@ use svg::Node;
 
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
-    let largest_x = tree.get_largest_x() + 200.0 ;
-    let largest_y = tree.get_largest_y() + 200.0 ;
+    let largest_x = tree.get_largest_x() + 0.0 ;
+    let largest_y = tree.get_largest_y() + 0.0 ;
+    let largest  = match largest_x > largest_y {
+        true => largest_x,
+        false => largest_y,
+    };
     let  mut document = Document::new()
-    .set("width", largest_x)
-    .set("viewBox", (-100, -100, largest_x,largest_y));
+        .set("width",largest_x)
+        .set("height",largest_y)
+        .set("viewBox", (-0, -0, largest_x,largest_y));
+
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
     for  index in &tree.arena {
@@ -57,11 +63,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
          //     _           =>  {},
          // }
      }
-     let smallest = cmp::min(largest_x as i32, largest_y as i32);
-     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
-     transfo.push_str(&(smallest/2).to_string());
-     transfo.push_str(" -");
-     transfo.push_str(&(smallest/2).to_string());
+     let mut transfo: String = "rotate(-90 ".to_owned();
+     transfo.push_str(&(largest / 2.0 ).to_string());
+     transfo.push_str(" ");
+     transfo.push_str(&(largest / 2.0 ).to_string());
      transfo.push_str(")");
      info!("draw_tree: svg transform = {}",transfo);
      document.assign("transform",transfo);
@@ -69,70 +74,75 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
 }
 
 /// Draw a svg species tree
-pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
-    let largest_x = tree.get_largest_x() + 200.0 ;
-    let largest_y = tree.get_largest_y() + 200.0 ;
-    let  mut document = Document::new()
-    .set("viewBox", (-100, -100, largest_x,largest_y));
-    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
-    document.append(style);
-    for  index in &tree.arena {
-         let _parent =  match index.parent {
-             Some(p) => {
-                 let n = &tree.arena[p];
-                 let chemin = get_chemin_sp(index.x,index.y,index.width/2.0,index.height/2.0,n.x,n.y,n.width/2.0,n.height/2.0);
-                 document.append(chemin);
-                 0
-                },
-             None => {
-                 -1},
-         };
-         let mut element = Element::new("text");
-         element.assign("x", index.x-5.0);
-         element.assign("y", index.y+10.0);
-         element.assign("class", "vert");
-         let txt  = Text::new(&index.name);
-         element.append(txt);
-         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-         document.append(element);
-     }
-     let smallest = cmp::min(largest_x as i32, largest_y as i32);
-     let mut transfo: String = "rotate(-90)   translate( -".to_owned();
-     transfo.push_str(&(smallest/2).to_string());
-     transfo.push_str(" -");
-     transfo.push_str(&(smallest/2).to_string());
-     transfo.push_str(")");
-     info!("drawsp_tree: svg transform = {}",transfo);
-     document.assign("transform",transfo);
-     svg::save(name, &document).unwrap();
-}
+// pub fn draw_sptree (tree: &mut ArenaTree<String>, name: String) {
+//     let largest_x = tree.get_largest_x() + 200.0 ;
+//     let largest_y = tree.get_largest_y() + 200.0 ;
+//     let  mut document = Document::new()
+//     .set("viewBox", (-100, -100, largest_x,largest_y));
+//     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+//     document.append(style);
+//     for  index in &tree.arena {
+//          let _parent =  match index.parent {
+//              Some(p) => {
+//                  let n = &tree.arena[p];
+//                  let chemin = get_chemin_sp(index.x,index.y,index.width/2.0,index.height/2.0,n.x,n.y,n.width/2.0,n.height/2.0);
+//                  document.append(chemin);
+//                  0
+//                 },
+//              None => {
+//                  -1},
+//          };
+//          let mut element = Element::new("text");
+//          element.assign("x", index.x-5.0);
+//          element.assign("y", index.y+10.0);
+//          element.assign("class", "vert");
+//          let txt  = Text::new(&index.name);
+//          element.append(txt);
+//          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+//          document.append(element);
+//      }
+//      let smallest = cmp::min(largest_x as i32, largest_y as i32);
+//      let mut transfo: String = "rotate(-90)   translate( -".to_owned();
+//      transfo.push_str(&(smallest/2).to_string());
+//      transfo.push_str(" -");
+//      transfo.push_str(&(smallest/2).to_string());
+//      transfo.push_str(")");
+//      info!("drawsp_tree: svg transform = {}",transfo);
+//      document.assign("transform",transfo);
+//      svg::save(name, &document).unwrap();
+// }
 
 /// Draw a svg species tree
 pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut ArenaTree<String>, name: String) {
-    let largest_x = sp_tree.get_largest_x() * 1.0 + 200.0 ;
-    let largest_y = sp_tree.get_largest_y() * 1.0 + 200.0 ;
-    let largest  = match largest_x > largest_y {
-        true => largest_x,
-        false => largest_y,
-    };
+    let largest_x = sp_tree.get_largest_x() * 1.0 + 0.0 ;
+    let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
+    let smallest_x = sp_tree.get_smallest_x() * 1.0 + 0.0 ;
+    let smallest_y = sp_tree.get_smallest_y() * 1.0 + 0.0 ;
+    let width_svg = largest_x - smallest_x + 0.0;
+    let width_svg = width_svg * 1.0;
+    let height_svg = largest_y - smallest_y + 0.0;
+    let height_svg = height_svg * 1.0;
+    let x_viewbox = smallest_x - 0.0 ;
+    let y_viewbox = smallest_y - 0.0;
+
     let  mut document = Document::new()
-        .set("width",largest)
-        .set("height",largest)
-        .set("viewBox", (-100, -0, largest,largest));
-    // .set("viewBox", (-100, -100, largest_x,largest_y));
+            .set("width",height_svg + 100.0 )
+            .set("height",width_svg + 100.0 )
+             .set("viewBox", (x_viewbox,y_viewbox,height_svg + 100.0 ,width_svg + 100.0 ));;
     let style = Style::new(".vert { font:  18px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 18px serif; fill: orange; }");
     document.append(style);
+    let mut g = Element::new("g");
     for  index in &sp_tree.arena {
          let _parent =  match index.parent {
              Some(p) => {
                  let n = &sp_tree.arena[p];
                  let chemin = get_chemin_sp(index.x, index.y, index.width/2.0, index.height/2.0, n.x, n.y,n.width/2.0,n.height/2.0);
-                 document.append(chemin);
+                 g.append(chemin);
                  if sp_tree.is_leaf(index.idx) {
                                       let chemin = close_chemin_sp(index.x, index.y, index.width/2.0, index.height/2.0);
-                                      document.append(chemin);
+                                      g.append(chemin);
                  }
                  0
                 },
@@ -146,7 +156,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
          let txt  = Text::new(&index.name);
          element.append(txt);
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-         document.append(element);
+         g.append(element);
      }
      for  index in &gene_tree.arena {
           let _parent =  match index.parent {
@@ -157,7 +167,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                       Event::TransferBack   => get_chemin_transfer(index.x,index.y,n.x,n.y),
                       _                     => get_chemin_carre(index.x,index.y,n.x,n.y),
                   };
-                  document.append(chemin);
+                  g.append(chemin);
                   0
                  },
               None => {
@@ -165,12 +175,12 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           };
           let  event = &index.e;
           match event {
-               Event::Leaf        =>  document.append(get_carre(index.x,index.y,1.0,"red".to_string())),
-               Event::Duplication =>  document.append(get_carre(index.x,index.y,3.0,"yellow".to_string())),
+               Event::Leaf        =>  g.append(get_carre(index.x,index.y,1.0,"red".to_string())),
+               Event::Duplication =>  g.append(get_carre(index.x,index.y,3.0,"yellow".to_string())),
                Event::Loss =>        {
                    let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
                    cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
-                   document.append(cross);
+                   g.append(cross);
                 },
                 Event::TransferBack => {
                     let _parent =  match index.parent {
@@ -189,14 +199,14 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                             // </eventsRec>
                             let n = &gene_tree.arena[p];
                             let mut diamond = get_carre(n.x,n.y,4.0,"green".to_string());
-                            diamond.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
-                            document.append(diamond);},
+                            g.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
+                            g.append(diamond);},
                         None =>{panic!("The TransferBack Node as no father {:?}",index)},
                     };
                 },
-                Event::BranchingOut  =>  document.append(get_carre(index.x,index.y,1.0,"pink".to_string())),
-                Event::BifurcationOut  =>  document.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
-               _                  =>  document.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+                Event::BranchingOut  =>  g.append(get_carre(index.x,index.y,1.0,"pink".to_string())),
+                Event::BifurcationOut  =>  g.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
+               _                  =>  g.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
           };
           match event {
                Event::Leaf        => {
@@ -207,22 +217,41 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                    let txt  = Text::new(&index.name);
                    element.append(txt);
                    element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-                   document.append(element);
+                   g.append(element);
                 },
                 _ => {},
             }
       }
 
-     let mut transfo: String = "rotate(-90 ".to_owned();
-     transfo.push_str(&(largest / 2.0 ).to_string());
-     transfo.push_str(" ");
-     transfo.push_str(&(largest / 2.0 ).to_string());
-     transfo.push_str(")");
-     info!("drawsp_tree: svg transform = {}",transfo);
-     // Pivote de -90
-     document.assign("transform",transfo);
+     g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,1.0,"red".to_string()));
+     let mut transfo: String = "translate( -50 ".to_owned();
+     transfo.push_str(&(width_svg  + 50.0).to_string());
+     transfo.push_str(") rotate(-90 0 0 ) ");
+     g.assign("transform",transfo);
+     document.append(g);
      svg::save(name, &document).unwrap();
 }
+
+
+
+pub fn get_cadre (x: f32, y:f32,w:f32,h:f32, s:f32, c:String) -> Path {
+    let data = Data::new()
+    .move_to((x , y))
+    .line_by((w, 0.0 ))
+    .line_by((0.0, h))
+    .line_by((-w, 0.0))
+    .close();
+
+    let fill = c.clone();
+    let path = Path::new()
+     .set("fill", "none")
+    .set("stroke", c)
+    .set("stroke-width", 3)
+    .set("d", data);
+
+    path
+}
+
 /// Draw a square  of size s at x,y
 pub fn get_carre (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
