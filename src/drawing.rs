@@ -2,6 +2,7 @@ use std::cmp;
 use log::{info};
 use crate::arena::ArenaTree;
 use crate::arena::Event;
+use crate::arena::BLOCK;
 use svg::Document;
 use svg::node::element::Path;
 use svg::node::element::Circle;
@@ -126,12 +127,12 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
     let y_viewbox = smallest_y - 0.0;
 
     let  mut document = Document::new()
-            .set("width",height_svg + 100.0 )
-            .set("height",width_svg + 100.0 )
-             .set("viewBox", (x_viewbox,y_viewbox,height_svg + 100.0 ,width_svg + 100.0 ));;
-    let style = Style::new(".vert { font:  18px serif; fill: green; }");
+            .set("width",height_svg + BLOCK )
+            .set("height",width_svg + BLOCK )
+             .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));;
+    let style = Style::new(".vert { font:  12px serif; fill: green; }");
     document.append(style);
-    let style = Style::new(".jaune { font: italic 18px serif; fill: orange; }");
+    let style = Style::new(".jaune { font: italic 12px serif; fill: orange; }");
     document.append(style);
     let mut g = Element::new("g");
     for  index in &sp_tree.arena {
@@ -224,8 +225,10 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
       }
 
      g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,1.0,"red".to_string()));
-     let mut transfo: String = "translate( -50 ".to_owned();
-     transfo.push_str(&(width_svg  + 50.0).to_string());
+     let mut transfo: String = "translate(  ".to_owned();
+     transfo.push_str(&(-BLOCK / 2.0 ).to_string());
+     transfo.push_str(" ");
+     transfo.push_str(&(width_svg  + BLOCK / 2.0).to_string());
      transfo.push_str(") rotate(-90 0 0 ) ");
      g.assign("transform",transfo);
      document.append(g);
