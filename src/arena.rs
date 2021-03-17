@@ -655,6 +655,18 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                     gene_tree.arena[*node].set_x_noref(x);
 
                     let y = gene_tree.arena[*node].y;
+
+                    let parent = gene_tree.arena[*node].parent;
+                    let y = match parent {
+                        None =>  {
+                            panic!("Loss node with no parent");
+                            0.0
+                        },
+                        Some(p) => {
+                            gene_tree.arena[p].y + PIPEBLOCK
+                        },
+                    };
+
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_y_noref(y);
 
