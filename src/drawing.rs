@@ -129,7 +129,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
     let  mut document = Document::new()
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )
-             .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));;
+            .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));;
     let style = Style::new(".vert { font:  12px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 12px serif; fill: orange; }");
@@ -188,7 +188,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           let  event = &index.e;
           match event {
                Event::Leaf        =>  g.append(get_carre(index.x,index.y,1.0,"red".to_string())),
-               Event::Duplication =>  g.append(get_carre(index.x,index.y,3.0,"yellow".to_string())),
+               Event::Duplication =>  g.append(get_carre(index.x,index.y,4.0,"blue".to_string())),
                Event::Loss =>        {
                    let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
                    cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
@@ -218,7 +218,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                 },
                 Event::BranchingOut  =>  g.append(get_carre(index.x,index.y,1.0,"pink".to_string())),
                 Event::BifurcationOut  =>  g.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
-               _                  =>  g.append(get_circle(index.x,index.y,2.0,"blue".to_string())),
+               _                  =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
           };
           match event {
                Event::Leaf        => {
