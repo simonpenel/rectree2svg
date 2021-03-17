@@ -724,6 +724,27 @@ pub fn find_rgtree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId
     Err(0)
 }
 
+// Renvoie le NodeId du premier tag "regGeneTree"
+pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::NodeId>, usize> {
+    let descendants = doc.root().descendants();
+    let mut gene_nodes:std::vec::Vec<roxmltree::NodeId> = Vec::new();
+    // Search for the first occurnce of clade spTree
+    for  node in descendants {
+        if node.has_tag_name("recGeneTree"){
+            // return Ok(node.id().get())
+            // return Ok(node.id())
+            gene_nodes.push(node.id());
+        }
+    }
+    info!("find_sptrees: Number of gene trees in xml = {}",gene_nodes.len());
+    match gene_nodes.len() > 0 {
+        true => return Ok(gene_nodes),
+        false => Err(0),
+    }
+    // return Ok(gene_nodes)
+    // Err(0)
+}
+
 
 //
 // pub fn find_first_tag( mut doc: &mut roxmltree::Document, tag: String) -> Result < roxmltree::NodeId, usize> {

@@ -21,6 +21,7 @@ use crate::arena::shift_duplicated_and_loss;
 use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
 use crate::arena::find_rgtree;
+use crate::arena::find_rgtrees;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
 use crate::arena::shift_mod_xy;
@@ -226,33 +227,35 @@ fn main()  {
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
-            let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-            let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
-            // Recupere le Node associe grace ai NodeId
-            let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
-            info!("recGeneTree Id: {:?}",rgnode);
-            // Search for the first gene trees
-            let descendants = rgnode.descendants();
-            // Search for the first occurnce of clade tag
-            for node in descendants {
-                if node.has_tag_name("clade"){
-                    // node est la racine
-                    let mut index  = &mut 0;
-                    // Nom de la racine
-                    let name = "N".to_owned()+&index.to_string();
-                    // Cree le nouveau noeud et recupere son index
-                    let name = gene_tree.new_node(name.to_string());
-                    // Appelle xlm2tree sur la racine
-                    xml2tree(node, name, &mut index, &mut gene_tree);
-                    // on s'arrête la
-                    break;
+            // let mut gene_tree: ArenaTree<String> = ArenaTree::default();
+            let mut rgnodes = find_rgtrees(doc).expect("No clade recGeneTree has been found in xml");
+            for rgnode in rgnodes {
+                let mut gene_tree: ArenaTree<String> = ArenaTree::default();
+                info!("=>Gene node {:?}",rgnode);
+                let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
+                info!("recGeneTree Id: {:?}",rgnode);
+                // Search for the first gene trees
+                let descendants = rgnode.descendants();
+                // Search for the first occurnce of clade tag
+                for node in descendants {
+                    if node.has_tag_name("clade"){
+                        // node est la racine
+                        let mut index  = &mut 0;
+                        // Nom de la racine
+                        let name = "N".to_owned()+&index.to_string();
+                        // Cree le nouveau noeud et recupere son index
+                        let name = gene_tree.new_node(name.to_string());
+                        // Appelle xlm2tree sur la racine
+                        xml2tree(node, name, &mut index, &mut gene_tree);
+                        // on s'arrête la
+                        break;
+                    }
                 }
+                gene_trees.push(gene_tree);
             }
-            // gene_trees.push(&gene_tree);
-            info!("Species tree  : {:?}",sp_tree);
             info!("Gene trees : {:?}",gene_trees);
+            let mut gene_tree = &mut gene_trees[0];
             info!("Gene tree : {:?}",gene_tree);
-
             // Calcule les coordondees de l'arbre d'espece
 
             // 1ere etape : profondeur => Y, left => X= 0, right X=1
