@@ -223,8 +223,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
           match event {
                Event::Leaf        => {
                    let mut element = Element::new("text");
-                   element.assign("x", index.x-5.0);
-                   element.assign("y", index.y+10.0);
+                   element.assign("x", index.x+10.0);
+                   element.assign("y", index.y+0.0);
                    element.assign("class", "vert");
                    let txt  = Text::new(&index.name);
                    element.append(txt);
