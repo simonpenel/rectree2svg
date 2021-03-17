@@ -15,6 +15,7 @@ use crate::arena::xml2tree;
 use crate::arena::map_gene_tree;
 use crate::arena::map_species_tree;
 use crate::arena::bilan_mapping;
+use crate::arena::move_dupli_mapping;
 use crate::arena::set_species_width;
 use crate::arena::shift_duplicated_and_loss;
 use crate::arena::find_first_clade;
@@ -328,6 +329,7 @@ fn main()  {
             let  groot = gene_tree.get_root();
             // shift_duplicated_and_loss(&mut gene_tree, groot);
             bilan_mapping(&mut sp_tree, &mut gene_tree,root);
+            move_dupli_mapping(&mut sp_tree, &mut gene_tree,root);
             shift_mod_xy(&mut gene_tree, groot, &mut 0.0, &mut 0.0);
             println!("Output filename is {}",outfile);
             drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
