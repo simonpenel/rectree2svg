@@ -566,62 +566,6 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                     gene_tree.arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
-
-                },
-                Event::BifurcationOut => {  //Duplication
-                    let y = gene_tree.arena[*node].y;
-                    let y = y - PIPEBLOCK / ratio;
-                    // gene_tree.arena[*node].set_y_noref(y);
-                    let parent = gene_tree.arena[*node].parent;
-                    let y = match parent {
-                        None =>  y - PIPEBLOCK / ratio,
-                        Some(p) => {
-                            match  gene_tree.arena[p].e {
-                                Event::Leaf =>  y - PIPEBLOCK / ratio,//IMPOSSIBLE
-                                _ =>  gene_tree.arena[p].y + BLOCK ,
-                            }
-                        },
-                    };
-
-                    gene_tree.arena[*node].set_y_noref(y);
-                    // TO DO ou pas:
-                    // let x = gene_tree.arena[*node].x;
-                    // let x = x + PIPEBLOCK*shift / ratio;
-                    // gene_tree.arena[*node].set_x_noref(x);
-                    // shift = shift + 1.0;
-
-                    let mut children =  &mut  gene_tree.arena[*node].children;
-                    if children.len() > 0 {
-                        let son_left = children[0];
-                        let son_right = children[1];
-
-                        let  xmod = gene_tree.arena[son_left].xmod;
-                        let  xmod = xmod  - PIPEBLOCK / ratio ;
-                        gene_tree.arena[son_left].set_xmod_noref(xmod);
-                    // Si le noeud  droit n'est pas une feuille on le decale en y
-                    // TODO a améliorer : feuille a gauche et noeud interne  a droite?
-                    let is_leaf = match gene_tree.arena[son_right].e {
-                         Event::Leaf => true,
-                         _           => false,
-                    };
-                        // il ne faut  pas transfer, les efants seront calcules
-                        // let ymod =gene_tree.arena[son_left].ymod;
-                        // let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
-                        // gene_tree.arena[son_left].set_ymod_noref(ymod);
-                        // let ymod = gene_tree.arena[son_right].ymod;
-                        // let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
-                        // gene_tree.arena[son_right].set_ymod_noref(ymod);
-
-
-                        let y =gene_tree.arena[son_left].y;
-                        let y = y  + PIPEBLOCK / ratio * 1.0 ;
-                        gene_tree.arena[son_left].set_y_noref(y);
-                        let y = gene_tree.arena[son_right].y;
-                        let y = y  + PIPEBLOCK / ratio * 1.0 ;
-                        gene_tree.arena[son_right].set_y_noref(y);
-                    }
-
-
                 },
                 Event::Speciation => {
                     let x = gene_tree.arena[*node].x;
