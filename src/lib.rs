@@ -24,7 +24,7 @@ pub use self::arena::set_middle_postorder;
 
 mod drawing;
 pub use self::drawing::draw_tree;
-pub use self::drawing::draw_sptree;
+pub use self::drawing::draw_sptree_gntree;
 pub use self::drawing::get_carre;
 pub use self::drawing::get_chemin_carre;
 pub use self::drawing::get_chemin_sp;
