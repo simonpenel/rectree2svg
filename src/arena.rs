@@ -556,14 +556,39 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
             println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
             match  gene_tree.arena[*node].e {
                 Event::Duplication => {
+
+                    let x = gene_tree.arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / ratio;
+                    gene_tree.arena[*node].set_x_noref(x);
+
+                    let y = gene_tree.arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    gene_tree.arena[*node].set_y_noref(y);
+
+                    shift = shift + 1.0;
+
+                },
+                Event::BifurcationOut => {  //Duplication
                     let y = gene_tree.arena[*node].y;
                     let y = y - PIPEBLOCK / ratio;
+                    // gene_tree.arena[*node].set_y_noref(y);
+                    let parent = gene_tree.arena[*node].parent;
+                    let y = match parent {
+                        None =>  y - PIPEBLOCK / ratio,
+                        Some(p) => {
+                            match  gene_tree.arena[p].e {
+                                Event::Leaf =>  y - PIPEBLOCK / ratio,//IMPOSSIBLE
+                                _ =>  gene_tree.arena[p].y + BLOCK ,
+                            }
+                        },
+                    };
+
                     gene_tree.arena[*node].set_y_noref(y);
                     // TO DO ou pas:
                     // let x = gene_tree.arena[*node].x;
                     // let x = x + PIPEBLOCK*shift / ratio;
                     // gene_tree.arena[*node].set_x_noref(x);
-                    shift = shift + 1.0;
+                    // shift = shift + 1.0;
 
                     let mut children =  &mut  gene_tree.arena[*node].children;
                     if children.len() > 0 {
@@ -579,13 +604,21 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                          Event::Leaf => true,
                          _           => false,
                     };
+                        // il ne faut  pas transfer, les efants seront calcules
+                        // let ymod =gene_tree.arena[son_left].ymod;
+                        // let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
+                        // gene_tree.arena[son_left].set_ymod_noref(ymod);
+                        // let ymod = gene_tree.arena[son_right].ymod;
+                        // let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
+                        // gene_tree.arena[son_right].set_ymod_noref(ymod);
 
-                        let ymod =gene_tree.arena[son_left].ymod;
-                        let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
-                        gene_tree.arena[son_left].set_ymod_noref(ymod);
-                        let ymod = gene_tree.arena[son_right].ymod;
-                        let ymod = ymod  + PIPEBLOCK / ratio * 1.0 ;
-                        gene_tree.arena[son_right].set_ymod_noref(ymod);
+
+                        let y =gene_tree.arena[son_left].y;
+                        let y = y  + PIPEBLOCK / ratio * 1.0 ;
+                        gene_tree.arena[son_left].set_y_noref(y);
+                        let y = gene_tree.arena[son_right].y;
+                        let y = y  + PIPEBLOCK / ratio * 1.0 ;
+                        gene_tree.arena[son_right].set_y_noref(y);
                     }
 
 
@@ -608,9 +641,9 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_tree.arena[*node].set_x_noref(x);
 
-                    // let y = gene_tree.arena[*node].y;
-                    // let y = y + PIPEBLOCK*shift;
-                    // gene_tree.arena[*node].set_y_noref(y);
+                    let y = gene_tree.arena[*node].y;
+                    let y = y + PIPEBLOCK*shift;
+                    gene_tree.arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
 
@@ -639,6 +672,47 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
          bilan_mapping( sp_tree, gene_tree,son_left);
          bilan_mapping( sp_tree, gene_tree,son_right);
          // bilan_mapping(&mut sp_tree, &mut gene_tree,children[1]);
+    }
+}
+
+
+pub fn move_dupli_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
+    for node in &sp_tree.arena[index].nodes {
+        println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
+        match  gene_tree.arena[*node].e {
+            Event::Duplication => {
+                let mut dupli_children =  &mut  gene_tree.arena[*node].children;
+                let dupli_son_left = dupli_children[0];
+                let x = gene_tree.arena[dupli_son_left].x;
+                gene_tree.arena[*node].set_x_noref(x);
+
+            },
+            // Il faut deplacer aussi les feuilles pour compenser: on les mets au meme niveau
+            Event::Leaf => {
+                let y = sp_tree.arena[index].y + sp_tree.arena[index].height / 2.0 ;
+                gene_tree.arena[*node].set_y_noref(y);
+                gene_tree.arena[*node].set_ymod_noref(0.0);
+            }
+
+            _=> {},
+        }
+    }
+    let mut children =  &mut  sp_tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        move_dupli_mapping( sp_tree, gene_tree,son_left);
+        move_dupli_mapping( sp_tree, gene_tree,son_right);
+    }
+    for node in &sp_tree.arena[index].nodes {
+        println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
+        match  gene_tree.arena[*node].e {
+            Event::Duplication => {
+                let x = gene_tree.arena[*node].x;
+
+            },
+            _=> {},
+        }
     }
 }
 
