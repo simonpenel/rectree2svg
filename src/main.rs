@@ -6,7 +6,6 @@ use std::env;
 use std::process;
 use getopt::Opt;
 use taxonomy::formats::newick;
-// use taxonomy::formats::phyloxml;
 use taxonomy::Taxonomy;
 mod arena;
 use crate::arena::ArenaTree;
@@ -29,15 +28,12 @@ use crate::arena::real_length;
 mod drawing;
 use log::{info};
 
-
 // Message d'erreur
 // ----------------
 fn display_help(programe_name:String) {
     const VERSION: Option<&'static str> = option_env!("CARGO_PKG_VERSION");
     const NAME: Option<&'static str> = option_env!("CARGO_PKG_NAME");
     const DESCRIPTION: Option<&'static str> = option_env!("CARGO_PKG_DESCRIPTION");
-// ...
-
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
@@ -98,7 +94,6 @@ fn main()  {
     if nb_args != 1 {
          display_help(args[0].to_string());
     }
-
     //  Determination du format
     //  ------------------------
     let filename = &infile.clone();
@@ -120,7 +115,6 @@ fn main()  {
             },
     };
     println!("Assume that format is {:?}",format);
-
     // Ouverture  du fichier
     // ----------------------
     let  f = File::open(filename);
@@ -134,14 +128,11 @@ fn main()  {
                 process::exit(1);
             }
     };
-
-    // Creation de la structure ArenaTree
-    // ---------------------------------
+    // Creation d'une structure ArenaTree (pour phyloxml et newick)
+    // -----------------------------------------------------------
     let mut tree: ArenaTree<String> = ArenaTree::default();
-
     // Charge l'arbre selon le format de fichier
     //  ----------------------------------------
-
     match format {
         // Phymxoml
         Format::Phyloxml => {
@@ -190,7 +181,7 @@ fn main()  {
         Format::Recphyloxml => {
             // On cree une structure Arena pour l'arbre d'espece
             // et un vecteur de  structures Arena pour le(s) arbres de gènes
-
+            // -------------------------------------------------------------
             // Creation de la structure ArenaTree pour l'arbre d'espece
             // --------------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
@@ -219,7 +210,6 @@ fn main()  {
                     break;
                 }
             }
-
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
@@ -251,65 +241,76 @@ fn main()  {
             }
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
-            // process::exit(0);
             info!("List of gene trees : {:?}",gene_trees);
-
-            // 1ere etape : profondeur => Y, left => X= 0, right X=1
-            // ===========
+            // -----------------------
+            // Traitement en 10 etapes
+            // -----------------------
+            // Au depart l'arbre est orienté du haut vers le bas (i.e. selon Y)
+            // Le svg sera tourné de -90 a la fin.
+            //
+            //----------------------------------------------------------
+            // 1ere étape :initialisation des x,y de l'arbre d'espèces :
+            // profondeur => Y, left => X= 0, right X=1
+            // ---------------------------------------------------------
             let  root = sp_tree.get_root();
             knuth_layout(&mut sp_tree,root, &mut 1);
             if verbose {
                 drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
             }
-
+            // --------------------
             // Option : Cladogramme
-            // =======
+            // --------------------
             if clado_flag {
                 cladogramme(&mut sp_tree);
             }
-
-            // 2eme etape :  mapping des genes sur l'espece pour calculer l'epaisseur de
-            // ===========
-            // l'arbre d'especes
-            //
+            // ---------------------------------------------------------
+            // 2eme étape :  mapping des genes sur l'espèce pour
+            // connaître le nombre de noeuds d'arbre de gènes associés à
+            // chaque noeud de l'arbre d'espèces
+            // ---------------------------------------------------------
             map_species_trees(&mut sp_tree,&mut gene_trees);
             info!("Species tree after mapping : {:?}",sp_tree);
-
-            // 3eme etape : Verifie les contours
-            // ===========
+            // ---------------------------------------------------------
+            // 3eme étape : Vérifie les conflits dans l'arbre d'espèces
+            // au niveau horizontal -> valeurs xmod
+            // ---------------------------------------------------------
              check_contour_postorder(&mut sp_tree, root);
-
-             // 4eme etape : Decale toutes les valeurs de x en fonction de xmod
-            // ============
+            // ---------------------------------------------------------
+            // 4eme étape : Décale toutes les valeurs de x en fonction
+            // de xmod dans l'abre d'espèces
+            // ---------------------------------------------------------
             shift_mod_xy(&mut sp_tree, root, &mut 0.0, &mut 0.0);
-
-            // 5eme etape : Place le parent entre les enfants dans l'arbre d'espèces
-            // ===========
+            // ---------------------------------------------------------
+            // 5eme étape : Place le parent entre les enfants dans
+            // l'arbre d'espèces
+            // ---------------------------------------------------------
             set_middle_postorder(&mut sp_tree, root);
-
-            // 6eme etape : Fixe l'epaisseur de l'arbre d'espèces
-            // ===========
+            // ---------------------------------------------------------
+            // 6ème etape : Fixe l'épaisseur de l'arbre d'espèces
+            // ---------------------------------------------------------
             set_species_width(&mut sp_tree);
-
-            // 7eme etape :  verifies les conflits verticaux dans l'arbre d'espèces
-            // ===========
+            // ---------------------------------------------------------
+            // 7ème étape :  Vérifie les conflits verticaux dans
+            // l'arbre d'espèces
+            // ---------------------------------------------------------
             check_vertical_contour_postorder(&mut sp_tree, root, 0.0);
-
-            // 8eme etape :  mapping des genes sur l'espece pour initialiser les coordonees
-            // ===========
-            // des noeuds des arbres de gènes
-            //
+            // ---------------------------------------------------------
+            // 8ème étape :  mapping des noeuds de genes sur les noeuds
+            // d'espèce pour initialiser les coordonées des noeuds des
+            // arbres de gènes
+            // ---------------------------------------------------------
             map_gene_trees(&mut sp_tree,&mut gene_trees);
-
-            // 9eme etape : decale les noeuds de gene associés à un noeud d'especes pour
-            // ===========
-            // eviter qu'ils soit superposés, et traite specifiquement les duplications
-            //
+            // ---------------------------------------------------------
+            // 9ème etape : décale les noeuds de gene associés à un
+            // noeud d'especes pour éviter qu'ils soit superposés, puis
+            // traite spécifiquement les duplications et les feuilles
+            // ---------------------------------------------------------
             bilan_mappings(&mut sp_tree, &mut gene_trees,root);
             move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
-
-            // 10eme etape : recalcule les coordonnées svg de tous les arbres de gènes
-            // ============
+            // ---------------------------------------------------------
+            // 10ème étape : recalcule les coordonnées svg de tous les
+            // arbres de gènes
+            // ---------------------------------------------------------
             let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
             info!("map_species_trees: {} gene trees to be processed",nb_gntree);
             let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
@@ -321,56 +322,63 @@ fn main()  {
                     break;
                 }
             }
-
+            // ---------------------------------------------------------
             // Fin: Ecriture du fichier svg
-            // ===========================
+            // ---------------------------------------------------------
             println!("Output filename is {}",outfile);
             drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
-
+            // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
             process::exit(0);
         },
     }
     info!("Tree : {:?}",tree);
-    // Calcul des coordonees x y
-    // =========================
-
-    // 1ere etape : profondeur => Y, left => X= 0, right X=1
-    // ======================================================
+    // -----------------------
+    // Traitement en 4 étapes
+    // -----------------------
+    // Au départ l'arbre est orienté du haut vers le bas (i.e. selon Y)
+    // Le svg sera tourné de -90 a la fin.
+    //
+    //----------------------------------------------------------
+    // 1ère étape :initialisation des x,y de l'arbre :
+    // profondeur => Y, left => X= 0, right X=1
+    // ---------------------------------------------------------
     let  root = tree.get_root();
     knuth_layout(&mut tree,root, &mut 1);
     if verbose {
         drawing::draw_tree(&mut tree,"verbose-knuth.svg".to_string());
     }
-
+    // ---------------------------------------------------------
     // Option : Cladogramme
-    // ====================
+    // ---------------------------------------------------------
     if clado_flag {
         cladogramme(&mut tree);
     }
-
-
-    // 2eme etape : Verifie les contours
-    // ==================================
+    // ---------------------------------------------------------
+    // 2ème étape : Vérifie les contours
+    // ---------------------------------------------------------
      check_contour_postorder(&mut tree, root);
-
-    // 3eme etape : Decale toutes les valeurs de x en fonction de xmod
-    // ===============================================================
+    // ---------------------------------------------------------
+    // 3eme etape : Decale toutes les valeurs de x en fonction
+    // de xmod
+    // ---------------------------------------------------------
     shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
     if verbose {
         drawing::draw_tree(&mut tree,"verbose-shifted.svg".to_string());
     }
-    // 4eme etape : Place le parent entre les enfants
-    // ==============================================
+    // ---------------------------------------------------------
+    // 4ème étape : Place le parent entre les enfants
+    // ---------------------------------------------------------
     set_middle_postorder(&mut tree, root);
-
+    // ---------------------------------------------------------
     // Option : real_length
-    // ====================
+    // ---------------------------------------------------------
     if real_length_flag {
         real_length(&mut tree, root, &mut 0.0);
     }
-
+    // ---------------------------------------------------------
+    // Fin: Ecriture du fichier svg
+    // ---------------------------------------------------------
     println!("Output filename is {}",outfile);
     drawing::draw_tree(&mut tree,outfile);
-
 }

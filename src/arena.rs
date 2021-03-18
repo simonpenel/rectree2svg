@@ -160,7 +160,7 @@ where
     }
 
     //A AMELIORER : RENVOYER UN RESULTS
-    /// Send the index of the root
+    /// Get the index of the root.
     #[allow(unreachable_code)]
     pub fn get_root(&mut self) -> usize {
         for node in &self.arena {
@@ -176,7 +176,7 @@ where
         0
     }
 
-    /// is leaf
+    /// Check if the node is a leaf.
     pub fn is_leaf(&self, idx: usize) -> bool {
         match self.arena[idx].children.len() {
         0 => true,
@@ -184,13 +184,15 @@ where
         }
     }
 
-    /// Send the depth of the tree
+    /// Get the depth of the tree.
     pub fn depth(&self, idx: usize) -> usize {
         match self.arena[idx].parent {
             Some(id) => 1 + self.depth(id),
             None => 0,
         }
     }
+
+    /// Get the largest x value of a tree.
     pub fn get_largest_x(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
@@ -200,6 +202,8 @@ where
             }
         max
     }
+
+    /// Get the largest y value of a tree.
     pub fn get_largest_y(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
@@ -210,6 +214,7 @@ where
         max
     }
 
+    /// Get the smallest x value of a tree.
     pub fn get_smallest_x(&mut self) -> f32 {
         let mut min = 1000000.0;
         for node in &self.arena {
@@ -220,6 +225,7 @@ where
         min
     }
 
+    /// Get the smallest y value of a tree.
     pub fn get_smallest_y(&mut self) -> f32 {
         let mut min = 1000000.0;
         for node in &self.arena {
@@ -228,27 +234,6 @@ where
              }
             }
         min
-    }
-    // pub fn get_largest_y(&mut self) -> f32 {
-    //     let mut max = 0.0;
-    //     for node in &self.arena {
-    //         if node.y + node.height > max {
-    //             max = node.y;
-    //          }
-    //         }
-    //     max
-    // }
-    #[allow(dead_code)]
-    pub fn rotate(&mut self)  {
-        let root = self.get_root();
-        let x_0 = self.arena[root].x;
-        let y_0 = self.arena[root].y;
-        for  node in &mut self.arena {
-            let x = node.x;
-            let y = node.y;
-            node.x = y + -y_0 + x_0;
-            node.y = -x + x_0 + y_0;
-        }
     }
 }
 /// enum of the possible events in a gene tree
@@ -273,7 +258,7 @@ impl Default for Event {
 // Fonctions
 // =========
 
-/// Fill an ArenaTree structure with the contents of a GeneralTaxonomy structure
+/// Fill an ArenaTree structure with the contents of a GeneralTaxonomy structure.
 pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
     let children = &t.children(n).expect("Pas de fils");
     let name = t.from_internal_id(n).expect("Pas de nom");
@@ -307,201 +292,184 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
         taxo2tree(& t,*child,  tree);
     }
 }
+
 /// Fill an ArenaTree structure with the contents of a roxmltre::Node structure
 pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, mut  tree: &mut ArenaTree<String>) {
-        // je cherche les fils
-        let children = node.children();
-         for child in children {
-            if child.has_tag_name("clade"){
-                    // increment le numero
-                    *numero += 1;
-                    // Nouveau nom
-                    let name = "N".to_owned()+&numero.to_string();
-                    //  index de ce nouveau nom
-                    let name = tree.new_node(name.to_string());
-                    //Ajoute ce noeud au parent
-                    tree.arena[parent].children.push(name);
-                    // Attribue un parent a ce noeud
-                    tree.arena[name].parent = Some(parent);
-                    // Explore le reste de l'arbre a partir de ce noeud
-                    xml2tree(child, name, &mut numero, &mut tree);
-
-            }
-            // Attribue le nom defini dans le tag id
-            if child.has_tag_name("id"){
-                let nom = child.first_child().unwrap().text();
-                match nom {
-                    Some(text) => tree.arena[parent].name = text.to_string(),
-                    None    => tree.arena[parent].name = "Unkwnown".to_string(),
-                };
-            }
-            // Attribue le nom defini dans le tag name
-            if child.has_tag_name("name"){
-                let nom = child.first_child().unwrap().text();
-                match nom {
-                    Some(text) => tree.arena[parent].name = text.to_string(),
-                    None    => tree.arena[parent].name = "Unkwnown".to_string(),
-                };
-            }
-            // Attribue l evenement
-            if child.has_tag_name("eventsRec"){
-                info!("xml2tree:Event detected");
-                let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
-                for evenement in child.children() {
-                        if evenement.has_tag_name("loss"){
-                            event_num += 1;
-                            info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            tree.arena[parent].set_event(Event::Loss);
+    // je cherche les fils
+    let children = node.children();
+    for child in children {
+        if child.has_tag_name("clade"){
+            // increment le numero
+            *numero += 1;
+            // Nouveau nom
+            let name = "N".to_owned()+&numero.to_string();
+            //  index de ce nouveau nom
+            let name = tree.new_node(name.to_string());
+            //Ajoute ce noeud au parent
+            tree.arena[parent].children.push(name);
+            // Attribue un parent a ce noeud
+            tree.arena[name].parent = Some(parent);
+            // Explore le reste de l'arbre a partir de ce noeud
+            xml2tree(child, name, &mut numero, &mut tree);
+        }
+        // Attribue le nom defini dans le tag id
+        if child.has_tag_name("id"){
+            let nom = child.first_child().unwrap().text();
+            match nom {
+                Some(text) => tree.arena[parent].name = text.to_string(),
+                None    => tree.arena[parent].name = "Unkwnown".to_string(),
+            };
+        }
+        // Attribue le nom defini dans le tag name
+        if child.has_tag_name("name"){
+            let nom = child.first_child().unwrap().text();
+            match nom {
+                Some(text) => tree.arena[parent].name = text.to_string(),
+                None    => tree.arena[parent].name = "Unkwnown".to_string(),
+            };
+        }
+        // Attribue l evenement
+        if child.has_tag_name("eventsRec"){
+            info!("xml2tree:Event detected");
+            let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
+            for evenement in child.children() {
+                    if evenement.has_tag_name("loss"){
+                        event_num += 1;
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        tree.arena[parent].set_event(Event::Loss);
+                        assert!(evenement.has_attribute("speciesLocation"));
+                        assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                        let location = evenement.attributes()[0].value();
+                        tree.arena[parent].location = location.to_string();
+                    }
+                    if evenement.has_tag_name("leaf"){
+                        event_num += 1;
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        // TODO
+                        // C'est une feuille seulement si c'est le premier evenement:
+                        // <eventsRec>
+                        //   <leaf speciesLocation="5"></leaf>
+                        // </eventsRec>
+                        //  mais pas dans les autres cas
+                        // <eventsRec>
+                        //   <transferBack destinationSpecies="4"></transferBack>
+                        //   <leaf speciesLocation="4"></leaf>
+                        // </eventsRec>
+                        if event_num == 1 {
+                            tree.arena[parent].set_event(Event::Leaf);
+                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                            let nb_att = evenement.attributes().len();
+                            info!("Number of attributes  = {}",nb_att);
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            if nb_att == 1 {
+                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                                let location = evenement.attributes()[0].value();
+                                tree.arena[parent].location = location.to_string();
+                            }
+                            else {
+                                // TODO tres sale
+                                assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
+                                let location = evenement.attributes()[1].value();
+                                tree.arena[parent].location = location.to_string();
+                            }
+                        }
+                    }
+                    if evenement.has_tag_name("speciation"){
+                        event_num += 1;
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        // TODO
+                        // C'est une speciation seulement si c'est le premier evenement:
+                        if event_num == 1 {
+                            tree.arena[parent].set_event(Event::Speciation);
+                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("speciesLocation"));
                             assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                             let location = evenement.attributes()[0].value();
+                            info!("xml2tree: set location = {}",location);
                             tree.arena[parent].location = location.to_string();
                         }
-                        if evenement.has_tag_name("leaf"){
-                            event_num += 1;
-                            info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            // TODO
-                            // C'est une feuille seulement si c'est le premier evenement:
-                            // <eventsRec>
-                            //   <leaf speciesLocation="5"></leaf>
-                            // </eventsRec>
-                            //  mais pas dans les autres cas
-                            // <eventsRec>
-                            //   <transferBack destinationSpecies="4"></transferBack>
-                            //   <leaf speciesLocation="4"></leaf>
-                            // </eventsRec>
-
-                            if event_num == 1 {
-                                tree.arena[parent].set_event(Event::Leaf);
-
-                                info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                                let nb_att = evenement.attributes().len();
-                                info!("Number of attributes  = {}",nb_att);
-                                assert!(evenement.has_attribute("speciesLocation"));
-                                if nb_att == 1 {
-                                    assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                    let location = evenement.attributes()[0].value();
-                                    tree.arena[parent].location = location.to_string();
-                                }
-                                else {
-                                    // TODO tres sale
-                                    assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
-                                    let location = evenement.attributes()[1].value();
-                                    tree.arena[parent].location = location.to_string();
-                                }
-                            }
-
-                        }
-                        if evenement.has_tag_name("speciation"){
-                            event_num += 1;
-                            info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            // TODO
-                            // C'est une speciation seulement si c'est le premier evenement:
-                            if event_num == 1 {
-                                tree.arena[parent].set_event(Event::Speciation);
-                                info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                                assert!(evenement.has_attribute("speciesLocation"));
-                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                let location = evenement.attributes()[0].value();
-                                info!("xml2tree: set location = {}",location);
-                                tree.arena[parent].location = location.to_string();
-                            }
-                        }
-                        if evenement.has_tag_name("duplication"){
-                            event_num += 1;
-                            // TODO
-                            // C'est une duplication seulement si c'est le premier evenement:
-                            if event_num == 1 {
-                                info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                                tree.arena[parent].set_event(Event::Duplication);
-                                info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                                assert!(evenement.has_attribute("speciesLocation"));
-                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                let location = evenement.attributes()[0].value();
-                                info!("xml2tree: set location = {}",location);
-                                tree.arena[parent].location = location.to_string();
-                            }
-                        }
-                        if evenement.has_tag_name("branchingOut"){
-                            event_num += 1;
-                            // TODO
-                            // C'est une duplication seulement si c'est le premier evenement:
-                            if event_num == 1 {
-                                info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                                tree.arena[parent].set_event(Event::BranchingOut);
-                                info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                                assert!(evenement.has_attribute("speciesLocation"));
-                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                let location = evenement.attributes()[0].value();
-                                info!("xml2tree: set location = {}",location);
-                                tree.arena[parent].location = location.to_string();
-                            }
-                        }
+                    }
+                    if evenement.has_tag_name("duplication"){
+                        event_num += 1;
                         // TODO
-                        // a verifier
-                        if evenement.has_tag_name("transferBack"){
-                            // Ici on plusieurs evenements
-                            // Par exemple
-                            // <eventsRec>
-                            // <transferBack destinationSpecies="5"></transferBack>
-                            // <branchingOut speciesLocation="5"></branchingOut>
-                            // </eventsRec>
-                            // ou
-                            // <eventsRec>
-                            // <transferBack destinationSpecies="10"></transferBack>
-                            // <speciation speciesLocation="10"></speciation>
-                            // </eventsRec>
-                            // Le destinationSpecies est donc l'emplacement ou doit etre
-                            // le noeud représentant l'arivee du transfert
-                            // le point de depart du transfer etant le pere de ce noeud
-                            event_num += 1;
+                        // C'est une duplication seulement si c'est le premier evenement:
+                        if event_num == 1 {
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            tree.arena[parent].set_event(Event::TransferBack);
+                            tree.arena[parent].set_event(Event::Duplication);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            assert!(evenement.has_attribute("destinationSpecies"));
-                            assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                             let location = evenement.attributes()[0].value();
-                            info!("xml2tree: set destinationSpecies = {}",location);
+                            info!("xml2tree: set location = {}",location);
                             tree.arena[parent].location = location.to_string();
                         }
+                    }
+                    if evenement.has_tag_name("branchingOut"){
+                        event_num += 1;
                         // TODO
-                        if evenement.has_tag_name("bifurcationOut"){
-                            event_num += 1;
+                        // C'est une duplication seulement si c'est le premier evenement:
+                        if event_num == 1 {
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            tree.arena[parent].set_event(Event::BifurcationOut);
+                            tree.arena[parent].set_event(Event::BranchingOut);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            let grandparent =  tree.arena[parent].parent;
-                            match grandparent {
-                                Some(p)     => {
-                                    let location =  &tree.arena[p].location;
-                                    info!("xml2tree: set location according to its father = {}",location);
-                                    tree.arena[parent].location = location.to_string();},
-                                None        => panic!("BifurcationOut node as no parent : {:?}",tree.arena[parent]),
-                            };
-                            //  A verifier
-                            // Meme espece que son pere
-                            // assert!(evenement.has_attribute("destinationSpecies"));
-                            // assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
-                            // let location = evenement.attributes()[0].value();
-                            // tree.arena[parent].location = location.to_string();
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            let location = evenement.attributes()[0].value();
+                            info!("xml2tree: set location = {}",location);
+                            tree.arena[parent].location = location.to_string();
                         }
-
-
-
-
-
-
-                // match nom {
-                //     Some(text) => tree.arena[parent].name = text.to_string(),
-                //     None    => tree.arena[parent].name = "Unkwnown".to_string(),
-                // };
+                    }
+                    // TODO
+                    // a verifier
+                    if evenement.has_tag_name("transferBack"){
+                        // Ici on plusieurs evenements
+                        // Par exemple
+                        // <eventsRec>
+                        // <transferBack destinationSpecies="5"></transferBack>
+                        // <branchingOut speciesLocation="5"></branchingOut>
+                        // </eventsRec>
+                        // ou
+                        // <eventsRec>
+                        // <transferBack destinationSpecies="10"></transferBack>
+                        // <speciation speciesLocation="10"></speciation>
+                        // </eventsRec>
+                        // Le destinationSpecies est donc l'emplacement ou doit etre
+                        // le noeud représentant l'arivee du transfert
+                        // le point de depart du transfer etant le pere de ce noeud
+                        event_num += 1;
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        tree.arena[parent].set_event(Event::TransferBack);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        assert!(evenement.has_attribute("destinationSpecies"));
+                        assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
+                        let location = evenement.attributes()[0].value();
+                        info!("xml2tree: set destinationSpecies = {}",location);
+                        tree.arena[parent].location = location.to_string();
+                    }
+                    // TODO
+                    if evenement.has_tag_name("bifurcationOut"){
+                        event_num += 1;
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        tree.arena[parent].set_event(Event::BifurcationOut);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        let grandparent =  tree.arena[parent].parent;
+                        match grandparent {
+                            Some(p)     => {
+                                let location =  &tree.arena[p].location;
+                                info!("xml2tree: set location according to its father = {}",location);
+                                tree.arena[parent].location = location.to_string();},
+                            None        => panic!("BifurcationOut node as no parent : {:?}",tree.arena[parent]),
+                        };
+                        //  A verifier
+                        // Meme espece que son pere
+                        // assert!(evenement.has_attribute("destinationSpecies"));
+                        // assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
+                        // let location = evenement.attributes()[0].value();
+                        // tree.arena[parent].location = location.to_string();
+                }
             }
-                info!("xml2tree:Event closed");
-                // println!("Event = {:?}",evenement);
-            }
-
-
-
+        info!("xml2tree:Event closed");
+        }
     }
 }
 
@@ -511,33 +479,30 @@ pub fn map_gene_trees(sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec:
     info!("map_gene_trees: {} gene trees to be processed",nb_gntree);
     let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
     loop {
-        println!("map_gene_trees: => Processing Gene Tree {}",idx_rcgen);
-
-
-    for  index in &mut gene_trees[idx_rcgen].arena {
-        let mut mapped = false;
-        // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
-        for spindex in  &mut sp_tree.arena {
-            if  index.location == spindex.name {
-                mapped = true;
-                let x = spindex.x;
-                index.x = x;
-                let y = spindex.y;
-                index.y = y;
-                info!("map_tree: [{}] Gene node {:?} mapped to  species node {:?}",idx_rcgen,index,spindex);
+        info!("map_gene_trees: => Processing Gene Tree {}",idx_rcgen);
+        for  index in &mut gene_trees[idx_rcgen].arena {
+            let mut mapped = false;
+            // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
+            for spindex in  &mut sp_tree.arena {
+                if  index.location == spindex.name {
+                    mapped = true;
+                    let x = spindex.x;
+                    index.x = x;
+                    let y = spindex.y;
+                    index.y = y;
+                    info!("map_tree: [{}] Gene node {:?} mapped to  species node {:?}",idx_rcgen,index,spindex);
+                }
+            }
+            if !mapped {
+                panic!("Unable to map Node {:?}",index);
             }
         }
-        if !mapped {
-            panic!("Unable to map Node {:?}",index);
+        // Passe à l'arbre de gènes suivant
+        idx_rcgen += 1;
+        if idx_rcgen == nb_gntree {
+            break;
         }
-
-    }
-    // Passe à l'arbre de gènes suivant
-    idx_rcgen += 1;
-    if idx_rcgen == nb_gntree {
-        break;
-    }
-} //Fin de la boucle sur les arbres de gènes
+    } //Fin de la boucle sur les arbres de gènes
 }
 
 /// Determine the number of gene nodes associated to a species node
@@ -546,7 +511,7 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
     info!("map_species_trees: {} gene trees to be processed",nb_gntree);
     let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
     loop {
-        println!("map_species_trees: => Processing Gene Tree {}",idx_rcgen);
+        info!("map_species_trees: => Processing Gene Tree {}",idx_rcgen);
         // Boucle sur les noeuds de l'arbre de gene idx_rcgen
         for  index in &mut gene_trees[idx_rcgen].arena {
             let mut mapped = false;
@@ -576,47 +541,38 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
 }
 
 pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
-    println!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
+    info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
         let ratio = 2.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
-            println!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+            info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
             match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
-
                     let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
-
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-
                     shift = shift + 1.0;
                 },
                 Event::Speciation => {
                     let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
-
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-
                     shift = shift + 1.0;
-
-
                 },
                 Event::Leaf => {
                     let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
-
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-
                     shift = shift + 1.0;
                 },
                 Event::Loss => {
@@ -632,13 +588,9 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                             gene_trees[*index_node].arena[p].y + PIPEBLOCK
                         },
                     };
-
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-
                     shift = shift + 1.0;
-
-
                 },
                 _=> {},
             }
@@ -653,17 +605,15 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
     }
 }
 
-
 pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     for (index_node, node) in &sp_tree.arena[index].nodes {
-        println!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+        info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
         match  gene_trees[*index_node].arena[*node].e {
             Event::Duplication => {
                 let dupli_children =  &mut  gene_trees[*index_node].arena[*node].children;
                 let dupli_son_left = dupli_children[0];
                 let x = gene_trees[*index_node].arena[dupli_son_left].x;
                 gene_trees[*index_node].arena[*node].set_x_noref(x);
-
             },
             // Il faut deplacer aussi les feuilles pour compenser: on les mets au meme niveau
             Event::Leaf => {
@@ -671,7 +621,6 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std
                 gene_trees[*index_node].arena[*node].set_y_noref(y);
                 gene_trees[*index_node].arena[*node].set_ymod_noref(0.0);
             }
-
             _=> {},
         }
     }
@@ -711,6 +660,7 @@ pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::
     }
     Err(0)
 }
+
 // Renvoie le NodeId du premier tag "spTree"
 pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
     let descendants = doc.root().descendants();
@@ -723,7 +673,6 @@ pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId
     }
     Err(0)
 }
-
 
 // Renvoie le NodeId du premier tag "regGeneTree"
 pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::NodeId>, usize> {
@@ -759,8 +708,6 @@ pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::N
 // }
 // Err(0)
 // }
-
-
 
 /// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
@@ -913,9 +860,8 @@ pub fn  check_vertical_contour_postorder(tree: &mut ArenaTree<String>,index:usiz
     if children.len() > 0 {
         let left = children[0];
         let right = children[1];
-        println!("check_vertical_contour_postorder: Father = {} (ymod = {} ) , Left = {}, Right = {}",tree.arena[index].name,tree.arena[index].ymod,tree.arena[left].name,tree.arena[right].name,);
-        // push_down(tree,index, left,right,tree.arena[index].ymod);
-                push_down(tree,index, left,right);
+        info!("check_vertical_contour_postorder: Father = {} (ymod = {} ) , Left = {}, Right = {}",tree.arena[index].name,tree.arena[index].ymod,tree.arena[left].name,tree.arena[right].name);
+        push_down(tree,index, left,right);
         check_vertical_contour_postorder(tree,left,tree.arena[left].ymod + 0.0 *  ymod);
         check_vertical_contour_postorder(tree,right,tree.arena[right].ymod + 0.0 * ymod);
     }
@@ -936,9 +882,9 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
             shift_down = PIPEBLOCK;
 
         }
-        println!("CONFLIT AT SPEC NODE {}: parent y = {} ymod = {} down = {} left up = {} right up = {} => shift = {}",tree.arena[parent].name,tree.arena[parent].y,tree.arena[parent].ymod,node_parent_down_pos,node_left_up_pos,node_right_up_pos,shift_down);
-        println!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
-        println!("Initial left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
+        info!("CONFLIT AT SPEC NODE {}: parent y = {} ymod = {} down = {} left up = {} right up = {} => shift = {}",tree.arena[parent].name,tree.arena[parent].y,tree.arena[parent].ymod,node_parent_down_pos,node_left_up_pos,node_right_up_pos,shift_down);
+        info!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
+        info!("Initial left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
         let y = tree.arena[left].y;
         // let y = y + shift_down + 1.0 * PIPEBLOCK;
             let y = y + shift_down ;
@@ -948,10 +894,7 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
         // let ymod = ymod + shift_down + 1.0 * PIPEBLOCK;
                 let ymod = ymod + shift_down;
         tree.arena[left].set_ymod_noref(ymod);
-        println!("Final left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
-
-        println!("Initial right : y = {}, ymod = {}",tree.arena[right].y,tree.arena[right].ymod);
-        let y = tree.arena[right].y;
+                let y = tree.arena[right].y;
         // let y = y +shift_down + 1.0 * PIPEBLOCK;
                 let y = y +shift_down ;
         tree.arena[right].set_y_noref(y);
@@ -960,7 +903,6 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
         // let ymod = ymod +  shift_down + 1.0 * PIPEBLOCK;
                 let ymod = ymod +  shift_down ;
         tree.arena[right].set_ymod_noref(ymod);
-        println!("Final right : y = {}, ymod = {}",tree.arena[right].y,tree.arena[right].ymod);
 
     }
 
@@ -986,7 +928,6 @@ pub fn node_xpos(tree: &mut ArenaTree<String>, index: usize, xmod: f32, operator
     // il y a des conflits ( un noud d'arbre d'espexe sans gene a la meme epaissuer qu'un noeud d'arbre d'espece avec 1 gene)
 }
 pub fn node_ypos(tree: &mut ArenaTree<String>, index: usize,  operator : i32) -> f32 {
-    println!("node_ypos: y ({}) + ymod ({}) +/ nbg ({})/2 x PIPEBLOCK",tree.arena[index].y, tree.arena[index].ymod, tree.arena[index].nbg );
     tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK
     // tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK + ymod
     // TODO quand la valeur ng est 0, ca peut etre un noeud  d'arbre de gene mais aussi un noeud
