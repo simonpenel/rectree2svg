@@ -627,7 +627,6 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = match parent {
                         None =>  {
                             panic!("Loss node with no parent");
-                            0.0
                         },
                         Some(p) => {
                             gene_trees[*index_node].arena[p].y + PIPEBLOCK

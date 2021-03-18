@@ -17,7 +17,6 @@ use crate::arena::map_species_trees;
 use crate::arena::bilan_mappings;
 use crate::arena::move_dupli_mappings;
 use crate::arena::set_species_width;
-use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
 use crate::arena::find_rgtrees;
 use crate::arena::knuth_layout;
