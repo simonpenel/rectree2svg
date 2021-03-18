@@ -1,10 +1,7 @@
 use taxonomy::Taxonomy;
 use log::{info};
-// const BLOCK: f32 = 30.0;
 pub const BLOCK: f32 = 100.0;
-// const PIPEBLOCK: f32 = BLOCK / 4.0;
 const PIPEBLOCK: f32 = BLOCK / 4.0;
-const MINWIDTH: f32 = BLOCK / 4.0;
 // Structures
 // ==========
 
@@ -30,7 +27,7 @@ where
     pub width: f32,             // largeur du tuyeau (dans le cas d'arbre d'espece)
     pub height: f32,            // hauteur du tuyeau (dans le cas d'arbre d'espece)
     pub nbg: usize,             // nombre de noeud  d'arbre de genes associcés à ce noeud  (dans le cas d'arbre d'espece)
-    pub nodes: Vec<usize>,      // gene nodes associes (dans le cas d'arbre d'espece)
+    pub nodes: Vec<(usize,usize)>,      // gene nodes associes (dans le cas d'arbre d'espece)
 }
 
 impl<T> Noeud<T>
@@ -507,9 +504,17 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
     }
 }
+
 /// Set the coordinates of the gene tree according to species tree coordinates
-pub fn map_gene_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
-    for  index in &mut gene_tree.arena {
+pub fn map_gene_trees(sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec::Vec<ArenaTree<String>>) {
+    let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
+    info!("map_gene_trees: {} gene trees to be processed",nb_gntree);
+    let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+    loop {
+        println!("map_gene_trees: => Processing Gene Tree {}",idx_rcgen);
+
+
+    for  index in &mut gene_trees[idx_rcgen].arena {
         let mut mapped = false;
         // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
         for spindex in  &mut sp_tree.arena {
@@ -519,100 +524,118 @@ pub fn map_gene_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                 index.x = x;
                 let y = spindex.y;
                 index.y = y;
-                info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
+                info!("map_tree: [{}] Gene node {:?} mapped to  species node {:?}",idx_rcgen,index,spindex);
             }
         }
         if !mapped {
             panic!("Unable to map Node {:?}",index);
         }
+
     }
-}
-/// Determine the number of gene nodes associated to a species node
-pub fn map_species_tree(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>) {
-    for  index in &mut gene_tree.arena {
-        let mut mapped = false;
-        // println!("MAP node {:?} event {:?} location {:?}",index.idx, index.e,index.location);
-        for spindex in  &mut sp_tree.arena {
-            if  index.location == spindex.name {
-                mapped = true;
-                let mut nbg = spindex.nbg;
-                nbg = nbg + 1 ;
-                spindex.nbg = nbg;
-                spindex.nodes.push(index.idx);
-                info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
-            }
-        }
-        if !mapped {
-            panic!("Unable to map Node {:?}",index);
-        }
+    // Passe à l'arbre de gènes suivant
+    idx_rcgen += 1;
+    if idx_rcgen == nb_gntree {
+        break;
     }
+} //Fin de la boucle sur les arbres de gènes
 }
 
-pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
+/// Determine the number of gene nodes associated to a species node
+pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>) {
+    let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
+    info!("map_species_trees: {} gene trees to be processed",nb_gntree);
+    let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+    loop {
+        println!("map_species_trees: => Processing Gene Tree {}",idx_rcgen);
+        // Boucle sur les noeuds de l'arbre de gene idx_rcgen
+        for  index in &mut gene_trees[idx_rcgen].arena {
+            let mut mapped = false;
+            // Boucle sur les noeuds de l'arbre d'espèce
+            for spindex in  &mut sp_tree.arena {
+                if  index.location == spindex.name {
+                    mapped = true;
+                    // Incremente le nb de noeuds de gene associé au noeud d'espece
+                    let mut nbg = spindex.nbg;
+                    nbg = nbg + 1 ;
+                    spindex.nbg = nbg;
+                    // Ajoute le tuple (indexe de l'arbre de  gene, index du noeud de gene ) associé
+                    spindex.nodes.push((idx_rcgen,index.idx));
+                    info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
+                }
+            }
+            if !mapped {
+                panic!("Unable to map Node {:?}",index);
+            }
+        }
+        // Passe à l'arbre de gènes suivant
+        idx_rcgen += 1;
+        if idx_rcgen == nb_gntree {
+            break;
+        }
+    } //Fin de la boucle sur les arbres de gènes
+}
+
+pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     println!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
         let ratio = 2.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
-        for node in &sp_tree.arena[index].nodes {
-            println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
-            match  gene_tree.arena[*node].e {
+        // boucle sur m'espeve
+        for (index_node, node)  in &sp_tree.arena[index].nodes {
+            println!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+            match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
 
-                    let x = gene_tree.arena[*node].x;
+                    let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_x_noref(x);
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
 
-                    let y = gene_tree.arena[*node].y;
+                    let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_y_noref(y);
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
                 },
                 Event::Speciation => {
-                    let x = gene_tree.arena[*node].x;
+                    let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_x_noref(x);
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
 
-                    let y = gene_tree.arena[*node].y;
+                    let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_y_noref(y);
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
 
 
                 },
                 Event::Leaf => {
-                    let x = gene_tree.arena[*node].x;
+                    let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_x_noref(x);
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
 
-                    let y = gene_tree.arena[*node].y;
+                    let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift;
-                    gene_tree.arena[*node].set_y_noref(y);
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
-
-
                 },
                 Event::Loss => {
-                    let x = gene_tree.arena[*node].x;
+                    let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_x_noref(x);
-
-                    let y = gene_tree.arena[*node].y;
-
-                    let parent = gene_tree.arena[*node].parent;
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
+                    let parent = gene_trees[*index_node].arena[*node].parent;
                     let y = match parent {
                         None =>  {
                             panic!("Loss node with no parent");
                             0.0
                         },
                         Some(p) => {
-                            gene_tree.arena[p].y + PIPEBLOCK
+                            gene_trees[*index_node].arena[p].y + PIPEBLOCK
                         },
                     };
 
                     let y = y + PIPEBLOCK*shift / ratio;
-                    gene_tree.arena[*node].set_y_noref(y);
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
 
                     shift = shift + 1.0;
 
@@ -621,58 +644,48 @@ pub fn bilan_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut Ar
                 _=> {},
             }
         }
-    let mut children =  &mut  sp_tree.arena[index].children;
+    let children =  &mut  sp_tree.arena[index].children;
     if children.len() > 0 {
         let son_left = children[0];
         let son_right = children[1];
-         bilan_mapping( sp_tree, gene_tree,son_left);
-         bilan_mapping( sp_tree, gene_tree,son_right);
+         bilan_mappings( sp_tree, gene_trees,son_left);
+         bilan_mappings( sp_tree, gene_trees,son_right);
          // bilan_mapping(&mut sp_tree, &mut gene_tree,children[1]);
     }
 }
 
 
-pub fn move_dupli_mapping(mut sp_tree: &mut ArenaTree<String>, mut gene_tree: &mut ArenaTree<String>, index: usize) {
-    for node in &sp_tree.arena[index].nodes {
-        println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
-        match  gene_tree.arena[*node].e {
+pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
+    for (index_node, node) in &sp_tree.arena[index].nodes {
+        println!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+        match  gene_trees[*index_node].arena[*node].e {
             Event::Duplication => {
-                let mut dupli_children =  &mut  gene_tree.arena[*node].children;
+                let dupli_children =  &mut  gene_trees[*index_node].arena[*node].children;
                 let dupli_son_left = dupli_children[0];
-                let x = gene_tree.arena[dupli_son_left].x;
-                gene_tree.arena[*node].set_x_noref(x);
+                let x = gene_trees[*index_node].arena[dupli_son_left].x;
+                gene_trees[*index_node].arena[*node].set_x_noref(x);
 
             },
             // Il faut deplacer aussi les feuilles pour compenser: on les mets au meme niveau
             Event::Leaf => {
                 let y = sp_tree.arena[index].y + sp_tree.arena[index].height / 2.0 ;
-                gene_tree.arena[*node].set_y_noref(y);
-                gene_tree.arena[*node].set_ymod_noref(0.0);
+                gene_trees[*index_node].arena[*node].set_y_noref(y);
+                gene_trees[*index_node].arena[*node].set_ymod_noref(0.0);
             }
 
             _=> {},
         }
     }
-    let mut children =  &mut  sp_tree.arena[index].children;
+    let children =  &mut  sp_tree.arena[index].children;
     if children.len() > 0 {
         let son_left = children[0];
         let son_right = children[1];
-        move_dupli_mapping( sp_tree, gene_tree,son_left);
-        move_dupli_mapping( sp_tree, gene_tree,son_right);
-    }
-    for node in &sp_tree.arena[index].nodes {
-        println!(">>> {:?} {:?}",gene_tree.arena[*node].name,gene_tree.arena[*node].e);
-        match  gene_tree.arena[*node].e {
-            Event::Duplication => {
-                let x = gene_tree.arena[*node].x;
-
-            },
-            _=> {},
-        }
+        move_dupli_mappings( sp_tree, gene_trees,son_left);
+        move_dupli_mappings( sp_tree, gene_trees,son_right);
     }
 }
 
-pub fn set_species_width(mut sp_tree: &mut ArenaTree<String>) {
+pub fn set_species_width(sp_tree: &mut ArenaTree<String>) {
     for spindex in  &mut sp_tree.arena {
         let  nbg = spindex.nbg;
         if nbg > 0 {
@@ -687,6 +700,7 @@ pub fn set_species_width(mut sp_tree: &mut ArenaTree<String>) {
 }
 
 // Renvoie le NodeId du premier tag "clade"
+#[allow(dead_code)]
 pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
     let descendants = doc.root().descendants();
     // Search for the first occurnce of clade tag
@@ -711,18 +725,6 @@ pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId
     Err(0)
 }
 
-// Renvoie le NodeId du premier tag "regGeneTree"
-pub fn find_rgtree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
-    let descendants = doc.root().descendants();
-    // Search for the first occurnce of clade spTree
-    for  node in descendants {
-        if node.has_tag_name("recGeneTree"){
-            // return Ok(node.id().get())
-            return Ok(node.id())
-        }
-    }
-    Err(0)
-}
 
 // Renvoie le NodeId du premier tag "regGeneTree"
 pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::NodeId>, usize> {
@@ -883,174 +885,6 @@ pub fn shift_mod_xy( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32,
 
 }
 
-
-
-pub fn shift_duplicated_and_loss(tree: &mut ArenaTree<String>, index: usize) {
-    //  Evenement associe au noeud courant:
-    let is_dupli = match tree.arena[index].e {
-         Event::Duplication => true,
-         _                  => false,
-    };
-    let is_loss = match tree.arena[index].e {
-         Event::Loss => true,
-         _           => false,
-    };
-    let is_bifu = match tree.arena[index].e {
-         Event::BifurcationOut => true,
-         _           => false,
-    };
-    let is_brout = match tree.arena[index].e {
-         Event::BranchingOut => true,
-         _           => false,
-    };
-    let is_trback = match tree.arena[index].e {
-         Event::TransferBack => true,
-         _           => false,
-    };
-
-    if is_bifu {
-        // Les noeud bifurcationOut sont affiches juste 1 cran en dessous de leur parent
-        //  Et decale en x
-        let p = tree.arena[index].parent;
-        match p {
-            Some(p) => {
-                let y = tree.arena[p].y;
-                let y = y + BLOCK  ;
-                tree.arena[index].set_y_noref(y);
-                // TODO
-                // x et pas modx car on decal pas les decsendants
-                let x = tree.arena[p].x;
-                let x = x + PIPEBLOCK/2.0  ;
-                tree.arena[index].set_x_noref(x);
-                },
-            None => {
-                panic!("This BifurcationOut node has no parent {:?}",tree.arena[index]);
-                },
-        }
-    }
-    if is_loss {
-        // Les noeud Loss sont affiches juste 1 cran en dessous de leur parent
-        let p = tree.arena[index].parent;
-        match p {
-            Some(p) => {
-                let y = tree.arena[p].y;
-                let y = y + BLOCK  ;
-                tree.arena[index].set_y_noref(y);
-                },
-            None => {
-                panic!("This Loss node has no parent {:?}",tree.arena[index]);
-                },
-        }
-    }
-    if is_brout {
-        let p = tree.arena[index].parent;
-        match p {
-            Some(p) => {
-                let y = tree.arena[p].y;
-                let y = y + BLOCK  ;
-                tree.arena[index].set_y_noref(y);
-                },
-            None => {
-                panic!("This BranchingOut node has no parent {:?}",tree.arena[index]);
-                },
-        }
-    }
-
-    let children  =  &mut tree.arena[index].children;
-    if children.len() > 0 {
-        let son_left = children[0];
-        let son_right = children[1];
-        if is_dupli || is_bifu  {
-            let p = tree.arena[index].parent;
-            // Un noeud Duplication est initialement positioné en y  comme
-            // le noeud de l'espèce associée. On le positione un peu moins
-            // d'un cran en dessous du parent  pour permettre la visualisation
-            match p {
-                Some(p) => {
-                    // en fait ca fou la merde quand plusieur dupli
-                    // let y = tree.arena[p].y;
-                    // let y = y + BLOCK  - PIPEBLOCK;
-                    // tree.arena[index].set_y_noref(y);
-
-                    // je vais plutot baisser les fils
-                    // let y = tree.arena[index].y;
-                    // let y = y  - PIPEBLOCK;
-                    // tree.arena[index].set_y_noref(y);
-
-
-                    } ,
-                None => {
-                     // Sinon je relece ub peu
-                                         // je vais plutot baisser les fils
-                    // let y = tree.arena[index].y;
-                    // let y = y  - PIPEBLOCK;
-                    // tree.arena[index].set_y_noref(y);
-                },
-            }
-            // Je decale en y versle bas pour me detacher du noeud de dupli
-            // let  y = tree.arena[son_right].y;
-            // let  y = y  + PIPEBLOCK / 2.0 ;
-            // tree.arena[son_right].set_y_noref(y);
-            // let  y = tree.arena[son_left].y;
-            // let  y = y  + PIPEBLOCK / 1.0 ;
-            // tree.arena[son_left].set_y_noref(y);
-
-
-            // let  ymod = tree.arena[son_right].ymod;
-            // let  ymod = ymod  + PIPEBLOCK / 2.0 ;
-            // tree.arena[son_right].set_ymod_noref(ymod);
-            // let  ymod = tree.arena[son_left].ymod;
-            // let  ymod = ymod  + PIPEBLOCK / 2.0 ;
-            // tree.arena[son_left].set_ymod_noref(ymod);
-
-
-            // On décale en x à gauche et à droite les noeuds issus de la duplication
-            // Attention je ne mdofie plus le fils de gauche
-            // let  xmod = tree.arena[son_left].xmod;
-            // let  xmod = xmod  - PIPEBLOCK / 2.0 ;
-            // tree.arena[son_left].set_xmod_noref(xmod);
-            let  xmod = tree.arena[son_right].xmod;
-            let  xmod = xmod  + PIPEBLOCK / 2.0 ;
-            tree.arena[son_right].set_xmod_noref(xmod);
-            // Si le noeud  droit n'est pas une feuille on le decale en y
-            // TODO a améliorer : feuille a gauche et noeud interne  a droite?
-            let is_leaf = match tree.arena[son_right].e {
-                 Event::Leaf => true,
-                 _           => false,
-            };
-            // if  !is_leaf {
-
-
-
-                // let y = tree.arena[son_left].y;
-                // let y = y  + PIPEBLOCK / 1.0 ;
-                // tree.arena[son_left].set_y_noref(y);
-                // let y = tree.arena[son_right].y;
-                // let y = y  + PIPEBLOCK / 2.0 ;
-                // tree.arena[son_right].set_y_noref(y);
-
-                // Si on veut trsnamettre le decalage vertical!
-                let ymod = tree.arena[son_left].ymod;
-                let ymod = ymod  + PIPEBLOCK / 1.0 ;
-                tree.arena[son_left].set_ymod_noref(ymod);
-                let ymod = tree.arena[son_right].ymod;
-                let ymod = ymod  + PIPEBLOCK / 2.0 ;
-                tree.arena[son_right].set_ymod_noref(ymod);
-
-
-            // }
-        }
-        shift_duplicated_and_loss( tree, son_left);
-        shift_duplicated_and_loss( tree, son_right);
-    }
-
-    //     match event {
-    //             Event::Duplication => { println!("Shifting suplicated")},
-    //             _ => {},
-    //     };
-    // }
-
-}
 #[allow(dead_code)]
 /// Traverse the tree using post-order traversal
 pub fn  postorder(tree: &mut ArenaTree<String>){
@@ -1082,16 +916,16 @@ pub fn  check_vertical_contour_postorder(tree: &mut ArenaTree<String>,index:usiz
         let right = children[1];
         println!("check_vertical_contour_postorder: Father = {} (ymod = {} ) , Left = {}, Right = {}",tree.arena[index].name,tree.arena[index].ymod,tree.arena[left].name,tree.arena[right].name,);
         // push_down(tree,index, left,right,tree.arena[index].ymod);
-                push_down(tree,index, left,right,0.0);
+                push_down(tree,index, left,right);
         check_vertical_contour_postorder(tree,left,tree.arena[left].ymod + 0.0 *  ymod);
         check_vertical_contour_postorder(tree,right,tree.arena[right].ymod + 0.0 * ymod);
     }
 }
 
-pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, right: usize, ymod: f32) {
-    let node_parent_down_pos = node_ypos(tree,parent,ymod,1);
-    let node_left_up_pos = node_ypos(tree,left,ymod,-1);
-    let node_right_up_pos = node_ypos(tree,right,ymod,-1);
+pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, right: usize) {
+    let node_parent_down_pos = node_ypos(tree,parent,1);
+    let node_left_up_pos = node_ypos(tree,left,-1);
+    let node_right_up_pos = node_ypos(tree,right,-1);
     if (node_left_up_pos <=  node_parent_down_pos) || (node_right_up_pos <=  node_parent_down_pos) {
         let shift_left = node_parent_down_pos - node_left_up_pos ;
         let shift_right = node_parent_down_pos - node_right_up_pos ;
@@ -1152,7 +986,7 @@ pub fn node_xpos(tree: &mut ArenaTree<String>, index: usize, xmod: f32, operator
     // d'arbre d'espece sans noeud abre de gene associé et du coup la position extreme n'est pas exacte... Verfier su
     // il y a des conflits ( un noud d'arbre d'espexe sans gene a la meme epaissuer qu'un noeud d'arbre d'espece avec 1 gene)
 }
-pub fn node_ypos(tree: &mut ArenaTree<String>, index: usize, ymod: f32, operator : i32) -> f32 {
+pub fn node_ypos(tree: &mut ArenaTree<String>, index: usize,  operator : i32) -> f32 {
     println!("node_ypos: y ({}) + ymod ({}) +/ nbg ({})/2 x PIPEBLOCK",tree.arena[index].y, tree.arena[index].ymod, tree.arena[index].nbg );
     tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK
     // tree.arena[index].y + tree.arena[index].ymod + operator as f32 * tree.arena[index].nbg as f32 /2.0  *PIPEBLOCK + ymod

@@ -12,15 +12,13 @@ mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
-use crate::arena::map_gene_tree;
-use crate::arena::map_species_tree;
-use crate::arena::bilan_mapping;
-use crate::arena::move_dupli_mapping;
+use crate::arena::map_gene_trees;
+use crate::arena::map_species_trees;
+use crate::arena::bilan_mappings;
+use crate::arena::move_dupli_mappings;
 use crate::arena::set_species_width;
-use crate::arena::shift_duplicated_and_loss;
 use crate::arena::find_first_clade;
 use crate::arena::find_sptree;
-use crate::arena::find_rgtree;
 use crate::arena::find_rgtrees;
 use crate::arena::knuth_layout;
 use crate::arena::set_middle_postorder;
@@ -191,11 +189,11 @@ fn main()  {
         },
         // Recphyloxml
         Format::Recphyloxml => {
-            // Attention dance cas, on cree une structure Arena pour l'arbre d'espece
-            // et un vecteur de  structures Arena poru le(s) arbres de gènes
+            // On cree une structure Arena pour l'arbre d'espece
+            // et un vecteur de  structures Arena pour le(s) arbres de gènes
 
-            // Creation de la structure ArenaTree pour l'espece
-            // ------------------------------------------------
+            // Creation de la structure ArenaTree pour l'arbre d'espece
+            // --------------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
             println!("The handling of this format is still under development");
             let contents = fs::read_to_string(filename)
@@ -206,7 +204,6 @@ fn main()  {
             // Recupere le Node associe grace ai NodeId
             let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
             info!("spTree Id: {:?}",spnode);
-
             let descendants = spnode.descendants();
             // Search for the first occurnce of clade tag
             for node in descendants {
@@ -227,13 +224,13 @@ fn main()  {
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
-            // let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-            let mut rgnodes = find_rgtrees(doc).expect("No clade recGeneTree has been found in xml");
+            // Recupere la liste des noeuds associés à la balise  recGeneTree
+            let rgnodes = find_rgtrees(doc).expect("No clade recGeneTree has been found in xml");
             for rgnode in rgnodes {
                 let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-                info!("=>Gene node {:?}",rgnode);
+                info!("Search recGeneTree node {:?}",rgnode);
                 let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
-                info!("recGeneTree Id: {:?}",rgnode);
+                info!("Associated recGeneTree  : {:?}",rgnode);
                 // Search for the first gene trees
                 let descendants = rgnode.descendants();
                 // Search for the first occurnce of clade tag
@@ -253,13 +250,13 @@ fn main()  {
                 }
                 gene_trees.push(gene_tree);
             }
-            info!("Gene trees : {:?}",gene_trees);
-            let mut gene_tree = &mut gene_trees[0];
-            info!("Gene tree : {:?}",gene_tree);
-            // Calcule les coordondees de l'arbre d'espece
+            let  nb_gntree =  gene_trees.len().clone();
+            println!("Number of gene trees : {}",nb_gntree);
+            // process::exit(0);
+            info!("List of gene trees : {:?}",gene_trees);
 
             // 1ere etape : profondeur => Y, left => X= 0, right X=1
-            // ======================================================
+            // ===========
             let  root = sp_tree.get_root();
             knuth_layout(&mut sp_tree,root, &mut 1);
             if verbose {
@@ -267,77 +264,71 @@ fn main()  {
             }
 
             // Option : Cladogramme
-            // ====================
+            // =======
             if clado_flag {
                 cladogramme(&mut sp_tree);
             }
-            // 2eme etape :  mapping
-            // ==================================
 
-            map_species_tree(&mut sp_tree,&mut gene_tree);
+            // 2eme etape :  mapping des genes sur l'espece pour calculer l'epaisseur de
+            // ===========
+            // l'arbre d'especes
+            //
+            map_species_trees(&mut sp_tree,&mut gene_trees);
             info!("Species tree after mapping : {:?}",sp_tree);
 
             // 3eme etape : Verifie les contours
-            // ==================================
+            // ===========
              check_contour_postorder(&mut sp_tree, root);
 
              // 4eme etape : Decale toutes les valeurs de x en fonction de xmod
-            // ===============================================================
+            // ============
             shift_mod_xy(&mut sp_tree, root, &mut 0.0, &mut 0.0);
-            if verbose {
-                drawing::draw_tree(&mut sp_tree,"verbose-shifted.svg".to_string());
-            }
-            // 4eme etape : Place le parent entre les enfants
-            // ==============================================
+
+            // 5eme etape : Place le parent entre les enfants dans l'arbre d'espèces
+            // ===========
             set_middle_postorder(&mut sp_tree, root);
 
-// nouveau map poyr les genes
+            // 6eme etape : Fixe l'epaisseur de l'arbre d'espèces
+            // ===========
             set_species_width(&mut sp_tree);
 
+            // 7eme etape :  verifies les conflits verticaux dans l'arbre d'espèces
+            // ===========
             check_vertical_contour_postorder(&mut sp_tree, root, 0.0);
 
-// setr coord genes
-            map_gene_tree(&mut sp_tree,&mut gene_tree);
+            // 8eme etape :  mapping des genes sur l'espece pour initialiser les coordonees
+            // ===========
+            // des noeuds des arbres de gènes
+            //
+            map_gene_trees(&mut sp_tree,&mut gene_trees);
 
-            // // Creation du vecteur de structure ArenaTree pour les genes
-            // // ---------------------------------------------------------
-            // let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
-            // let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-            // let rgnode = find_rgtree(doc).expect("No clade recGeneTree has been found in xml");
-            // // Recupere le Node associe grace ai NodeId
-            // let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
-            // info!("recGeneTree Id: {:?}",rgnode);
-            // // Search for the first gene trees
-            // let descendants = rgnode.descendants();
-            // // Search for the first occurnce of clade tag
-            // for node in descendants {
-            //     if node.has_tag_name("clade"){
-            //         // node est la racine
-            //         let mut index  = &mut 0;
-            //         // Nom de la racine
-            //         let name = "N".to_owned()+&index.to_string();
-            //         // Cree le nouveau noeud et recupere son index
-            //         let name = gene_tree.new_node(name.to_string());
-            //         // Appelle xlm2tree sur la racine
-            //         xml2tree(node, name, &mut index, &mut gene_tree);
-            //         // on s'arrête la
-            //         break;
-            //     }
-            // }
-            // // gene_trees.push(&gene_tree);
-            // info!("Species tree  : {:?}",sp_tree);
-            // info!("Gene trees : {:?}",gene_trees);
-            // info!("Gene tree : {:?}",gene_tree);
-            // map_tree(&mut sp_tree,&mut gene_tree);
-            let  groot = gene_tree.get_root();
-            // shift_duplicated_and_loss(&mut gene_tree, groot);
-            bilan_mapping(&mut sp_tree, &mut gene_tree,root);
-            move_dupli_mapping(&mut sp_tree, &mut gene_tree,root);
-            shift_mod_xy(&mut gene_tree, groot, &mut 0.0, &mut 0.0);
+            // 9eme etape : decale les noeuds de gene associés à un noeud d'especes pour
+            // ===========
+            // eviter qu'ils soit superposés, et traite specifiquement les duplications
+            //
+            bilan_mappings(&mut sp_tree, &mut gene_trees,root);
+            move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
+
+            // 10eme etape : recalcule les coordonnées svg de tous les arbres de gènes
+            // ============
+            let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
+            info!("map_species_trees: {} gene trees to be processed",nb_gntree);
+            let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+            loop {
+                let  groot = gene_trees[idx_rcgen].get_root();
+                shift_mod_xy(&mut gene_trees[idx_rcgen], groot, &mut 0.0, &mut 0.0);
+                idx_rcgen += 1;
+                if idx_rcgen == nb_gntree {
+                    break;
+                }
+            }
+
+            // Fin: Ecriture du fichier svg
+            // ===========================
             println!("Output filename is {}",outfile);
-            drawing::draw_sptree_gntree(&mut sp_tree,&mut gene_tree, outfile);
+            drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
 
-            // On s'arrete la, lereste du programme concerne les autres formats
+            // On s'arrete la, le reste du programme concerne les autres formats
             process::exit(0);
         },
     }

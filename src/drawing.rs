@@ -113,8 +113,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
 //      svg::save(name, &document).unwrap();
 // }
 
+
+
 /// Draw a svg species tree
-pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut ArenaTree<String>, name: String) {
+pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec::Vec<ArenaTree<String>>, name: String) {
     let largest_x = sp_tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
     let smallest_x = sp_tree.get_smallest_x() * 1.0 + 0.0 ;
@@ -129,7 +131,7 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
     let  mut document = Document::new()
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )
-            .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));;
+            .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));
     let style = Style::new(".vert { font:  12px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 12px serif; fill: orange; }");
@@ -170,10 +172,16 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
          element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
          g.append(element);
      }
-     for  index in &gene_tree.arena {
+
+     let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
+
+     let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+     loop {
+
+     for  index in &gene_trees[idx_rcgen].arena {
           let _parent =  match index.parent {
               Some(p) => {
-                  let n = &gene_tree.arena[p];
+                  let n = &gene_trees[idx_rcgen].arena[p];
                   // La forme du chemin depend de l'evenement
                   let chemin = match index.e {
                       Event::TransferBack   => get_chemin_transfer(index.x,index.y,n.x,n.y),
@@ -209,8 +217,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                             //   <transferBack destinationSpecies="10"></transferBack>
                             //   <speciation speciesLocation="10"></speciation>
                             // </eventsRec>
-                            let n = &gene_tree.arena[p];
-                            let mut diamond = get_carre(n.x,n.y,4.0,"green".to_string());
+                            let n = &gene_trees[idx_rcgen].arena[p];
+                            let diamond = get_carre(n.x,n.y,4.0,"green".to_string());
                             g.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
                             g.append(diamond);},
                         None =>{panic!("The TransferBack Node as no father {:?}",index)},
@@ -234,8 +242,12 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
                 _ => {},
             }
       }
-
-     // g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,1.0,"red".to_string()));
+      idx_rcgen += 1;
+      if idx_rcgen == nb_gntree {
+          break;
+      }
+  }
+     g.append(get_cadre(smallest_x,smallest_y,width_svg,height_svg,"red".to_string()));
      let mut transfo: String = "translate(  ".to_owned();
      transfo.push_str(&(-BLOCK / 2.0 ).to_string());
      transfo.push_str(" ");
@@ -246,9 +258,8 @@ pub fn draw_sptree_gntree (sp_tree: &mut ArenaTree<String>, gene_tree: &mut Aren
      svg::save(name, &document).unwrap();
 }
 
-
-
-pub fn get_cadre (x: f32, y:f32,w:f32,h:f32, s:f32, c:String) -> Path {
+#[allow(dead_code)]
+pub fn get_cadre (x: f32, y:f32,w:f32,h:f32, c:String) -> Path {
     let data = Data::new()
     .move_to((x , y))
     .line_by((w, 0.0 ))
@@ -256,7 +267,6 @@ pub fn get_cadre (x: f32, y:f32,w:f32,h:f32, s:f32, c:String) -> Path {
     .line_by((-w, 0.0))
     .close();
 
-    let fill = c.clone();
     let path = Path::new()
      .set("fill", "none")
     .set("stroke", c)
@@ -356,9 +366,6 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     // Point de controle de la courbe de Bezier
     let controle_x = (x1 + x2) / 2.0 ;
     let controle_y = (y1 + y2) / 2.0 - bez_y ;
-    let data = Data::new()
-    .move_to((x1, y1))
-    .line_to((x2, y2));
     let data = "M".to_owned()+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
     let path = Path::new()
     .set("fill", "none")
@@ -383,44 +390,6 @@ pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     .set("d", data);
 
     path
-}
-/// Draw a square pipe path between x1,y1 ad x2,y2
-pub fn get_chemin_sp_old (x1: f32, y1:f32, width:f32, x2: f32, y2:f32) -> Path {
-    if x1 < x2 {
-        let data = Data::new()
-        .move_to((x1 - width, y1 - width))
-        .line_to((x1 - width, y2 - width))
-        .line_to((x2 - width, y2 - width))
-        .move_to((x1 + width, y1 - width))
-        .line_to((x1 + width, y2 + width))
-        .line_to((x2, y2 + width));
-
-        let path = Path::new()
-        .set("fill", "none")
-        .set("stroke", "pink")
-        .set("stroke-width", 4)
-        .set("d", data);
-
-        path
-    }
-    else {
-        let data = Data::new()
-        .move_to((x1 + width, y1 - width))
-        .line_to((x1 + width, y2 - width))
-        .line_to((x2 + width, y2 - width))
-        .move_to((x1 - width, y1 - width))
-        .line_to((x1 - width, y2 + width))
-        .line_to((x2, y2 + width));
-
-        let path = Path::new()
-        .set("fill", "none")
-        .set("stroke", "pink")
-        .set("stroke-width", 4)
-        .set("d", data);
-
-        path
-
-    }
 }
 
 /// Draw a square pipe path between x1,y1 ad x2,y2
