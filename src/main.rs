@@ -44,9 +44,9 @@ fn display_help(programe_name:String) {
     println!("    -v : verbose");
     process::exit(1);
 }
-
+/// enum of the possible input file Formats
 #[derive(Debug)]
-enum  Format {
+pub enum  Format {
     Newick,
     Phyloxml,
     Recphyloxml,

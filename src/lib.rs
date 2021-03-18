@@ -3,6 +3,7 @@
 //! `tree2svg` is a collection of utilities to draw phylogentic trees in svg format.
 
 // Pour la doc et pour facilier l'usage par les utilisateurs du module:
+
 mod arena;
 pub use self::arena::Event;
 pub use self::arena::Noeud;
@@ -18,11 +19,13 @@ pub use self::arena::bilan_mappings;
 pub use self::arena::move_dupli_mappings;
 pub use self::arena::set_species_width;
 pub use self::arena::knuth_layout;
-pub use self::arena::postorder;
 pub use self::arena::cladogramme;
 pub use self::arena::check_contour_postorder;
 pub use self::arena::check_vertical_contour_postorder;
 pub use self::arena::push_right;
+pub use self::arena::push_down;
+pub use self::arena::node_xpos;
+pub use self::arena::node_ypos;
 pub use self::arena::get_contour_left;
 pub use self::arena::get_contour_right;
 pub use self::arena::shift_mod_xy;
@@ -32,8 +35,12 @@ mod drawing;
 pub use self::drawing::draw_tree;
 pub use self::drawing::draw_sptree_gntrees;
 pub use self::drawing::get_carre;
+pub use self::drawing::get_circle;
+pub use self::drawing::get_cross;
 pub use self::drawing::get_chemin_carre;
 pub use self::drawing::get_chemin_sp;
+pub use self::drawing::close_chemin_sp;
+
 
 #[cfg(test)]
 mod tests {
