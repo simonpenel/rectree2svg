@@ -834,7 +834,8 @@ pub fn  check_vertical_contour_postorder(tree: &mut ArenaTree<String>,index:usiz
         check_vertical_contour_postorder(tree,right,tree.arena[right].ymod + 0.0 * ymod);
     }
 }
-
+/// Check for conficts between parents and children and shift down nodes in order to solve
+/// detected conflicts ( for species pipe tree only).
 pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, right: usize) {
     let node_parent_down_pos = node_ypos(tree,parent,1);
     let node_left_up_pos = node_ypos(tree,left,-1);
