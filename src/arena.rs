@@ -624,6 +624,15 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + 1.0;
                 },
+                Event::BifurcationOut => {
+                    let x = gene_trees[*index_node].arena[*node].x;
+                    let x = x - PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
+                    let y = gene_trees[*index_node].arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
+                    shift = shift + 1.0;
+                },
                 _=> {},
             }
         }
