@@ -471,8 +471,8 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         // assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
                         // let location = evenement.attributes()[0].value();
                         // tree.arena[parent].location = location.to_string();
+                    }
                 }
-            }
         info!("xml2tree:Event closed");
         }
     }
