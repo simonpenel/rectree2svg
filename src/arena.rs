@@ -353,33 +353,33 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         event_num += 1;
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         // TODO
-                        // C'est une feuille seulement si c'est le premier evenement:
+                        // C'est une feuille mais pas forcement  le premier evenement:
                         // <eventsRec>
                         //   <leaf speciesLocation="5"></leaf>
                         // </eventsRec>
-                        //  mais pas dans les autres cas
+                        //  mais dans les autres cas
                         // <eventsRec>
                         //   <transferBack destinationSpecies="4"></transferBack>
                         //   <leaf speciesLocation="4"></leaf>
                         // </eventsRec>
-                        if event_num >= 1 {
-                            tree.arena[parent].set_event(Event::Leaf);
-                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
-                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            let nb_att = evenement.attributes().len();
-                            info!("Number of attributes  = {}",nb_att);
-                            assert!(evenement.has_attribute("speciesLocation"));
-                            if nb_att == 1 {
-                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                                let location = evenement.attributes()[0].value();
-                                tree.arena[parent].location = location.to_string();
-                            }
-                            else {
-                                // TODO tres sale
-                                assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
-                                let location = evenement.attributes()[1].value();
-                                tree.arena[parent].location = location.to_string();
-                            }
+                        //  On va ecraser l'info  transferBack, mais celle-ci a ete stockée dans
+                        //  le champs is_a_transfert
+                        tree.arena[parent].set_event(Event::Leaf);
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        let nb_att = evenement.attributes().len();
+                        info!("Number of attributes  = {}",nb_att);
+                        assert!(evenement.has_attribute("speciesLocation"));
+                        if nb_att == 1 {
+                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                            let location = evenement.attributes()[0].value();
+                            tree.arena[parent].location = location.to_string();
+                        }
+                        else {
+                            // TODO tres sale
+                            assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
+                            let location = evenement.attributes()[1].value();
+                            tree.arena[parent].location = location.to_string();
                         }
                     }
                     if evenement.has_tag_name("speciation"){
@@ -387,48 +387,40 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         // TODO
                         // C'est une speciation seulement si c'est le premier evenement:
-                        if event_num >= 1 {
-                            tree.arena[parent].set_event(Event::Speciation);
-                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
-                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            assert!(evenement.has_attribute("speciesLocation"));
-                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                            let location = evenement.attributes()[0].value();
-                            info!("xml2tree: set location = {}",location);
-                            tree.arena[parent].location = location.to_string();
-                        }
+                        tree.arena[parent].set_event(Event::Speciation);
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        assert!(evenement.has_attribute("speciesLocation"));
+                        assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                        let location = evenement.attributes()[0].value();
+                        info!("xml2tree: set location = {}",location);
+                        tree.arena[parent].location = location.to_string();
                     }
                     if evenement.has_tag_name("duplication"){
                         event_num += 1;
                         // TODO
                         // C'est une duplication seulement si c'est le premier evenement:
-                        if event_num >= 1 {
-                            info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            tree.arena[parent].set_event(Event::Duplication);
-                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
-                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            assert!(evenement.has_attribute("speciesLocation"));
-                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                            let location = evenement.attributes()[0].value();
-                            info!("xml2tree: set location = {}",location);
-                            tree.arena[parent].location = location.to_string();
-                        }
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        tree.arena[parent].set_event(Event::Duplication);
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        assert!(evenement.has_attribute("speciesLocation"));
+                        assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                        let location = evenement.attributes()[0].value();
+                        info!("xml2tree: set location = {}",location);
+                        tree.arena[parent].location = location.to_string();
                     }
                     if evenement.has_tag_name("branchingOut"){
                         event_num += 1;
-                        // TODO
-                        // C'est une duplication seulement si c'est le premier evenement:
-                        if event_num >= 1 {
-                            info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                            tree.arena[parent].set_event(Event::BranchingOut);
-                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
-                            info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
-                            assert!(evenement.has_attribute("speciesLocation"));
-                            assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                            let location = evenement.attributes()[0].value();
-                            info!("xml2tree: set location = {}",location);
-                            tree.arena[parent].location = location.to_string();
-                        }
+                        info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                        tree.arena[parent].set_event(Event::BranchingOut);
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                        info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
+                        assert!(evenement.has_attribute("speciesLocation"));
+                        assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                        let location = evenement.attributes()[0].value();
+                        info!("xml2tree: set location = {}",location);
+                        tree.arena[parent].location = location.to_string();
                     }
                     // TODO
                     // a verifier
