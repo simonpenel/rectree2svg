@@ -11,10 +11,12 @@ use svg::node::Text;
 use svg::node::element::Element;
 use svg::node::element::path::Data;
 use svg::Node;
+use random_color::{RandomColor};
 
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     info!("draw_tree: Drawing tree...");
+    let gene_color = "blue";
     let largest_x = tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = tree.get_largest_y() * 1.0 + 0.0 ;
     let smallest_x = tree.get_smallest_x() * 1.0 + 0.0 ;
@@ -36,7 +38,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
         let _parent =  match index.parent {
             Some(p) => {
                 let n = &tree.arena[p];
-                let chemin = get_chemin_carre(index.x,index.y,n.x,n.y);
+                let chemin = get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string());
                 g.append(chemin);
                 0
             },
@@ -127,14 +129,17 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
      let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
      let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
      loop {
+         let gene_color = RandomColor::new()
+            .to_hsl_string(); //
+
          for  index in &gene_trees[idx_rcgen].arena {
              let _parent =  match index.parent {
                  Some(p) => {
                      let n = &gene_trees[idx_rcgen].arena[p];
                      // La forme du chemin depend de l'evenement
                      let chemin = match index.is_a_transfert {
-                        true => get_chemin_transfer(index.x,index.y,n.x,n.y),
-                        false => get_chemin_carre(index.x,index.y,n.x,n.y),
+                        true => get_chemin_transfer(index.x,index.y,n.x,n.y,gene_color.to_string()),
+                        false => get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string()),
                      };
                      g.append(chemin);
                      0
@@ -144,9 +149,9 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
              let  event = &index.e;
              match event {
                  Event::Leaf        =>  g.append(get_carre(index.x,index.y,1.0,"red".to_string())),
-                 Event::Duplication =>  g.append(get_carre(index.x,index.y,4.0,"blue".to_string())),
+                 Event::Duplication =>  g.append(get_carre(index.x,index.y,4.0,gene_color.to_string())),
                  Event::Loss => {
-                     let mut cross = get_cross(index.x,index.y,2.0,"blue".to_string());
+                     let mut cross = get_cross(index.x,index.y,2.0,gene_color.to_string());
                      cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
                      g.append(cross);
                  },
@@ -166,13 +171,13 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                 //     };
                 // },
                 Event::BranchingOut  =>  {
-                    let mut diamond = get_carre(index.x,index.y,4.0,"blue".to_string());
+                    let mut diamond = get_carre(index.x,index.y,4.0,gene_color.to_string());
                     diamond.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
                     g.append(diamond);
                     // g.append(get_carre(index.x,index.y,1.0,"pink".to_string()))
                     },
                 Event::BifurcationOut  =>  g.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
-                _                  =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
+                _                  =>  g.append(get_circle(index.x,index.y,3.0,gene_color.to_string())),
             };
             match event {
                 Event::Leaf        => {
@@ -282,21 +287,21 @@ pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 }
 
 /// Draw a square path between x1,y1 ad x2,y2
-pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     let data = Data::new()
     .move_to((x1*1.0, y1*1.0))
     .line_to((x1*1.0, y2*1.0))
     .line_to((x2*1.0, y2*1.0));
     let path = Path::new()
     .set("fill", "none")
-    .set("stroke", "blue")
+    .set("stroke", c)
     .set("stroke-width", 1)
     .set("d", data);
     path
 }
 
 /// Draw a transfer path between x1,y1 ad x2,y2
-pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     // Arrivee du point: un peu avant pour dessiner la fleche
     let initial_y1 = y1 ;
     let y1 = y1 - PIPEBLOCK;
@@ -316,7 +321,7 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let data = data.to_owned() + "M"+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
     let path = Path::new()
     .set("fill", "none")
-    .set("stroke", "blue")
+    .set("stroke", c)
     .set("stroke-width", 1)
     .set("stroke-dasharray","1, 1")
     .set("d",data);
