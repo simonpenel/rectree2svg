@@ -131,6 +131,8 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
      loop {
          let gene_color = RandomColor::new()
             .to_hsl_string(); //
+        let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font: italic 12px serif; fill:"+&gene_color.to_string()+"; }");
+        document.append(style);
 
          for  index in &gene_trees[idx_rcgen].arena {
              let _parent =  match index.parent {
@@ -184,7 +186,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                     let mut element = Element::new("text");
                     element.assign("x", index.x+10.0);
                     element.assign("y", index.y+0.0);
-                    element.assign("class", "vert");
+                    element.assign("class", "gene_".to_owned()+&idx_rcgen.to_string());
                     let txt  = Text::new(&index.name);
                     element.append(txt);
                     element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
