@@ -2,6 +2,7 @@ use log::{info};
 use crate::arena::ArenaTree;
 use crate::arena::Event;
 use crate::arena::BLOCK;
+use crate::arena::PIPEBLOCK;
 use svg::Document;
 use svg::node::element::Path;
 use svg::node::element::Circle;
@@ -131,9 +132,9 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                  Some(p) => {
                      let n = &gene_trees[idx_rcgen].arena[p];
                      // La forme du chemin depend de l'evenement
-                     let chemin = match index.e {
-                         Event::TransferBack   => get_chemin_transfer(index.x,index.y,n.x,n.y),
-                         _                     => get_chemin_carre(index.x,index.y,n.x,n.y),
+                     let chemin = match index.is_a_transfert {
+                        true => get_chemin_transfer(index.x,index.y,n.x,n.y),
+                        false => get_chemin_carre(index.x,index.y,n.x,n.y),
                      };
                      g.append(chemin);
                      0
@@ -149,30 +150,27 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                      cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
                      g.append(cross);
                  },
-                 Event::TransferBack => {
-                     let _parent =  match index.parent {
-                         Some(p) => {
-                            // Attention, ici on place le symbole a l'emplacement du pere du noeud.
-                            // Rappel sur le xml des ev.transferBack : il est toujours suivi d'un
-                            // autre evenement:
-                            // <eventsRec>
-                            //   <transferBack destinationSpecies="5"></transferBack>
-                            //   <branchingOut speciesLocation="5"></branchingOut>
-                            // </eventsRec>
-                            //
-                            // <eventsRec>
-                            //   <transferBack destinationSpecies="10"></transferBack>
-                            //   <speciation speciesLocation="10"></speciation>
-                            // </eventsRec>
-                            let n = &gene_trees[idx_rcgen].arena[p];
-                            let diamond = get_carre(n.x,n.y,4.0,"green".to_string());
-                            g.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
-                            g.append(diamond);
-                        },
-                        None =>{ panic!("The TransferBack Node as no father {:?}",index) },
-                    };
-                },
-                Event::BranchingOut  =>  g.append(get_carre(index.x,index.y,1.0,"pink".to_string())),
+                // Normalement il ny' a pas d event transferBack : comme il est toujour associé
+                // a un autre event,c'est ce dernier qui est stocké dans le champs "e"
+                // Par contre le champs "is_a_transfert" indique si le noeud prvient d'un transfer
+
+                //  Event::TransferBack => {
+                //      let _parent =  match index.parent {
+                //          Some(p) => {
+                //             let n = &gene_trees[idx_rcgen].arena[p];
+                //             let diamond = get_carre(n.x,n.y,4.0,"green".to_string());
+                //             g.assign("transform","rotate(45 ".to_owned()+&n.x.to_string()+" "+&n.y.to_string()+")");
+                //             g.append(diamond);
+                //         },
+                //         None =>{ panic!("The TransferBack Node as no father {:?}",index) },
+                //     };
+                // },
+                Event::BranchingOut  =>  {
+                    let mut diamond = get_carre(index.x,index.y,4.0,"blue".to_string());
+                    diamond.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
+                    g.append(diamond);
+                    // g.append(get_carre(index.x,index.y,1.0,"pink".to_string()))
+                    },
                 Event::BifurcationOut  =>  g.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
                 _                  =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
             };
@@ -299,18 +297,28 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 
 /// Draw a transfer path between x1,y1 ad x2,y2
 pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+    // Arrivee du point: un peu avant pour dessiner la fleche
+    let initial_y1 = y1 ;
+    let y1 = y1 - PIPEBLOCK;
     // Courbure de la courbe de Bezier
-    // let bez_y = BLOCK; TO DO
-    let bez_y = 20.0;
+    let bez_y = BLOCK;
+    // let bez_y = 20.0;
     // Point de controle de la courbe de Bezier
     let controle_x = (x1 + x2) / 2.0 ;
     let controle_y = (y1 + y2) / 2.0 - bez_y ;
-    let data = "M".to_owned()+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
+    // ligne horizontale
+    let data = "M".to_owned()+&x1.to_string()+" "+&initial_y1.to_string()+" L "+ &x1.to_string()+" "+ &y1.to_string();
+    // fleche
+    let data = data.to_owned()+ "M"+&x1.to_string() + " " + &(initial_y1- PIPEBLOCK / 4.0).to_string() + "L "+ &(x1 - PIPEBLOCK / 4.0 ).to_string() + " " + &(initial_y1 - PIPEBLOCK / 2.0 ).to_string();
+    let data = data.to_owned()+ "M"+&x1.to_string() + " " + &(initial_y1- PIPEBLOCK / 4.0).to_string() + "L "+ &(x1 + PIPEBLOCK / 4.0 ).to_string() + " " + &(initial_y1 - PIPEBLOCK / 2.0 ).to_string();
+
+    // bezier
+    let data = data.to_owned() + "M"+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
     let path = Path::new()
     .set("fill", "none")
-    .set("stroke", "pink")
-    .set("stroke-width", 0.5)
-    .set("stroke-dasharray","2, 1")
+    .set("stroke", "blue")
+    .set("stroke-width", 1)
+    .set("stroke-dasharray","1, 1")
     .set("d",data);
     path
 }

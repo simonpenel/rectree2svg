@@ -1,7 +1,7 @@
 use taxonomy::Taxonomy;
 use log::{info};
 pub const BLOCK: f32 = 100.0;
-const PIPEBLOCK: f32 = BLOCK / 4.0;
+pub const PIPEBLOCK: f32 = BLOCK / 4.0;
 // Structures
 // ==========
 
@@ -28,6 +28,11 @@ where
     pub height: f32,            // hauteur du tuyeau (dans le cas d'arbre d'espece)
     pub nbg: usize,             // nombre de noeud  d'arbre de genes associcés à ce noeud  (dans le cas d'arbre d'espece)
     pub nodes: Vec<(usize,usize)>,      // gene nodes associes (dans le cas d'arbre d'espece)
+    pub is_a_transfert: bool,    // the node come from a tarnsfert, i.e. he is a transferBack and
+                                // his parent is a BranchingOut . Since more than 1 event is
+                                // associated to the node in xml (as transferBack+leaf) and only one is
+                                // associated to the node in the structure ( here leaf), this is useful
+                                // for drawing the transfer.
 }
 
 impl<T> Noeud<T>
@@ -52,6 +57,7 @@ where
             height: PIPEBLOCK ,
             nbg: 0,
             nodes: vec![],
+            is_a_transfert:false,
         }
     }
     #[allow(dead_code)]
@@ -337,6 +343,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         event_num += 1;
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         tree.arena[parent].set_event(Event::Loss);
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                         assert!(evenement.has_attribute("speciesLocation"));
                         assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                         let location = evenement.attributes()[0].value();
@@ -355,8 +362,9 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         //   <transferBack destinationSpecies="4"></transferBack>
                         //   <leaf speciesLocation="4"></leaf>
                         // </eventsRec>
-                        if event_num == 1 {
+                        if event_num >= 1 {
                             tree.arena[parent].set_event(Event::Leaf);
+                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             let nb_att = evenement.attributes().len();
                             info!("Number of attributes  = {}",nb_att);
@@ -379,8 +387,9 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         // TODO
                         // C'est une speciation seulement si c'est le premier evenement:
-                        if event_num == 1 {
+                        if event_num >= 1 {
                             tree.arena[parent].set_event(Event::Speciation);
+                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("speciesLocation"));
                             assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
@@ -393,9 +402,10 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         event_num += 1;
                         // TODO
                         // C'est une duplication seulement si c'est le premier evenement:
-                        if event_num == 1 {
+                        if event_num >= 1 {
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                             tree.arena[parent].set_event(Event::Duplication);
+                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("speciesLocation"));
                             assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
@@ -408,9 +418,10 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         event_num += 1;
                         // TODO
                         // C'est une duplication seulement si c'est le premier evenement:
-                        if event_num == 1 {
+                        if event_num >= 1 {
                             info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                             tree.arena[parent].set_event(Event::BranchingOut);
+                            info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                             info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                             assert!(evenement.has_attribute("speciesLocation"));
                             assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
@@ -438,13 +449,15 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         // le point de depart du transfer etant le pere de ce noeud
                         event_num += 1;
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                        tree.arena[parent].set_event(Event::TransferBack);
+                        tree.arena[parent].set_event(Event::TransferBack); // a priori ce ne sera pas conserve
+                        info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                         info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
                         assert!(evenement.has_attribute("destinationSpecies"));
                         assert_eq!(evenement.attributes()[0].name(),"destinationSpecies");
                         let location = evenement.attributes()[0].value();
                         info!("xml2tree: set destinationSpecies = {}",location);
                         tree.arena[parent].location = location.to_string();
+                        tree.arena[parent].is_a_transfert = true;
                     }
                     // TODO
                     if evenement.has_tag_name("bifurcationOut"){
@@ -559,6 +572,24 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     shift = shift + 1.0;
                 },
                 Event::Speciation => {
+                    let x = gene_trees[*index_node].arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
+                    let y = gene_trees[*index_node].arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
+                    shift = shift + 1.0;
+                },
+                Event::TransferBack => {
+                    let x = gene_trees[*index_node].arena[*node].x;
+                    let x = x + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
+                    let y = gene_trees[*index_node].arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
+                    shift = shift + 1.0;
+                },
+                Event::BranchingOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
