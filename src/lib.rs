@@ -1,6 +1,6 @@
 //! # tree2svg
 //!
-//! `tree2svg` is a collection of utilities to draw phylogentic trees in svg format.
+//! `tree2svg` Read a phylogentic trees in newick, phyloxml or recPhyloXML format and create a svg.
 
 // Pour la doc et pour facilier l'usage par les utilisateurs du module:
 

@@ -3,7 +3,7 @@ name = "rectree2svg"
 version = "0.1.0"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
-description ="Read a newick or phyloxml file and create a svg.\nFormat is guessed according to filename (default is newick)"
+description ="Read a newick, phyloxml or recPhyloXML file and create a svg.\nFormat is guessed according to filename (default is newick)"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
