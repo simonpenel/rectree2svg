@@ -665,6 +665,57 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std
         move_dupli_mappings( sp_tree, gene_trees,son_right);
     }
 }
+/// Center the gene nodes into specie snode
+pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
+    let left_sp = sp_tree.arena[index].x - sp_tree.arena[index].width / 2.0  ;
+    let right_sp = sp_tree.arena[index].x + sp_tree.arena[index].width / 2.0  ;
+    let up_sp = sp_tree.arena[index].y  - sp_tree.arena[index].height / 2.0  ;
+    let down_sp = sp_tree.arena[index].y  + sp_tree.arena[index].height / 2.0  ;
+    let mut left_gene = -100000000.0;
+    let mut right_gene = 100000000.0;
+    let mut down_gene = -100000000.0;
+    let mut up_gene = 100000000.0;
+    for (index_node, node) in &sp_tree.arena[index].nodes {
+        info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+        if ( gene_trees[*index_node].arena[*node].x    > left_gene ){
+            left_gene =  gene_trees[*index_node].arena[*node].x  ;
+        }
+        if ( gene_trees[*index_node].arena[*node].x    < right_gene ){
+            right_gene =  gene_trees[*index_node].arena[*node].x  ;
+        }
+
+
+        if ( gene_trees[*index_node].arena[*node].y    > down_gene ){
+            down_gene =  gene_trees[*index_node].arena[*node].y  ;
+        }
+        if ( gene_trees[*index_node].arena[*node].y    < up_gene ){
+            up_gene =  gene_trees[*index_node].arena[*node].y  ;
+        }
+    }
+    let middle_sp = (left_sp + right_sp) / 2.0;
+    let middle_gn = (left_gene  + right_gene)  / 2.0;
+    let shift = middle_gn  - middle_sp;
+    let y_middle_sp = (up_sp + down_sp) / 2.0;
+    let y_middle_gn = (up_gene  + down_gene)  / 2.0;
+    let y_shift = y_middle_gn  - y_middle_sp;
+    for (index_node, node) in &sp_tree.arena[index].nodes {
+        info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+        let x = gene_trees[*index_node].arena[*node].x;
+        let x = x - shift ;
+        gene_trees[*index_node].arena[*node].set_x_noref(x);
+        // let y = gene_trees[*index_node].arena[*node].y;
+        // let y = y - y_shift ;
+        // gene_trees[*index_node].arena[*node].set_y_noref(y);
+    }
+
+    let children =  &mut  sp_tree.arena[index].children;
+    if children.len() > 0 {
+        let son_left = children[0];
+        let son_right = children[1];
+        center_gene_nodes( sp_tree, gene_trees,son_left);
+        center_gene_nodes( sp_tree, gene_trees,son_right);
+    }
+}
 
 /// Set the width of the species tree pipe.
 pub fn set_species_width(sp_tree: &mut ArenaTree<String>) {

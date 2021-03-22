@@ -15,6 +15,7 @@ use crate::arena::map_gene_trees;
 use crate::arena::map_species_trees;
 use crate::arena::bilan_mappings;
 use crate::arena::move_dupli_mappings;
+use crate::arena::center_gene_nodes;
 use crate::arena::set_species_width;
 use crate::arena::find_sptree;
 use crate::arena::find_rgtrees;
@@ -322,6 +323,11 @@ fn main()  {
                     break;
                 }
             }
+
+            // 11eme etape
+            center_gene_nodes(&mut sp_tree,&mut gene_trees,root);
+
+
             // ---------------------------------------------------------
             // Fin: Ecriture du fichier svg
             // ---------------------------------------------------------
