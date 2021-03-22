@@ -548,7 +548,7 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
 /// Shift the gene nodes in a given species node to avoid superposition.
 pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
-        let ratio = 2.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
+        let ratio = 1.10 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
@@ -669,8 +669,8 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std
 pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     let left_sp = sp_tree.arena[index].x - sp_tree.arena[index].width / 2.0  ;
     let right_sp = sp_tree.arena[index].x + sp_tree.arena[index].width / 2.0  ;
-    let up_sp = sp_tree.arena[index].y  - sp_tree.arena[index].height / 2.0  ;
-    let down_sp = sp_tree.arena[index].y  + sp_tree.arena[index].height / 2.0  ;
+    let up_sp = sp_tree.arena[index].y + sp_tree.arena[index].ymod - sp_tree.arena[index].height / 2.0  ;
+    let down_sp = sp_tree.arena[index].y + sp_tree.arena[index].ymod + sp_tree.arena[index].height / 2.0  ;
     let mut left_gene = -100000000.0;
     let mut right_gene = 100000000.0;
     let mut down_gene = -100000000.0;
@@ -684,28 +684,37 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
             right_gene =  gene_trees[*index_node].arena[*node].x  ;
         }
 
-
-        if ( gene_trees[*index_node].arena[*node].y    > down_gene ){
-            down_gene =  gene_trees[*index_node].arena[*node].y  ;
+        if  gene_trees[*index_node].arena[*node].ymod > 0.0 {
+            panic!("Unexpected ymod value");
         }
-        if ( gene_trees[*index_node].arena[*node].y    < up_gene ){
-            up_gene =  gene_trees[*index_node].arena[*node].y  ;
+        match gene_trees[*index_node].arena[*node].e {
+            Event::Loss => {},
+            _ => {
+                if ( gene_trees[*index_node].arena[*node].y    > down_gene ){
+                        down_gene =  gene_trees[*index_node].arena[*node].y  ;
+                }
+                if ( gene_trees[*index_node].arena[*node].y    < up_gene ){
+                        up_gene =  gene_trees[*index_node].arena[*node].y  ;
+                }
+            }, 
         }
     }
     let middle_sp = (left_sp + right_sp) / 2.0;
     let middle_gn = (left_gene  + right_gene)  / 2.0;
     let shift = middle_gn  - middle_sp;
+
     let y_middle_sp = (up_sp + down_sp) / 2.0;
     let y_middle_gn = (up_gene  + down_gene)  / 2.0;
     let y_shift = y_middle_gn  - y_middle_sp;
+    println!("debug shifting y = {}",y_shift);
     for (index_node, node) in &sp_tree.arena[index].nodes {
         info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
         let x = gene_trees[*index_node].arena[*node].x;
         let x = x - shift ;
         gene_trees[*index_node].arena[*node].set_x_noref(x);
-        // let y = gene_trees[*index_node].arena[*node].y;
-        // let y = y - y_shift ;
-        // gene_trees[*index_node].arena[*node].set_y_noref(y);
+        let y = gene_trees[*index_node].arena[*node].y;
+        let y = y - y_shift ;
+        gene_trees[*index_node].arena[*node].set_y_noref(y);
     }
 
     let children =  &mut  sp_tree.arena[index].children;
