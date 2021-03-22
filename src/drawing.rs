@@ -203,7 +203,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
   let mut transfo: String = "translate(  ".to_owned();
   transfo.push_str(&(-BLOCK / 2.0 ).to_string());
   transfo.push_str(" ");
-  transfo.push_str(&(width_svg  + BLOCK / 2.0).to_string());
+  transfo.push_str(&(width_svg  - BLOCK / 2.0).to_string());
   transfo.push_str(") rotate(-90 0 0 ) ");
   g.assign("transform",transfo);
   document.append(g);
