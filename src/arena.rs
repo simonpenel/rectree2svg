@@ -548,7 +548,7 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
 /// Shift the gene nodes in a given species node to avoid superposition.
 pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
-        let ratio = 1.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
+        let ratio = 1.5 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
