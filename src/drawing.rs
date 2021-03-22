@@ -384,8 +384,8 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
 pub fn close_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32 ) -> Path {
         let data = Data::new()
         .move_to((x1 - width1, y1 - height1))
-        .line_to((x1 - width1, y1 + height1))
-        .line_to((x1 + width1, y1 + height1))
+        .line_to((x1 - width1, y1 + 2.0 * height1))
+        .line_to((x1 + width1, y1 + 2.0 * height1))
         .line_to((x1 + width1, y1 - height1));
         let path = Path::new()
         .set("fill", "none")
