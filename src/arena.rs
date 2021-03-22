@@ -189,6 +189,14 @@ where
         _ => false,
         }
     }
+    /// Check if the node is the root.
+    pub fn is_root(&self, idx: usize) -> bool {
+        match self.arena[idx].parent {
+        Some(_p) => false,
+        None => true,
+        }
+    }
+
 
     /// Get the depth of the tree.
     pub fn depth(&self, idx: usize) -> usize {
