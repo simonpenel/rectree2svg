@@ -13,6 +13,9 @@ use svg::node::element::path::Data;
 use svg::Node;
 use random_color::{RandomColor};
 
+const GTHICKNESS: usize = 2; // Epaisseur trait gene_
+const STHICKNESS: usize = 8; // Epaisseur trait species
+
 /// Draw a svg tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
     info!("draw_tree: Drawing tree...");
@@ -283,7 +286,7 @@ pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", "blue")
-    .set("stroke-width", 1)
+    .set("stroke-width", GTHICKNESS)
     .set("d", data);
     path
 }
@@ -297,7 +300,7 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", c)
-    .set("stroke-width", 1)
+    .set("stroke-width", GTHICKNESS)
     .set("d", data);
     path
 }
@@ -324,7 +327,7 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", c)
-    .set("stroke-width", 1)
+    .set("stroke-width", GTHICKNESS)
     .set("stroke-dasharray","1, 1")
     .set("d",data);
     path
@@ -358,7 +361,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
-        .set("stroke-width", 4)
+        .set("stroke-width", STHICKNESS)
         .set("d", data);
 
         path
@@ -374,7 +377,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
-        .set("stroke-width", 4)
+        .set("stroke-width", STHICKNESS)
         .set("d", data);
         path
     }
@@ -390,7 +393,7 @@ pub fn close_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32 ) -> Path {
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
-        .set("stroke-width", 4)
+        .set("stroke-width", STHICKNESS)
         .set("d", data);
         path
 }
