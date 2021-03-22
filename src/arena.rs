@@ -888,21 +888,11 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
         info!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
         info!("Initial left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
         let y = tree.arena[left].y;
-        // let y = y + shift_down + 1.0 * PIPEBLOCK;
-            let y = y + shift_down ;
+        let y = y + shift_down ;
         tree.arena[left].set_y_noref(y);
-        let ymod = tree.arena[left].ymod;
-        // let ymod = ymod + shift_down + 1.0 * PIPEBLOCK;
-                let ymod = ymod + shift_down;
-        tree.arena[left].set_ymod_noref(ymod);
-                let y = tree.arena[right].y;
-        // let y = y +shift_down + 1.0 * PIPEBLOCK;
-                let y = y +shift_down ;
+        let y = tree.arena[right].y;
+        let y = y +shift_down ;
         tree.arena[right].set_y_noref(y);
-        let ymod = tree.arena[right].ymod;
-        // let ymod = ymod +  shift_down + 1.0 * PIPEBLOCK;
-                let ymod = ymod +  shift_down ;
-        tree.arena[right].set_ymod_noref(ymod);
     }
 }
 
