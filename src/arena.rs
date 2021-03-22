@@ -949,7 +949,7 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
             shift_down = PIPEBLOCK;
 
         }
-        let shift_down = shift_down + PIPEBLOCK;
+        let shift_down = shift_down + 4.0 * PIPEBLOCK;
         info!("CONFLIT AT SPEC NODE {}: parent y = {} ymod = {} down = {} left up = {} right up = {} => shift = {}",tree.arena[parent].name,tree.arena[parent].y,tree.arena[parent].ymod,node_parent_down_pos,node_left_up_pos,node_right_up_pos,shift_down);
         info!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
         info!("Initial left : y = {}, ymod = {}",tree.arena[left].y,tree.arena[left].ymod);
