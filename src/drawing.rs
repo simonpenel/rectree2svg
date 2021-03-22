@@ -11,7 +11,7 @@ use svg::node::Text;
 use svg::node::element::Element;
 use svg::node::element::path::Data;
 use svg::Node;
-use random_color::{RandomColor};
+use random_color::{RandomColor,Luminosity};
 
 const GTHICKNESS: usize = 2; // Epaisseur trait gene_
 const STHICKNESS: usize = 8; // Epaisseur trait species
@@ -132,7 +132,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
      let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
      let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
      loop {
-         let gene_color = RandomColor::new()
+         let gene_color = RandomColor::new().luminosity(Luminosity::Bright) // Optional
             .to_hsl_string(); //
         let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font: italic 12px serif; fill:"+&gene_color.to_string()+"; }");
         document.append(style);
