@@ -149,7 +149,17 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                      g.append(chemin);
                      0
                  },
-                 None => {-1},
+                 None => {          //Racine
+                        let mut element = Element::new("text");
+                        element.assign("x", index.x+10.0);
+                         element.assign("y", index.y+0.0);
+                         element.assign("class", "gene_".to_owned()+&idx_rcgen.to_string());
+                         let txt  = Text::new(&idx_rcgen.to_string());
+                         element.append(txt);
+                         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+                        g.append(element);
+                        1
+                     },
              };
              let  event = &index.e;
              match event {
