@@ -190,6 +190,7 @@ where
         }
     }
     /// Check if the node is the root.
+    #[allow(dead_code)]
     pub fn is_root(&self, idx: usize) -> bool {
         match self.arena[idx].parent {
         Some(_p) => false,

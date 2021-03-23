@@ -17,6 +17,7 @@ pub use self::arena::map_gene_trees;
 pub use self::arena::map_species_trees;
 pub use self::arena::bilan_mappings;
 pub use self::arena::move_dupli_mappings;
+pub use self::arena::center_gene_nodes;
 pub use self::arena::set_species_width;
 pub use self::arena::knuth_layout;
 pub use self::arena::cladogramme;
