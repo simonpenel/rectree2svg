@@ -11,7 +11,7 @@ use svg::node::Text;
 use svg::node::element::Element;
 use svg::node::element::path::Data;
 use svg::Node;
-use random_color::{RandomColor,Luminosity};
+use random_color::{Color,RandomColor,Luminosity};
 
 const GTHICKNESS: usize = 2; // Epaisseur trait gene_
 const STHICKNESS: usize = 8; // Epaisseur trait species
@@ -90,8 +90,6 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
     let height_svg = height_svg * 1.0;
     let x_viewbox = smallest_x - 0.0 ;
     let y_viewbox = smallest_y - 0.0;
-    println!("debug x : {} - {}; y : {} - {}",smallest_x,largest_x,smallest_y,largest_y);
-    println!("debug width : {} height :{}",width_svg,height_svg);
     let  mut document = Document::new()
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )

@@ -564,7 +564,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
             info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
-            println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
+            // println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
             match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
                     let x = gene_trees[*index_node].arena[*node].x;
