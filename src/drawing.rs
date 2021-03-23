@@ -85,10 +85,13 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
     let smallest_y = sp_tree.get_smallest_y() * 1.0 + 0.0 ;
     let width_svg = largest_x - smallest_x + 0.0;
     let width_svg = width_svg * 1.0;
-    let height_svg = largest_y - smallest_y + 0.0;
+    let height_svg = largest_y - smallest_y + 2.0 * BLOCK; // Crade ; ajout car les fuielles de l'espece sont
+                                                           // allongées lors de la creation du le path
     let height_svg = height_svg * 1.0;
     let x_viewbox = smallest_x - 0.0 ;
     let y_viewbox = smallest_y - 0.0;
+    println!("debug x : {} - {}; y : {} - {}",smallest_x,largest_x,smallest_y,largest_y);
+    println!("debug width : {} height :{}",width_svg,height_svg);
     let  mut document = Document::new()
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )
@@ -132,12 +135,13 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
      let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
      let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
      loop {
-         let gene_color = RandomColor::new().luminosity(Luminosity::Bright) // Optional
+        let gene_color = RandomColor::new().luminosity(Luminosity::Bright) // Optional
             .to_hsl_string(); //
+
         let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font: italic 12px serif; fill:"+&gene_color.to_string()+"; }");
         document.append(style);
 
-         for  index in &gene_trees[idx_rcgen].arena {
+        for  index in &gene_trees[idx_rcgen].arena {
              let _parent =  match index.parent {
                  Some(p) => {
                      let n = &gene_trees[idx_rcgen].arena[p];
@@ -213,10 +217,12 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
           break;
       }
   }
+  // g.append(get_cadre(x_viewbox,y_viewbox,width_svg,height_svg,"red".to_string()));
   let mut transfo: String = "translate(  ".to_owned();
-  transfo.push_str(&(-BLOCK / 2.0 ).to_string());
+  // transfo.push_str(&(- BLOCK / 2.0 ).to_string());
+    transfo.push_str(&( x_viewbox).to_string());
   transfo.push_str(" ");
-  transfo.push_str(&(width_svg  + BLOCK / 2.0).to_string());
+  transfo.push_str(&((width_svg  + y_viewbox)).to_string());
   transfo.push_str(") rotate(-90 0 0 ) ");
   g.assign("transform",transfo);
   document.append(g);

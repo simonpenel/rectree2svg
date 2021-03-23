@@ -210,9 +210,9 @@ where
     pub fn get_largest_x(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
-            if node.x + node.width > max {
-                max = node.x + node.width;
-             }
+            if node.x + node.width / 2.0  > max {
+                max = node.x + node.width / 2.0 ;
+                }
             }
         max
     }
@@ -221,8 +221,8 @@ where
     pub fn get_largest_y(&mut self) -> f32 {
         let mut max = 0.0;
         for node in &self.arena {
-            if node.y + node.height > max {
-                max = node.y + node.height ;
+            if node.y  + node.height / 2.0  > max {
+                max = node.y  + node.height / 2.0  ;
              }
             }
         max
@@ -232,8 +232,8 @@ where
     pub fn get_smallest_x(&mut self) -> f32 {
         let mut min = 1000000.0;
         for node in &self.arena {
-            if node.x - node.width < min {
-                min = node.x - node.width;
+            if node.x - node.width / 2.0  < min {
+                min = node.x  - node.width / 2.0 ;
              }
             }
         min
@@ -243,8 +243,8 @@ where
     pub fn get_smallest_y(&mut self) -> f32 {
         let mut min = 1000000.0;
         for node in &self.arena {
-            if node.y - node.height < min {
-                min = node.y - node.height;
+            if node.y   - node.height / 2.0  < min {
+                min = node.y  - node.height / 2.0;
              }
             }
         min
@@ -558,9 +558,11 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
     info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
         let ratio = 1.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
+        // TODO classer selon le Y du pere pour eviter les croisement
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
             info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
+            // println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
             match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -685,10 +687,10 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
     let mut up_gene = 100000000.0;
     for (index_node, node) in &sp_tree.arena[index].nodes {
         info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
-        if ( gene_trees[*index_node].arena[*node].x    > left_gene ){
+        if  gene_trees[*index_node].arena[*node].x    > left_gene {
             left_gene =  gene_trees[*index_node].arena[*node].x  ;
         }
-        if ( gene_trees[*index_node].arena[*node].x    < right_gene ){
+        if gene_trees[*index_node].arena[*node].x    < right_gene {
             right_gene =  gene_trees[*index_node].arena[*node].x  ;
         }
 
@@ -698,10 +700,10 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
         match gene_trees[*index_node].arena[*node].e {
             Event::Loss => {},
             _ => {
-                if ( gene_trees[*index_node].arena[*node].y    > down_gene ){
+                if gene_trees[*index_node].arena[*node].y    > down_gene {
                         down_gene =  gene_trees[*index_node].arena[*node].y  ;
                 }
-                if ( gene_trees[*index_node].arena[*node].y    < up_gene ){
+                if  gene_trees[*index_node].arena[*node].y    < up_gene {
                         up_gene =  gene_trees[*index_node].arena[*node].y  ;
                 }
             },
@@ -949,6 +951,7 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
             shift_down = PIPEBLOCK;
 
         }
+        // TODO configurable
         let shift_down = shift_down + 4.0 * PIPEBLOCK;
         info!("CONFLIT AT SPEC NODE {}: parent y = {} ymod = {} down = {} left up = {} right up = {} => shift = {}",tree.arena[parent].name,tree.arena[parent].y,tree.arena[parent].ymod,node_parent_down_pos,node_left_up_pos,node_right_up_pos,shift_down);
         info!("SHIFTING Y {} + 1xPIPEBLOCK = {}",shift_down,shift_down + 1.0 * PIPEBLOCK);
