@@ -559,11 +559,12 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
     info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
         let ratio = 1.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
+        let incr = 1.0;
         // TODO classer selon le Y du pere pour eviter les croisement
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
             info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
-            // println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
+            println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
             match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -572,7 +573,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::Speciation => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -581,7 +582,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::TransferBack => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -590,7 +591,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::BranchingOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -599,7 +600,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::Leaf => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -608,7 +609,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::Loss => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -625,7 +626,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     };
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 Event::BifurcationOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
@@ -634,7 +635,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
-                    shift = shift + 1.0;
+                    shift = shift + incr;
                 },
                 _=> {},
             }
