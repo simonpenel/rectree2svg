@@ -303,11 +303,9 @@ fn main()  {
             map_gene_trees(&mut sp_tree,&mut gene_trees);
             // ---------------------------------------------------------
             // 9ème etape : décale les noeuds de gene associés à un
-            // noeud d'especes pour éviter qu'ils soit superposés, puis
-            // traite spécifiquement les duplications et les feuilles
+            // noeud d'especes pour éviter qu'ils soit superposés
             // ---------------------------------------------------------
             bilan_mappings(&mut sp_tree, &mut gene_trees,root);
-            move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
             // ---------------------------------------------------------
             // 10ème étape : recalcule les coordonnées svg de tous les
             // arbres de gènes
@@ -323,11 +321,14 @@ fn main()  {
                     break;
                 }
             }
-
-            // 11eme etape
+            // ---------------------------------------------------------
+            // 11eme etape : centre les noeuds de genes dans le noeud de l'espece
+            // ---------------------------------------------------------
             center_gene_nodes(&mut sp_tree,&mut gene_trees,root);
-
-
+            // ---------------------------------------------------------
+            // 12eme etape traite spécifiquement les duplications et les feuilles
+            // ---------------------------------------------------------
+            move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
             // ---------------------------------------------------------
             // Fin: Ecriture du fichier svg
             // ---------------------------------------------------------
