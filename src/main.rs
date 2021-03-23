@@ -7,6 +7,7 @@ use std::process;
 use getopt::Opt;
 use taxonomy::formats::newick;
 use taxonomy::Taxonomy;
+use webbrowser::{open_browser, Browser};
 mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
@@ -336,6 +337,10 @@ fn main()  {
             drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
             // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
+
+            if webbrowser::open_browser(Browser::Default,"file:///home/simon/github/version2/rectree2svg/tree2svg.svg").is_ok() {
+                    // ...
+                }
             process::exit(0);
         },
     }
