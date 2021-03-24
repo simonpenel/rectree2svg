@@ -160,7 +160,14 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                      let n = &gene_trees[idx_rcgen].arena[p];
                      // La forme du chemin depend de l'evenement
                      let chemin = match index.is_a_transfert {
-                        true => get_chemin_transfer(index.x,index.y,n.x,n.y,gene_color.to_string()),
+                        true => {
+                            // Verifie que le parent est bien un branchingout
+                            match n.e {
+                                Event::BranchingOut => get_chemin_transfer(index.x,index.y,n.x,n.y,gene_color.to_string()),
+                                Event::BifurcationOut => get_chemin_transfer(index.x,index.y,n.x,n.y,gene_color.to_string()),
+                                _ => panic!("Wrong recPhyloXML feature. The father node should be BranchingOut or BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
+                            }
+                        },
                         false => get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string()),
                      };
                      g.append(chemin);
