@@ -14,7 +14,7 @@ use svg::Node;
 use random_color::{Color,RandomColor,Luminosity};
 
 const GTHICKNESS: usize = 2; // Epaisseur trait gene_
-const STHICKNESS: usize = 8; // Epaisseur trait species
+const STHICKNESS: usize = 4; // Epaisseur trait species
 // const COLORS:Vec<Color> =  Vec::new();
 // const COLORS:Vec<Color> =  vec![Color::Red];
 // const COLORS: [ Color; 3] = [Color::Red,Color::Red,Color::Red ];
@@ -136,12 +136,12 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
      let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
      loop {
          let base_couleur = match &idx_rcgen % 6 {
-             0 => Color::Red,
-             1 => Color::Blue,
-             2 => Color::Purple,
-             3 => Color::Green,
-             4 => Color::Orange,
-             5 => Color::Yellow,
+             5 => Color::Orange,
+             0 => Color::Blue,
+             1 => Color::Purple,
+             2 => Color::Green,
+             3 => Color::Red,
+             4 => Color::Yellow,
              _ => Color::Monochrome, // Jamais
          };
          // println!("COULEUR = {:?}",toto);
@@ -151,7 +151,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
             // .seed(42) // Optional
             .alpha(1.0) // Optional
             .to_rgb_string(); //
-        let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font: italic 12px serif; fill:"+&gene_color.to_string()+"; }");
+        let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font:  10px serif; fill:"+&gene_color.to_string()+"; }");
         document.append(style);
 
         for  index in &gene_trees[idx_rcgen].arena {
