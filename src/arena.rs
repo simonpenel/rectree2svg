@@ -493,6 +493,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                                 tree.arena[parent].location = location.to_string();},
                             None        => panic!("BifurcationOut node as no parent : {:?}",tree.arena[parent]),
                         };
+                        tree.arena[parent].is_a_transfert = true;
                         //  A verifier
                         // Meme espece que son pere
                         // assert!(evenement.has_attribute("destinationSpecies"));
@@ -649,7 +650,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                 },
                 Event::BifurcationOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x - PIPEBLOCK*shift / ratio;
+                    let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
