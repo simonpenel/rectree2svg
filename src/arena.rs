@@ -1,6 +1,6 @@
 use taxonomy::Taxonomy;
 use log::{info};
-pub const BLOCK: f32 = 50.0;
+pub const BLOCK: f32 = 100.0;
 pub const PIPEBLOCK: f32 = BLOCK / 4.0;
 // Structures
 // ==========
@@ -621,7 +621,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                             panic!("Loss node with no parent");
                         },
                         Some(p) => {
-                            gene_trees[*index_node].arena[p].y + PIPEBLOCK
+                            gene_trees[*index_node].arena[p].y + PIPEBLOCK *1.2
                         },
                     };
                     let y = y + PIPEBLOCK*shift / ratio;
