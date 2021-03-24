@@ -412,7 +412,6 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                                 let location = evenement.attributes()[0].value();
                                 tree.arena[parent].location = location.to_string();
                             }
-                            println!("DEBUG {:?}",tree.arena[parent]);
                         }
                     }
                     if evenement.has_tag_name("speciation"){
@@ -640,16 +639,21 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     let x = gene_trees[*index_node].arena[*node].x;
                     let x = x + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
-                    let parent = gene_trees[*index_node].arena[*node].parent;
-                    let y = match parent {
-                        None =>  {
-                            panic!("Loss node with no parent");
-                        },
-                        Some(p) => {
-                            gene_trees[*index_node].arena[p].y + PIPEBLOCK *1.2
-                        },
-                    };
-                    // let y = y + PIPEBLOCK*shift / ratio;
+                    // let parent = gene_trees[*index_node].arena[*node].parent;
+                    // let y = match parent {
+                    //     None =>  {
+                    //         panic!("Loss node with no parent");
+                    //     },
+                    //     Some(p) => {
+                    //         gene_trees[*index_node].arena[p].y + PIPEBLOCK *1.2
+                    //     },
+                    // };
+                    // // let y = y + PIPEBLOCK*shift / ratio;
+                    // // essai
+                    let y = gene_trees[*index_node].arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    // fin essai
+
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
                 },
@@ -724,30 +728,32 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
         if  gene_trees[*index_node].arena[*node].ymod > 0.0 {
             panic!("Unexpected ymod value");
         }
-        match gene_trees[*index_node].arena[*node].e {
-            Event::Loss => {
-                // Seulement dans le cas ou le seul node de gene associé au neod d'espece
-                // est ce loss
-                if sp_tree.arena[index].nbg == 1 {
-                    if gene_trees[*index_node].arena[*node].y    > down_gene {
-                            down_gene =  gene_trees[*index_node].arena[*node].y  ;
-                    }
-                    if  gene_trees[*index_node].arena[*node].y    < up_gene {
-                            up_gene =  gene_trees[*index_node].arena[*node].y  ;
-                    }
+        // match gene_trees[*index_node].arena[*node].e {
 
-                }
 
-            },
-            _ => {
+            // Event::Undef => {
+            //     // Seulement dans le cas ou le seul node de gene associé au neod d'espece
+            //     // est ce loss
+            //     if sp_tree.arena[index].nbg == 1 {
+            //         if gene_trees[*index_node].arena[*node].y    > down_gene {
+            //                 down_gene =  gene_trees[*index_node].arena[*node].y  ;
+            //         }
+            //         if  gene_trees[*index_node].arena[*node].y    < up_gene {
+            //                 up_gene =  gene_trees[*index_node].arena[*node].y  ;
+            //         }
+            //
+            //     }
+            //
+            // },
+            // _ => {
                 if gene_trees[*index_node].arena[*node].y    > down_gene {
                         down_gene =  gene_trees[*index_node].arena[*node].y  ;
                 }
                 if  gene_trees[*index_node].arena[*node].y    < up_gene {
                         up_gene =  gene_trees[*index_node].arena[*node].y  ;
                 }
-            },
-        }
+            // },
+        // }
     }
     let middle_sp = (left_sp + right_sp) / 2.0;
     let middle_gn = (left_gene  + right_gene)  / 2.0;
