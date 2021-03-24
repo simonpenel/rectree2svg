@@ -39,7 +39,8 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-h][-p][-l][-v]",programe_name);
+    println!("{} -f input file [-o output file][-b][-h][-p][-l][-v]",programe_name);
+    println!("    -b : open svg in browser");
     println!("    -p : build a phylogram");
     println!("    -l : use branch length");
     println!("    -h : help");
@@ -61,10 +62,11 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:hvpl");
+    let mut opts = getopt::Parser::new(&args, "f:o:bhvpl");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
+    let mut open_browser = false;
     let mut real_length_flag = false;
     let mut verbose = false;
     let mut nb_args = 0;
@@ -72,6 +74,7 @@ fn main()  {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
+                Opt('b', None) => open_browser = true,
                 Opt('p', None) => clado_flag = false,
                 Opt('l', None) => real_length_flag = true,
                 Opt('v', None) => {
@@ -337,10 +340,12 @@ fn main()  {
             drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
             // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
-
+            if open_browser {
             if webbrowser::open_browser(Browser::Default,"file:///home/simon/github/version2/rectree2svg/tree2svg.svg").is_ok() {
                     // ...
                 }
+            }
+
             process::exit(0);
         },
     }
