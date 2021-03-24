@@ -310,6 +310,8 @@ pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<S
 
 /// Fill an ArenaTree structure with the contents of a roxmltre::Node structure
 pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, mut  tree: &mut ArenaTree<String>) {
+    // Note : speciationLoss", "speciationOutLoss", "speciationOut" sont obsolètes (vieux fomat recphyloxml)
+    // On essaie de les traiter correctement
     // je cherche les fils
     let children = node.children();
     for child in children {
@@ -348,6 +350,9 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
             info!("xml2tree:Event detected");
             let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
             for evenement in child.children() {
+                if evenement.has_tag_name("speciationLoss"){
+                    panic!("Warning: taxon 'speciationLoss' is obsolete");
+                }
                     if evenement.has_tag_name("loss"){
                         event_num += 1;
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
