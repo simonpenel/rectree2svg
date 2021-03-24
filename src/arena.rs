@@ -385,10 +385,29 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                             tree.arena[parent].location = location.to_string();
                         }
                         else {
-                            // TODO tres sale
-                            assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
-                            let location = evenement.attributes()[1].value();
-                            tree.arena[parent].location = location.to_string();
+                            // TODO tres sale verifier : on a les deux possibilites:
+                            // <leaf speciesLocation="Lentisphaerae" geneName="Lentisphaerae"></leaf>
+                            // <leaf geneName="a2_a" speciesLocation="a"></leaf>
+                            assert!(nb_att == 2);
+                            assert!(evenement.has_attribute("geneName"));
+                            assert!(evenement.has_attribute("speciesLocation"));
+                            if evenement.attributes()[0].name() == "geneName" {
+                                assert_eq!(evenement.attributes()[1].name(),"speciesLocation");
+                                let name = evenement.attributes()[0].value();
+                                tree.arena[parent].name = name.to_string();
+                                info!("set name {:?}",tree.arena[parent]);
+                                let location = evenement.attributes()[1].value();
+                                tree.arena[parent].location = location.to_string();
+                            }
+                            if evenement.attributes()[1].name() == "geneName" {
+                                assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                                let name = evenement.attributes()[1].value();
+                                tree.arena[parent].name = name.to_string();
+                                info!("set name {:?}",tree.arena[parent]);
+                                let location = evenement.attributes()[0].value();
+                                tree.arena[parent].location = location.to_string();
+                            }
+                            println!("DEBUG {:?}",tree.arena[parent]);
                         }
                     }
                     if evenement.has_tag_name("speciation"){
@@ -624,7 +643,7 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                             gene_trees[*index_node].arena[p].y + PIPEBLOCK *1.2
                         },
                     };
-                    let y = y + PIPEBLOCK*shift / ratio;
+                    // let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
                 },
@@ -700,7 +719,20 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
             panic!("Unexpected ymod value");
         }
         match gene_trees[*index_node].arena[*node].e {
-            Event::Loss => {},
+            Event::Loss => {
+                // Seulement dans le cas ou le seul node de gene associé au neod d'espece
+                // est ce loss
+                if sp_tree.arena[index].nbg == 1 {
+                    if gene_trees[*index_node].arena[*node].y    > down_gene {
+                            down_gene =  gene_trees[*index_node].arena[*node].y  ;
+                    }
+                    if  gene_trees[*index_node].arena[*node].y    < up_gene {
+                            up_gene =  gene_trees[*index_node].arena[*node].y  ;
+                    }
+
+                }
+
+            },
             _ => {
                 if gene_trees[*index_node].arena[*node].y    > down_gene {
                         down_gene =  gene_trees[*index_node].arena[*node].y  ;
