@@ -7,7 +7,7 @@ use std::process;
 use getopt::Opt;
 use taxonomy::formats::newick;
 use taxonomy::Taxonomy;
-use webbrowser::{open_browser, Browser};
+use webbrowser::{Browser};
 mod arena;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
