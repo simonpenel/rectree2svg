@@ -337,12 +337,14 @@ fn main()  {
             // Fin: Ecriture du fichier svg
             // ---------------------------------------------------------
             println!("Output filename is {}",outfile);
+            let path = env::current_dir().expect("Unable to get current dir");
+            let url_file = format!("file:///{}/{}", path.display(),outfile);
             drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
             // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
             if open_browser {
-            if webbrowser::open_browser(Browser::Default,"file:///home/simon/github/version2/rectree2svg/tree2svg.svg").is_ok() {
-                    // ...
+                if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
+                    info!("Browser OK");
                 }
             }
 
