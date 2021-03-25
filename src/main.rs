@@ -224,6 +224,10 @@ fn main()  {
                     break;
                 }
             }
+            if verbose {
+                info!("Drawing tree species verbose-species.svg");
+                drawing::draw_tree(&mut sp_tree,"verbose-species.svg".to_string(),&options);
+            }
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
@@ -270,9 +274,6 @@ fn main()  {
             // ---------------------------------------------------------
             let  root = sp_tree.get_root();
             knuth_layout(&mut sp_tree,root, &mut 1);
-            if verbose {
-                drawing::draw_tree(&mut sp_tree,"verbose-knuth.svg".to_string());
-            }
             // --------------------
             // Option : Cladogramme
             // --------------------
@@ -350,7 +351,7 @@ fn main()  {
             println!("Output filename is {}",outfile);
             let path = env::current_dir().expect("Unable to get current dir");
             let url_file = format!("file:///{}/{}", path.display(),outfile);
-            drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,options);
+            drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,&options);
             // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
             if open_browser {
@@ -375,9 +376,7 @@ fn main()  {
     // ---------------------------------------------------------
     let  root = tree.get_root();
     knuth_layout(&mut tree,root, &mut 1);
-    if verbose {
-        drawing::draw_tree(&mut tree,"verbose-knuth.svg".to_string());
-    }
+
     // ---------------------------------------------------------
     // Option : Cladogramme
     // ---------------------------------------------------------
@@ -393,9 +392,7 @@ fn main()  {
     // de xmod
     // ---------------------------------------------------------
     shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
-    if verbose {
-        drawing::draw_tree(&mut tree,"verbose-shifted.svg".to_string());
-    }
+
     // ---------------------------------------------------------
     // 4ème étape : Place le parent entre les enfants
     // ---------------------------------------------------------
@@ -413,7 +410,7 @@ fn main()  {
 
     let path = env::current_dir().expect("Unable to get current dir");
     let url_file = format!("file:///{}/{}", path.display(),outfile);
-    drawing::draw_tree(&mut tree,outfile);
+    drawing::draw_tree(&mut tree,outfile,&options);
     // EXIT
     // On s'arrete la, le reste du programme concerne les autres formats
     if open_browser {

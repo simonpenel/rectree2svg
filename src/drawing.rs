@@ -20,7 +20,7 @@ const STHICKNESS: usize = 6; // Epaisseur trait species
 // const COLORS:Vec<Color> =  vec![Color::Red];
 // const COLORS: [ Color; 3] = [Color::Red,Color::Red,Color::Red ];
 /// Draw a svg tree
-pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
+pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options) {
     info!("draw_tree: Drawing tree...");
     let gene_color = "blue";
     let largest_x = tree.get_largest_x() * 1.0 + 0.0 ;
@@ -70,7 +70,13 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
         let txt  = Text::new(&index.name);
         element.append(txt);
         element.assign("transform","rotate(90 ".to_owned()+&(index.x - 5.0).to_string()+","+&(index.y + 10.0).to_string()+")");
-        g.append(element);
+        match tree.is_leaf(index.idx) {
+            true => g.append(element),
+            _   =>  match options.gene_internal {
+                        true =>  g.append(element),
+                        false => {},
+                    },
+        };
     }
     let mut transfo: String = "translate(  ".to_owned();
     transfo.push_str(&( x_viewbox).to_string());
@@ -83,7 +89,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String) {
 }
 
 /// Draw a svg pipe species tree and  gene trees inside it
-pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec::Vec<ArenaTree<String>>, name: String, options: Options) {
+pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec::Vec<ArenaTree<String>>, name: String, options: &Options) {
     let largest_x = sp_tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
     let smallest_x = sp_tree.get_smallest_x() * 1.0 + 0.0 ;

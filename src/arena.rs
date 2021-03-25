@@ -564,7 +564,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
 // chec
 pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>) {
-    println!("CHECK : {:?}",&gene_tree);
+    info!("CHECK : {:?}",&gene_tree);
 }
 
 /// Set the coordinates of the gene tree according to species tree coordinates
