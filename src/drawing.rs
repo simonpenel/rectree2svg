@@ -161,7 +161,6 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
         let gene_color = RandomColor::new()
             .hue(base_couleur)
             .luminosity(Luminosity::Bright) // Optional
-            // .seed(42) // Optional
             .alpha(1.0) // Optional
             .to_rgb_string(); //
         let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font:  10px serif; fill:"+&gene_color.to_string()+"; }");
@@ -266,8 +265,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
   }
   // g.append(get_cadre(x_viewbox,y_viewbox,width_svg,height_svg,"red".to_string()));
   let mut transfo: String = "translate(  ".to_owned();
-  // transfo.push_str(&(- BLOCK / 2.0 ).to_string());
-    transfo.push_str(&( x_viewbox).to_string());
+  transfo.push_str(&( x_viewbox).to_string());
   transfo.push_str(" ");
   transfo.push_str(&((width_svg  + y_viewbox)).to_string());
   transfo.push_str(") rotate(-90 0 0 ) ");
