@@ -189,6 +189,17 @@ where
         _ => false,
         }
     }
+    /// Check if the node is a left node.
+    #[allow(dead_code)]
+    pub fn is_left(&self, idx: usize) -> bool {
+        match self.arena[idx].parent {
+        Some(p) => {
+            let children = &self.arena[p].children;
+            idx == children[0]
+        },
+        None => false,
+        }
+    }
     /// Check if the node is the root.
     #[allow(dead_code)]
     pub fn is_root(&self, idx: usize) -> bool {
@@ -563,6 +574,7 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::
                     spindex.nbg = nbg;
                     // Ajoute le tuple (indexe de l'arbre de  gene, index du noeud de gene ) associé
                     spindex.nodes.push((idx_rcgen,index.idx));
+                    // spindex.nodes.insert(0,(idx_rcgen,index.idx));
                     info!("map_tree: Gene node {:?} mapped to  species node {:?}",index,spindex);
                 }
             }
@@ -583,61 +595,87 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
     info!("BILAN MAPPING : Species Node {}",sp_tree.arena[index].name);
         let ratio = 1.0 ; // permet de rglere l'ecrtement entre les noeid de genes dans l'arbre d'espece
         let  mut shift = 0.0;
+        let  mut shift_x = sp_tree.arena[index].nbg as f32 -1.0 ;
         let incr = 1.0;
         // TODO classer selon le Y du pere pour eviter les croisement
         // boucle sur m'espeve
         for (index_node, node)  in &sp_tree.arena[index].nodes {
             info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
             // println!("DEBUG {}/{}",shift,&sp_tree.arena[index].nbg);
+            let bool_left = sp_tree.is_left(index);
             match  gene_trees[*index_node].arena[*node].e {
                 Event::Duplication => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
+
                 },
                 Event::Speciation => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 Event::TransferBack => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 Event::BranchingOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 Event::Leaf => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 Event::Loss => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     // let parent = gene_trees[*index_node].arena[*node].parent;
                     // let y = match parent {
@@ -656,15 +694,20 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
 
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 Event::BifurcationOut => {
                     let x = gene_trees[*index_node].arena[*node].x;
-                    let x = x + PIPEBLOCK*shift / ratio;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
                     gene_trees[*index_node].arena[*node].set_x_noref(x);
                     let y = gene_trees[*index_node].arena[*node].y;
                     let y = y + PIPEBLOCK*shift / ratio;
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
+                    shift_x = shift_x - incr;
                 },
                 _=> {},
             }
