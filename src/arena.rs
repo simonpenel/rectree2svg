@@ -286,12 +286,14 @@ impl Default for Event {
 pub struct Options{
     pub gene_internal :bool,
     pub species_internal :bool,
+    pub scale :f32,
 }
 impl Options {
     pub fn new() -> Self {
         Self {
             gene_internal:false,
             species_internal:false,
+            scale:1.0,
         }
     }
 }
@@ -1025,16 +1027,16 @@ pub fn cladogramme( tree: &mut ArenaTree<String>) {
 }
 
 /// Transforms the tree into real branch  length representation
-pub fn real_length( tree: &mut ArenaTree<String>, index: usize, dist: &mut f32) {
+pub fn real_length( tree: &mut ArenaTree<String>, index: usize, dist: &mut f32, options: &Options) {
     let  dist_father = tree.arena[index].l;
     let mut dist = *dist + dist_father;
-    tree.arena[index].set_y_noref(dist * BLOCK + BLOCK);
+    tree.arena[index].set_y_noref(dist * BLOCK * options.scale + BLOCK);
     let children  = &mut  tree.arena[index].children;
     if children.len() > 1 {
         let son_left = children[0];
         let son_right = children[1];
-        real_length( tree, son_left, &mut dist);
-        real_length( tree, son_right, &mut dist);
+        real_length( tree, son_left, &mut dist, options);
+        real_length( tree, son_right, &mut dist, options);
     }
 
 }
