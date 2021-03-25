@@ -960,7 +960,7 @@ pub fn cladogramme( tree: &mut ArenaTree<String>) {
 pub fn real_length( tree: &mut ArenaTree<String>, index: usize, dist: &mut f32) {
     let  dist_father = tree.arena[index].l;
     let mut dist = *dist + dist_father;
-    tree.arena[index].set_y_noref(dist * BLOCK);
+    tree.arena[index].set_y_noref(dist * BLOCK + BLOCK);
     let children  = &mut  tree.arena[index].children;
     if children.len() > 1 {
         let son_left = children[0];
