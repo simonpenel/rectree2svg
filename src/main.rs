@@ -40,10 +40,11 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-b][-h][-i][-p][-l][-v]",programe_name);
+    println!("{} -f input file [-o output file][-b][-h][-i][-I][-p][-l][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -p : build a phylogram");
     println!("    -i : display internal gene nodes ");
+    println!("    -I : display internal species nodes ");
     println!("    -l : use branch length");
     println!("    -h : help");
     println!("    -v : verbose");
@@ -66,7 +67,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:bhivpl");
+    let mut opts = getopt::Parser::new(&args, "f:o:bhiIvpl");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
@@ -79,6 +80,7 @@ fn main()  {
             None => break,
             Some(opt) => match opt {
                 Opt('i', None) => options.gene_internal = true,
+                Opt('I', None) => options.species_internal = true,
                 Opt('b', None) => open_browser = true,
                 Opt('p', None) => clado_flag = false,
                 Opt('l', None) => real_length_flag = true,

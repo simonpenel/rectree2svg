@@ -285,11 +285,13 @@ impl Default for Event {
 #[derive(Debug)]
 pub struct Options{
     pub gene_internal :bool,
+    pub species_internal :bool,
 }
 impl Options {
     pub fn new() -> Self {
         Self {
             gene_internal:false,
+            species_internal:false,
         }
     }
 }

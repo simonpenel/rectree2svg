@@ -123,8 +123,13 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                 element.assign("y", index.y - index.width /2.0 - 10.0);
             },
             false => {
-                element.assign("x", index.x+15.0);
-                element.assign("y", index.y+20.0);
+                match options.species_internal {
+                    true => {
+                        element.assign("x", index.x+15.0);
+                        element.assign("y", index.y+20.0);
+                    },
+                    false => {},
+                };
             },
         };
         element.assign("class", "jaune");
