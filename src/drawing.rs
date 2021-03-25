@@ -13,8 +13,8 @@ use svg::node::element::path::Data;
 use svg::Node;
 use random_color::{Color,RandomColor,Luminosity};
 
-const GTHICKNESS: usize = 2; // Epaisseur trait gene_
-const STHICKNESS: usize = 4; // Epaisseur trait species
+const GTHICKNESS: usize = 3; // Epaisseur trait gene_
+const STHICKNESS: usize = 6; // Epaisseur trait species
 // const COLORS:Vec<Color> =  Vec::new();
 // const COLORS:Vec<Color> =  vec![Color::Red];
 // const COLORS: [ Color; 3] = [Color::Red,Color::Red,Color::Red ];

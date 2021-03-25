@@ -1,6 +1,6 @@
 use taxonomy::Taxonomy;
 use log::{info};
-pub const BLOCK: f32 = 100.0;
+pub const BLOCK: f32 = 60.0;
 pub const PIPEBLOCK: f32 = BLOCK / 4.0;
 // Structures
 // ==========
