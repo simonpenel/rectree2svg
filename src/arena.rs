@@ -269,11 +269,11 @@ pub enum Event {
     Speciation,
     Duplication,
     Loss,
-    Transfer,
     BranchingOut,
     TransferBack,
     BifurcationOut,
     Leaf,
+    ObsoleteSpeciationLoss,
     Undef,
 }
 /// There  is no Default pour enum, we define one.
@@ -377,7 +377,32 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
             let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
             for evenement in child.children() {
                 if evenement.has_tag_name("speciationLoss"){
-                    panic!("Warning: taxon 'speciationLoss' is obsolete");
+                    panic!("Warning: taxon 'speciationOutLoss' is obsolete");
+                    // event_num += 1;
+                    // // increment le numero
+                    // *numero += 1;
+                    // // Nouveau nom
+                    // let name = "N".to_owned()+&numero.to_string();
+                    // //  index de ce nouveau nom
+                    // let name = tree.new_node(name.to_string());
+                    // //Ajoute ce noeud au parent
+                    // tree.arena[parent].children.push(name);
+                    // // Attribue un parent a ce noeud
+                    // tree.arena[name].parent = Some(parent);
+                    //
+                    // info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                    // tree.arena[name].set_event(Event::ObsoleteSpeciationLoss);
+                    // info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                    // assert!(evenement.has_attribute("speciesLocation"));
+                    // assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                    // let location = evenement.attributes()[0].value();
+                    // tree.arena[name].location = location.to_string();
+                }
+                if evenement.has_tag_name("speciationOutLoss"){
+                    panic!("Warning: taxon 'speciationOutLoss' is obsolete");
+                }
+                if evenement.has_tag_name("speciationOut"){
+                    panic!("Warning: taxon 'speciationOut' is obsolete");
                 }
                     if evenement.has_tag_name("loss"){
                         event_num += 1;
@@ -535,6 +560,11 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
         info!("xml2tree:Event closed");
         }
     }
+}
+
+// chec
+pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>) {
+    println!("CHECK : {:?}",&gene_tree);
 }
 
 /// Set the coordinates of the gene tree according to species tree coordinates

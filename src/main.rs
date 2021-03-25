@@ -13,6 +13,7 @@ use crate::arena::Options;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
+use crate::arena::check_for_obsolete;
 use crate::arena::map_gene_trees;
 use crate::arena::map_species_trees;
 use crate::arena::bilan_mappings;
@@ -250,6 +251,8 @@ fn main()  {
                         break;
                     }
                 }
+                // check for obsolete
+                check_for_obsolete(&mut gene_tree);
                 gene_trees.push(gene_tree);
             }
             let  nb_gntree =  gene_trees.len().clone();
