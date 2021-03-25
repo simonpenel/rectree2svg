@@ -375,28 +375,47 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
         if child.has_tag_name("eventsRec"){
             info!("xml2tree:Event detected");
             let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
+            let mut sploss_num = 0; // pour le format obsolete
             for evenement in child.children() {
                 if evenement.has_tag_name("speciationLoss"){
-                    panic!("Warning: taxon 'speciationOutLoss' is obsolete");
+                    // panic!("Warning: taxon 'speciationOutLoss' is obsolete");
                     // event_num += 1;
-                    // // increment le numero
-                    // *numero += 1;
-                    // // Nouveau nom
-                    // let name = "N".to_owned()+&numero.to_string();
-                    // //  index de ce nouveau nom
-                    // let name = tree.new_node(name.to_string());
-                    // //Ajoute ce noeud au parent
-                    // tree.arena[parent].children.push(name);
-                    // // Attribue un parent a ce noeud
-                    // tree.arena[name].parent = Some(parent);
-                    //
-                    // info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
-                    // tree.arena[name].set_event(Event::ObsoleteSpeciationLoss);
-                    // info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
-                    // assert!(evenement.has_attribute("speciesLocation"));
-                    // assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
-                    // let location = evenement.attributes()[0].value();
-                    // tree.arena[name].location = location.to_string();
+                    sploss_num += 1;
+                    // increment le numero
+                    *numero += 1;
+                    // Nouveau nom
+                    let sploss_name = "ADDED_SPECLOSS".to_owned()+&numero.to_string();
+                    //  index de ce nouveau nom
+                    let sploss_name = tree.new_node(sploss_name.to_string());
+                    //Ajoute ce noeud au grand parent
+                    let grandparent = match tree.arena[parent].parent {
+                        Some(p) => p,
+                        None => panic!("No parent! Unable to process obsolete format"),
+                    };
+
+                    tree.arena[grandparent].children.push(sploss_name);
+                    // Attribue un parent a ce noeud
+                    tree.arena[sploss_name].parent = Some(grandparent);
+                    // Nouveau nom
+                    let loss_name = "ADDED_LOSS".to_owned()+&numero.to_string();
+                    //  index de ce nouveau nom
+                    let loss_name = tree.new_node(loss_name.to_string());
+
+                    tree.arena[sploss_name].children.push(loss_name);
+
+                    // Attribue un parent a ce noeud
+                    tree.arena[loss_name].parent = Some(sploss_name);
+                    tree.arena[loss_name].set_event(Event::Loss);
+
+                    info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
+                    tree.arena[sploss_name].set_event(Event::ObsoleteSpeciationLoss);
+                    info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
+                    assert!(evenement.has_attribute("speciesLocation"));
+                    assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
+                    let location = evenement.attributes()[0].value();
+                    tree.arena[sploss_name].location = location.to_string();
+                    // BIDON, JUSTE POUR VOIR
+                    tree.arena[loss_name].location = location.to_string();
                 }
                 if evenement.has_tag_name("speciationOutLoss"){
                     panic!("Warning: taxon 'speciationOutLoss' is obsolete");
@@ -469,7 +488,11 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         event_num += 1;
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         // TODO
-                        // C'est une speciation seulement si c'est le premier evenement:
+                        // Traitement speciationloss:
+                        if sploss_num > 0 {
+                            panic!("Old format not supported yet");
+                        }
+
                         tree.arena[parent].set_event(Event::Speciation);
                         info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
                         info!("Attributes of {:?} are {:?}",evenement,evenement.attributes());
@@ -481,8 +504,6 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                     }
                     if evenement.has_tag_name("duplication"){
                         event_num += 1;
-                        // TODO
-                        // C'est une duplication seulement si c'est le premier evenement:
                         info!("xml2tree: event Nb {} = {:?}",event_num,evenement);
                         tree.arena[parent].set_event(Event::Duplication);
                         info!("xml2tree: setting event of {:?} : {:?}",tree.arena[parent].name,tree.arena[parent].e);
@@ -492,6 +513,15 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         let location = evenement.attributes()[0].value();
                         info!("xml2tree: set location = {}",location);
                         tree.arena[parent].location = location.to_string();
+                        // TODO
+                        // Traitement speciationloss:
+                        if sploss_num > 0 {
+                            println!("IIIIII");
+                            println!("CEST QUOI {:?}",tree.arena[parent]);
+                            println!("CEST QUOI {:?}",tree.arena);
+
+                        }
+
                     }
                     if evenement.has_tag_name("branchingOut"){
                         event_num += 1;
@@ -564,7 +594,45 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 
 // chec
 pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>) {
-    info!("CHECK : {:?}",&gene_tree);
+    println!("CHECK BEFORE  : {:?}",&gene_tree);
+    let mut obs = Vec::new();
+    for  index in &mut gene_tree.arena {
+        if index.e == Event::ObsoleteSpeciationLoss {
+            println!("YARGLAH {:?}",index);
+            let parent = match index.parent {
+                Some(p) => p,
+                None => panic!("Error when processing obsolete format"),
+            };
+            obs.push(parent);
+            // let  children =  &gene_tree.arena[parent].children;
+        }
+    }
+    for no in obs {
+        let children = &gene_tree.arena[no].children;
+        let mut to_move = 0;
+        let mut to_accept = 0;
+        for child in children {
+            println!("CHECK {:?}: {:?} {:?}",*child,&gene_tree.arena[*child].val, &gene_tree.arena[*child].e);
+            if &gene_tree.arena[*child].e == &Event::Duplication {
+                println!("FIND NODE TO MOVE:  {:?}",child);
+                to_move = *child;
+            }
+            if &gene_tree.arena[*child].e == &Event::ObsoleteSpeciationLoss {
+                println!("FIND NODE TO ACC:  {:?}",child);
+                to_accept = *child;
+            }
+        }
+        println!("ADDNG  {:?} TO {:?}",to_move,to_accept);
+        gene_tree.arena[to_accept].children.push(to_move);
+        gene_tree.arena[to_move].parent =  Some(to_accept);
+        println!("HE DIS VIRERE   {:?} DE  {:?}",to_move,no);
+        gene_tree.arena[no].children.retain(|&x| x !=  to_move);
+
+    //     for child in  &mut gene_tree.arena[no].children {
+    //     println!("CHECK {:?}", &mut gene_tree.arena[*child]);
+    // }
+    }
+        println!("CHECK AFTER  : {:?}",&gene_tree);
 }
 
 /// Set the coordinates of the gene tree according to species tree coordinates
