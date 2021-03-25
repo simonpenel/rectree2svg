@@ -5,6 +5,7 @@
 // Pour la doc et pour facilier l'usage par les utilisateurs du module:
 
 mod arena;
+pub use self::arena::Options;
 pub use self::arena::Event;
 pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;

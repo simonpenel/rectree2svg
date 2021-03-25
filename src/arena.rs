@@ -281,6 +281,19 @@ impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
+//  Structure Options
+#[derive(Debug)]
+pub struct Options{
+    pub gene_internal :bool,
+}
+impl Options {
+    pub fn new() -> Self {
+        Self {
+            gene_internal:false,
+        }
+    }
+}
+
 // Fonctions
 // =========
 

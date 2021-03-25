@@ -9,6 +9,7 @@ use taxonomy::formats::newick;
 use taxonomy::Taxonomy;
 use webbrowser::{Browser};
 mod arena;
+use crate::arena::Options;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
 use crate::arena::xml2tree;
@@ -39,9 +40,10 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-o output file][-b][-h][-p][-l][-v]",programe_name);
+    println!("{} -f input file [-o output file][-b][-h][-i][-p][-l][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -p : build a phylogram");
+    println!("    -i : display internal gene nodes ");
     println!("    -l : use branch length");
     println!("    -h : help");
     println!("    -v : verbose");
@@ -56,13 +58,15 @@ pub enum  Format {
 }
 
 fn main()  {
+    // Initialise Options
+    let mut options: Options = Options::new();
     // Gestion des arguments et des options
     // ------------------------------------
     let args: Vec<String> = std::env::args().collect();
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:o:bhvpl");
+    let mut opts = getopt::Parser::new(&args, "f:o:bhivpl");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
@@ -74,6 +78,7 @@ fn main()  {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
+                Opt('i', None) => options.gene_internal = true,
                 Opt('b', None) => open_browser = true,
                 Opt('p', None) => clado_flag = false,
                 Opt('l', None) => real_length_flag = true,
@@ -120,6 +125,7 @@ fn main()  {
             },
     };
     println!("Assume that format is {:?}",format);
+
     // Ouverture  du fichier
     // ----------------------
     let  f = File::open(filename);
@@ -339,7 +345,7 @@ fn main()  {
             println!("Output filename is {}",outfile);
             let path = env::current_dir().expect("Unable to get current dir");
             let url_file = format!("file:///{}/{}", path.display(),outfile);
-            drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile);
+            drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,options);
             // EXIT
             // On s'arrete la, le reste du programme concerne les autres formats
             if open_browser {
