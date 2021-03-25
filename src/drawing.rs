@@ -121,22 +121,27 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
             true => {
                 element.assign("x", index.x-15.0);
                 element.assign("y", index.y - index.width /2.0 - 10.0);
+                element.assign("class", "jaune");
+                let txt  = Text::new(&index.name);
+                element.append(txt);
+                element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+                g.append(element);
             },
             false => {
                 match options.species_internal {
                     true => {
                         element.assign("x", index.x+15.0);
                         element.assign("y", index.y+20.0);
+                        element.assign("class", "jaune");
+                        let txt  = Text::new(&index.name);
+                        element.append(txt);
+                        element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+                        g.append(element);
                     },
                     false => {},
                 };
             },
         };
-        element.assign("class", "jaune");
-        let txt  = Text::new(&index.name);
-        element.append(txt);
-        element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-        g.append(element);
      }
      let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
      let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
