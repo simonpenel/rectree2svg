@@ -259,7 +259,7 @@ fn main()  {
                     }
                 }
                 // check for obsolete
-                check_for_obsolete(&mut gene_tree);
+                check_for_obsolete(&mut gene_tree, &mut sp_tree);
                 gene_trees.push(gene_tree);
             }
             let  nb_gntree =  gene_trees.len().clone();

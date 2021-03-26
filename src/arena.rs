@@ -165,6 +165,20 @@ where
         idx
     }
 
+    //  Get index from name
+    pub fn get_index(&mut self, name: String) -> usize {
+        for node in &self.arena {
+    //        match node.parent {
+    //            None => return node.idx,
+    //            Some (t) => 0,
+            if node.name == name {
+                return node.idx
+             }
+
+            }
+        panic!("Unable to find {} in the tree",name);
+    }
+
     //A AMELIORER : RENVOYER UN RESULTS
     /// Get the index of the root.
     #[allow(unreachable_code)]
@@ -515,14 +529,6 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                         let location = evenement.attributes()[0].value();
                         info!("xml2tree: set location = {}",location);
                         tree.arena[parent].location = location.to_string();
-                        // TODO
-                        // Traitement speciationloss:
-                        if sploss_num > 0 {
-                            println!("IIIIII");
-                            println!("CEST QUOI {:?}",tree.arena[parent]);
-                            println!("CEST QUOI {:?}",tree.arena);
-
-                        }
 
                     }
                     if evenement.has_tag_name("branchingOut"){
@@ -595,46 +601,70 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 }
 
 // chec
-pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>) {
-    println!("CHECK BEFORE  : {:?}",&gene_tree);
+pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>, species_tree:&mut ArenaTree<String>) {
+    info!("[check_for_obsolete] Initial gene tree {:?}",&gene_tree);
     let mut obs = Vec::new();
     for  index in &mut gene_tree.arena {
         if index.e == Event::ObsoleteSpeciationLoss {
-            println!("YARGLAH {:?}",index);
+            info!("[check_for_obsolete] Find ObsoleteSpeciationLoss (OSL): {:?}",index);
             let parent = match index.parent {
                 Some(p) => p,
                 None => panic!("Error when processing obsolete format"),
             };
+            info!("[check_for_obsolete] Parent of OSL: {:?}",parent);
             obs.push(parent);
             // let  children =  &gene_tree.arena[parent].children;
         }
     }
     for no in obs {
+        info!("[check_for_obsolete] Processing parent: {:?}",no);
         let children = &gene_tree.arena[no].children;
-        let mut to_move = 0;
-        let mut to_accept = 0;
+        let mut to_move_node = 0;    //Le Neoud de duplication a deplacer sous le noeud specaitonLoss
+        let mut specloss_node = 0;
         for child in children {
-            println!("CHECK {:?}: {:?} {:?}",*child,&gene_tree.arena[*child].val, &gene_tree.arena[*child].e);
+            info!("[check_for_obsolete] Fils {:?}: {:?} {:?}",*child,&gene_tree.arena[*child].val, &gene_tree.arena[*child].e);
             if &gene_tree.arena[*child].e == &Event::Duplication {
-                println!("FIND NODE TO MOVE:  {:?}",child);
-                to_move = *child;
+                info!("[check_for_obsolete] Find the Duplication node to move:  {:?}",child);
+                to_move_node = *child;
             }
             if &gene_tree.arena[*child].e == &Event::ObsoleteSpeciationLoss {
-                println!("FIND NODE TO ACC:  {:?}",child);
-                to_accept = *child;
+                info!("[check_for_obsolete] Find the 'destination' OSL  node  :  {:?}",child);
+                specloss_node = *child;
             }
         }
-        println!("ADDNG  {:?} TO {:?}",to_move,to_accept);
-        gene_tree.arena[to_accept].children.push(to_move);
-        gene_tree.arena[to_move].parent =  Some(to_accept);
-        println!("HE DIS VIRERE   {:?} DE  {:?}",to_move,no);
-        gene_tree.arena[no].children.retain(|&x| x !=  to_move);
+        let loss_node=gene_tree.arena[specloss_node].children[0];
+        info!("[check_for_obsolete] Adding  {:?} to {:?}",to_move_node,specloss_node);
+        gene_tree.arena[specloss_node].children.push(to_move_node);
+        info!("[check_for_obsolete] Set parent of {:?} as {:?}",to_move_node,specloss_node);
+        gene_tree.arena[to_move_node].parent =  Some(specloss_node);
+        info!("[check_for_obsolete] Remove   {:?} from  {:?}",specloss_node,no);
+        gene_tree.arena[no].children.retain(|&x| x !=  to_move_node);
+        info!("[check_for_obsolete] Chidren of the OSL {:?}: {:?}",specloss_node,gene_tree.arena[specloss_node].children);
+        info!("[check_for_obsolete] Details of the OSL {:?}: {:?}: {:?}",specloss_node,gene_tree.arena[specloss_node].val,gene_tree.arena[specloss_node].location);
+        let specloss_species = &gene_tree.arena[specloss_node].location;
+        info!("[check_for_obsolete] Species of the OSL = {}",specloss_species);
+        let to_move_species = &gene_tree.arena[to_move_node].location;
+        info!("[check_for_obsolete] Species of the node moved under OSL = {}",to_move_species);
+        let species_node = species_tree.get_index(specloss_species.to_string());// index de  specloss_species dans l'arbre d'espece
+        info!("[check_for_obsolete] Node of the OSL in the species tree : {:?}",species_tree.arena[species_node]);
+        let species_node_left =  &species_tree.arena[species_node].children[0];
+        let species_node_right =  &species_tree.arena[species_node].children[1];
+        let species_left =  &species_tree.arena[*species_node_left].name;
+        let species_right =  &species_tree.arena[*species_node_right].name;
+        info!("[check_for_obsolete] Species under the OSL = {}, {}",species_left,species_right);
+        let loss_species = match to_move_species ==  species_left {
+            true => species_right,
+            false => species_left,
+        };
+        // TO DO : VERIFIER  L'AUTRE PARS ECUROTE
+        info!("[check_for_obsolete] Species of the loss is thus {}",loss_species);
+        gene_tree.arena[loss_node].location = loss_species.to_string();
 
     //     for child in  &mut gene_tree.arena[no].children {
     //     println!("CHECK {:?}", &mut gene_tree.arena[*child]);
     // }
     }
-        println!("CHECK AFTER  : {:?}",&gene_tree);
+        info!("[check_for_obsolete] Final gene tree {:?}",&gene_tree);
 }
 
 /// Set the coordinates of the gene tree according to species tree coordinates
