@@ -371,9 +371,9 @@ fn main()  {
             match species_only_flag {
                 true => {
                     if options.species_internal {
-                         options.gene_internal = true;
+                         options.gene_internal = true;}
                          drawing::draw_tree(&mut sp_tree, outfile,&options);
-                    }
+                    
                 },
                 false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,&options),
             };
