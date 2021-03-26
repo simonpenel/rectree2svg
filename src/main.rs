@@ -1,5 +1,15 @@
-// Temps de calcul en O(n^2) correct pour des arbres inferieur à  1500 feuilles
-// Au dela le calcul devient long et l'affichage illisible.
+/// name = "rectree2svg"
+/// version = "0.1.0"
+/// authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
+/// edition = "2021"
+///
+/// Usage:
+/// Draw phylogenetic trees in a svg file.
+/// Draw multiple reconciled gene trees with the associated species tree.
+/// Draw simple gene or species tree too.
+/// Read a newick, phyloxml or recPhyloXML file.
+/// Format is guessed according to filename (default is newick).
+
 use std::fs;
 use std::fs::File;
 use std::env;
