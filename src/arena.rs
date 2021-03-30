@@ -315,6 +315,119 @@ impl Options {
 // Fonctions
 // =========
 
+/// Fill an ArenaTree structure with the contents of a parentheses  tree.
+pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num: &mut usize) {
+    let (left,right,trail) = find_left_right(arbre);
+    println!("LEFT = {} RIGHT = {} TRAIL = {}",left,right,trail);
+    match trail.find(':') {
+        Some(j) => {
+            println!("Name of father          : {}",trail[0..j].to_string());
+            // println!("Length of father branch : {}",trail[j+1..].to_string().parse::<f32>().unwrap());
+            tree.arena[index].l = trail[j+1..].to_string().parse::<f32>().unwrap();
+            tree.arena[index].name = trail[0..j].to_string();
+
+        },
+        None => {},
+    };
+
+    match  left.find(',') {
+        Some(_i)=> {
+            *num = *num + 1;
+            //  Nouveau noeud
+            let name = "NODE_".to_string()+&num.to_string();
+            let new_index = tree.new_node(name.to_string());
+            // tree.arena[new_index].name = int_name.to_string();
+            tree.arena[index].children.push(new_index);
+            tree.arena[new_index].parent = Some(index);
+            newick2tree(left, tree,new_index,num);
+        }
+            ,
+        None => {
+            println!("{} is a leaf",left);
+            *num = *num + 1;
+            let name = "NODE_".to_string()+&num.to_string();
+            let left_index = tree.new_node(name);
+            tree.arena[index].children.push(left_index);
+            tree.arena[left_index].parent = Some(index);
+            match  left.find(':') {
+                Some(i)=> {
+                    tree.arena[left_index].name = left[0..i].to_string();
+                    tree.arena[left_index].l = left[i+1..].to_string().parse::<f32>().unwrap();
+                },
+                None => {
+                    tree.arena[left_index].name = left;
+                },
+            }
+        },
+    };
+    match  right.find(',') {
+        Some(_i)=> {
+            *num = *num + 1;
+            let name = "NODE_".to_string()+&num.to_string();
+            let new_index = tree.new_node(name.to_string());
+            tree.arena[index].children.push(new_index);
+            tree.arena[new_index].parent = Some(index);
+            newick2tree(right, tree,new_index,num);
+        },
+        None => {
+            println!("{} is a leaf",right);
+            *num = *num + 1;
+            let name = "NODE_".to_string()+&num.to_string();
+            let right_index = tree.new_node(name);
+            tree.arena[index].children.push(right_index);
+            tree.arena[right_index].parent = Some(index);
+            match  right.find(':') {
+                Some(i)=> {
+                    println!("Name is : {}",right[0..i].to_string());
+                    tree.arena[right_index].name = right[0..i].to_string();
+                    tree.arena[right_index].l = right[i+1..].to_string().parse::<f32>().unwrap();
+                },
+                None => {
+                    tree.arena[right_index].name = right;
+                },
+            }
+        },
+    };
+}
+
+/// Split a parenthesed tree into  left and right  parenthsed trees and trailing  string
+pub fn find_left_right(arbre:String)-> (String,String,String){
+    let mut len = arbre.len() - 1;
+    if &arbre[len..] == "\n" {
+        len -= 1;
+    }
+    assert_eq!(&arbre[..1],"(");
+    let mut left:std::string::String = String::new();
+    let mut right:std::string::String = String::new();
+    let mut num_par = 0;
+    let mut i = 0;
+    for char in arbre.chars() {
+        i += 1;
+         match char {
+             '(' => num_par += 1,
+             ')' => num_par -= 1,
+             ',' => {
+                 if num_par == 1 {
+                     break
+                 }
+             },
+             _ => {}
+         };
+    }
+    left = (&arbre[1..i-1]).to_string();
+    right = (&arbre[i..len]).to_string();
+
+    let trail =  match right.rfind(')'){
+        Some(k) =>  right[k+1..].to_string(),
+        None => "".to_string(),
+    };
+    let right_clean =  match right.rfind(')'){
+        Some(k) =>  right[..k].to_string(),
+        None => right[..].to_string(),
+    };
+    (left,right_clean,trail)
+}
+
 /// Fill an ArenaTree structure with the contents of a GeneralTaxonomy structure.
 pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
     let children = &t.children(n).expect("Pas de fils");

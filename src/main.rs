@@ -22,6 +22,7 @@ mod arena;
 use crate::arena::Options;
 use crate::arena::ArenaTree;
 use crate::arena::taxo2tree;
+use crate::arena::newick2tree;
 use crate::arena::xml2tree;
 use crate::arena::check_for_obsolete;
 use crate::arena::map_gene_trees;
@@ -189,24 +190,31 @@ fn main()  {
         },
         // Newick
         Format::Newick => {
-            // Stocke l'arbre dans une structure GeneralTaxonomy
-            let taxo = newick::load_newick(&mut file);
-            let taxo = match taxo {
-                Ok(taxo) => {
-                    info!("File is ok");
-                    taxo},
-                Err(error) => {
-                    panic!("Something went wrong reading the newick file : {:?}", error);
-                }
-            };
-            info!("taxonomy : {:?}",taxo);
-            // Stocke l'arbre dans une structure ArenaTree
-            let racine: &str = taxo.root();
-            let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
-            let children = taxo.children(racine_tid).expect("Pas de fils");
-            for child in children {
-                taxo2tree(& taxo, child,  &mut tree);
-            }
+                // let contents = fs::read_to_string(filename);
+                let contents = fs::read_to_string(filename)
+                .expect("Something went wrong reading the newick file");
+
+                let root = tree.new_node("Root".to_string());
+                newick2tree(contents, &mut tree, root, &mut 0);
+                // newick2tree(contents, &mut tree);
+            // // Stocke l'arbre dans une structure GeneralTaxonomy
+            // let taxo = newick::load_newick(&mut file);
+            // let taxo = match taxo {
+            //     Ok(taxo) => {
+            //         info!("File is ok");
+            //         taxo},
+            //     Err(error) => {
+            //         panic!("Something went wrong reading the newick file : {:?}", error);
+            //     }
+            // };
+            // info!("taxonomy : {:?}",taxo);
+            // // Stocke l'arbre dans une structure ArenaTree
+            // let racine: &str = taxo.root();
+            // let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
+            // let children = taxo.children(racine_tid).expect("Pas de fils");
+            // for child in children {
+            //     taxo2tree(& taxo, child,  &mut tree);
+            // }
         },
         // Recphyloxml
         Format::Recphyloxml => {
@@ -373,7 +381,7 @@ fn main()  {
                     if options.species_internal {
                          options.gene_internal = true;}
                          drawing::draw_tree(&mut sp_tree, outfile,&options);
-                    
+
                 },
                 false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,&options),
             };
