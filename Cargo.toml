@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
 description ="Read a phylogenic tree in newick, phyloxml or recPhyloXML file and create a svg."
-license="CeCILL"
+license="CECILL-2.1"
 license-file="LICENCE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
