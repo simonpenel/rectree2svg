@@ -11,17 +11,13 @@
 /// Format is guessed according to filename (default is newick).
 
 use std::fs;
-use std::fs::File;
 use std::env;
 use std::process;
 use getopt::Opt;
-use taxonomy::formats::newick;
-use taxonomy::Taxonomy;
 use webbrowser::{Browser};
 mod arena;
 use crate::arena::Options;
 use crate::arena::ArenaTree;
-use crate::arena::taxo2tree;
 use crate::arena::newick2tree;
 use crate::arena::xml2tree;
 use crate::arena::check_for_obsolete;
@@ -146,20 +142,6 @@ fn main()  {
             },
     };
     println!("Assume that format is {:?}",format);
-
-    // Ouverture  du fichier
-    // ----------------------
-    let  f = File::open(filename);
-    let  mut file = match f {
-            Ok(file) => {
-                info!("File exists");
-                file},
-            Err(error) => {
-                eprintln!("Unable to read {}",filename);
-                eprintln!("Error: {}", error);
-                process::exit(1);
-            }
-    };
     // Creation d'une structure ArenaTree (pour phyloxml et newick)
     // -----------------------------------------------------------
     let mut tree: ArenaTree<String> = ArenaTree::default();
@@ -193,28 +175,8 @@ fn main()  {
                 // let contents = fs::read_to_string(filename);
                 let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the newick file");
-
                 let root = tree.new_node("Root".to_string());
                 newick2tree(contents, &mut tree, root, &mut 0);
-                // newick2tree(contents, &mut tree);
-            // // Stocke l'arbre dans une structure GeneralTaxonomy
-            // let taxo = newick::load_newick(&mut file);
-            // let taxo = match taxo {
-            //     Ok(taxo) => {
-            //         info!("File is ok");
-            //         taxo},
-            //     Err(error) => {
-            //         panic!("Something went wrong reading the newick file : {:?}", error);
-            //     }
-            // };
-            // info!("taxonomy : {:?}",taxo);
-            // // Stocke l'arbre dans une structure ArenaTree
-            // let racine: &str = taxo.root();
-            // let racine_tid = taxo.to_internal_id(racine).expect("Pas de racine");
-            // let children = taxo.children(racine_tid).expect("Pas de fils");
-            // for child in children {
-            //     taxo2tree(& taxo, child,  &mut tree);
-            // }
         },
         // Recphyloxml
         Format::Recphyloxml => {

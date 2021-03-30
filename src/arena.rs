@@ -1,4 +1,3 @@
-use taxonomy::Taxonomy;
 use log::{info};
 pub const BLOCK: f32 = 60.0;
 pub const PIPEBLOCK: f32 = BLOCK / 4.0;
@@ -134,6 +133,7 @@ impl<T> ArenaTree<T>
 where
     T: PartialEq
 {
+    #[allow(dead_code)]
     /// Add a node and send its new index. If the
     /// node already exists, send its index.
     pub fn node(&mut self, val: T) -> usize {
@@ -318,14 +318,11 @@ impl Options {
 /// Fill an ArenaTree structure with the contents of a parentheses  tree.
 pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num: &mut usize) {
     let (left,right,trail) = find_left_right(arbre);
-    println!("LEFT = {} RIGHT = {} TRAIL = {}",left,right,trail);
+    info!("[newick2tree] Left = {} Right = {} Trail = {}",left,right,trail);
     match trail.find(':') {
         Some(j) => {
-            println!("Name of father          : {}",trail[0..j].to_string());
-            // println!("Length of father branch : {}",trail[j+1..].to_string().parse::<f32>().unwrap());
             tree.arena[index].l = trail[j+1..].to_string().parse::<f32>().unwrap();
             tree.arena[index].name = trail[0..j].to_string();
-
         },
         None => {},
     };
@@ -343,7 +340,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
         }
             ,
         None => {
-            println!("{} is a leaf",left);
+            info!("[newick2tree] {} is a leaf",left);
             *num = *num + 1;
             let name = "NODE_".to_string()+&num.to_string();
             let left_index = tree.new_node(name);
@@ -370,7 +367,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             newick2tree(right, tree,new_index,num);
         },
         None => {
-            println!("{} is a leaf",right);
+            info!("[newick2tree] {} is a leaf",right);
             *num = *num + 1;
             let name = "NODE_".to_string()+&num.to_string();
             let right_index = tree.new_node(name);
@@ -378,7 +375,6 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             tree.arena[right_index].parent = Some(index);
             match  right.find(':') {
                 Some(i)=> {
-                    println!("Name is : {}",right[0..i].to_string());
                     tree.arena[right_index].name = right[0..i].to_string();
                     tree.arena[right_index].l = right[i+1..].to_string().parse::<f32>().unwrap();
                 },
@@ -397,8 +393,6 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
         len -= 1;
     }
     assert_eq!(&arbre[..1],"(");
-    let mut left:std::string::String = String::new();
-    let mut right:std::string::String = String::new();
     let mut num_par = 0;
     let mut i = 0;
     for char in arbre.chars() {
@@ -414,9 +408,8 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
              _ => {}
          };
     }
-    left = (&arbre[1..i-1]).to_string();
-    right = (&arbre[i..len]).to_string();
-
+    let left = (&arbre[1..i-1]).to_string();
+    let right = (&arbre[i..len]).to_string();
     let trail =  match right.rfind(')'){
         Some(k) =>  right[k+1..].to_string(),
         None => "".to_string(),
@@ -426,41 +419,6 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
         None => right[..].to_string(),
     };
     (left,right_clean,trail)
-}
-
-/// Fill an ArenaTree structure with the contents of a GeneralTaxonomy structure.
-pub fn taxo2tree(t: &taxonomy::GeneralTaxonomy, n: usize, tree: &mut ArenaTree<String>) {
-    let children = &t.children(n).expect("Pas de fils");
-    let name = t.from_internal_id(n).expect("Pas de nom");
-    let parent = t.parent(n).expect("Pas de parent");
-    let parent_name = match parent {
-        None => "root",
-        Some ((id, _dist)) => t.from_internal_id(id).expect("Pas de nom")
-    };
-    let parent_dist = match parent {
-        None => -1.0,
-        Some ((_id, dist)) => {
-            dist
-        },
-    };
-    let parent_index = match parent {
-        None => 0,
-        Some ((id, _dist)) => id
-    };
-    let initial_name = name.clone();
-    let initial_parent_name = parent_name.clone();
-    let name = "N".to_owned()+&n.to_string()+"_"+name;
-    let parent_name = "N".to_owned()+&parent_index.to_string()+"_"+parent_name;
-    let name = tree.new_node(name.to_string());
-    let parent = tree.node(parent_name.to_string());
-    tree.arena[parent].name = initial_parent_name.to_string();
-    tree.arena[parent].children.push(name);
-    tree.arena[name].parent = Some(parent);
-    tree.arena[name].l = parent_dist;
-    tree.arena[name].name = initial_name.to_string();
-    for child in children {
-        taxo2tree(& t,*child,  tree);
-    }
 }
 
 /// Fill an ArenaTree structure with the contents of a roxmltre::Node structure

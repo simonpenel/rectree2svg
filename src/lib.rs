@@ -10,7 +10,6 @@ pub use self::arena::Event;
 pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;
 pub use self::arena::check_for_obsolete;
-pub use self::arena::taxo2tree;
 pub use self::arena::newick2tree;
 pub use self::arena::xml2tree;
 pub use self::arena::real_length;
