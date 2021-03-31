@@ -464,7 +464,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
             info!("[xml2tree] Event detected at {:?}",tree.arena[parent]);
             let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
             let mut sploss_num = 0; // pour le format obsolete
-            let mut current_sploss_name = parent;
+            let current_sploss_name = parent;
             for evenement in child.children() {
                 if evenement.has_tag_name("speciationLoss"){
                     info!("[xml2tree] Find obsolete tag speciationLoss (# {})",sploss_num);
