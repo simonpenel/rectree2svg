@@ -1,5 +1,5 @@
 # rectree2svg
-Build a svg phylogenetic reconciled (or not) tree with Rust
+Build a svg representation of a phylogenetic reconciled (or not) tree
 
 Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
@@ -12,7 +12,7 @@ Currently under development.
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
 
 # Under development:
-- Possible problem with obsolete recPhyloXML format (speciationLoss is supported , speciationOutLoss and speciationOut are not supported yet) 
+- Possible problem with obsolete recPhyloXML format (speciationLoss is supported , speciationOutLoss and speciationOut are not supported yet)
 - Allow 2/3 reconciliation levels (host/species/gene)
 
 # Instructions:
