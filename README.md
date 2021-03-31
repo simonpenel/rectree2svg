@@ -19,9 +19,13 @@ Currently under development.
 
 # Help:
 Read a newick, phyloxml or recPhyloXML file and create a svg.
+
 Format is guessed according to filename (default is newick)
+
 Usage:
+
 target/debug/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-s][-v]
+
     -b : open svg in browser
     -h : help
     -i : display internal gene nodes
