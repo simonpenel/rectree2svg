@@ -9,6 +9,9 @@ Read a newick or phyloxml file: create a svg representation of the tree.
 
 Currently under development.
 
+# Output example 
+https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
+
 # Under development:
 - Accepting old recPhyloXML format
 - Allow 2/3 reconciliation levels (host/species/gene)
