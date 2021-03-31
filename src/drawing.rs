@@ -94,7 +94,7 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
     let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
     let smallest_x = sp_tree.get_smallest_x() * 1.0 + 0.0 ;
     let smallest_y = sp_tree.get_smallest_y() * 1.0 + 0.0 ;
-    let width_svg = largest_x - smallest_x + 0.0;
+    let width_svg = largest_x - smallest_x+ 1.0 * BLOCK;
     let width_svg = width_svg * 1.0;
     let height_svg = largest_y - smallest_y + 2.0 * BLOCK; // Crade ; ajout car les fuielles de l'espece sont
                                                            // allongées lors de la creation du le path
