@@ -978,9 +978,14 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std
         info!(">>> {:?} {:?}",gene_trees[*index_node].arena[*node].name,gene_trees[*index_node].arena[*node].e);
         match  gene_trees[*index_node].arena[*node].e {
             Event::Duplication => {
+                let bool_left = sp_tree.is_left(index);
+                // on aligne sur le fils de gauch ou droite selon si on est dans une branche g ou d
                 let dupli_children =  &mut  gene_trees[*index_node].arena[*node].children;
-                let dupli_son_left = dupli_children[0];
-                let x = gene_trees[*index_node].arena[dupli_son_left].x;
+                let dupli_son = match bool_left {
+                    true => dupli_children[0],
+                    false => dupli_children[1],
+                };
+                let x = gene_trees[*index_node].arena[dupli_son].x;
                 gene_trees[*index_node].arena[*node].set_x_noref(x);
             },
             // Il faut deplacer aussi les feuilles pour compenser: on les mets au meme niveau
