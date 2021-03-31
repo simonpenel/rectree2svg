@@ -461,7 +461,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
         }
         // Attribue l evenement
         if child.has_tag_name("eventsRec"){
-            info!("xml2tree:Event detected");
+            info!("[xml2tree] Event detected at {:?}",tree.arena[parent]);
             let mut event_num = 0; // Le nb d'evenements dans balise eventsRec
             let mut sploss_num = 0; // pour le format obsolete
             let mut current_sploss_name = parent;
@@ -469,15 +469,15 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                 if evenement.has_tag_name("speciationLoss"){
                     info!("[xml2tree] Find obsolete tag speciationLoss (# {})",sploss_num);
                     info!("[xml2tree] Index of current father (current_sploss_name)  {}",current_sploss_name);
+                    info!("[xml2tree] Initial tree {:?}",tree);
                     // panic!("Warning: taxon 'speciationOutLoss' is obsolete");
                     // event_num += 1;
                     sploss_num += 1;
-                    if sploss_num == 1 {
-                        current_sploss_name = match tree.arena[parent].parent {
-                        Some(p) => p,
-                        None => panic!("No parent! Unable to process obsolete format"),
-                    };
-                    }
+                    // if sploss_num == 1 {
+                    //     current_sploss_name = match tree.arena[parent].parent {
+                    //     Some(p) => p,
+                    //     None => panic!("No parent! Unable to process obsolete format"),
+                    // };
                     // increment le numero
                     *numero += 1;
                     // Nouveau nom
@@ -485,49 +485,54 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
                     info!("[xml2tree] Create new node sploss {}",sploss_name);
                     //  index de ce nouveau nom
                     let sploss_name = tree.new_node(sploss_name.to_string());
-                    info!("[xml2tree] New node sploss : {:?}",tree.arena[sploss_name]);
-                    info!("[xml2tree] Adding sploss {} to current_sploss {}",sploss_name,current_sploss_name);
-                    info!("[xml2tree] Node current_sploss was {:?}",tree.arena[current_sploss_name]);
-                    tree.arena[current_sploss_name].children.push(sploss_name);
-                    tree.arena[sploss_name].parent = Some(current_sploss_name);
-                    info!("[xml2tree] Node current_sploss is now {:?}",tree.arena[current_sploss_name]);
-                    info!("[xml2tree] Node sploss is now {:?}",tree.arena[sploss_name]);
+                    info!("[xml2tree] Modified tree 1  {:?}",tree);
+                    info!("[xml2tree] Index of current node {}",parent);
 
-                    // Nouveau nom
-                    let loss_name = "ADDED_LOSS".to_owned()+&numero.to_string();
-                    info!("[xml2tree] Create new node loss {}",loss_name);
-                    //  index de ce nouveau nom
-                    let loss_name = tree.new_node(loss_name.to_string());
-                    info!("[xml2tree] New node loss : {:?}",tree.arena[loss_name]);
+                    // Je veux que le noeud courant soit le fils du ouveau noeud, et que celui ci
+                    // prenne la place du noeud courant
 
-                    info!("[xml2tree] Adding loss {} to sploss {}",loss_name,sploss_name);
-                    info!("[xml2tree] Node sploss was {:?}",tree.arena[sploss_name]);
-
-                    tree.arena[sploss_name].children.push(loss_name);
-                    tree.arena[loss_name].parent = Some(sploss_name);
-                    info!("[xml2tree] Node sploss is now {:?}",tree.arena[sploss_name]);
-                    info!("[xml2tree] Node loss is now {:?}",tree.arena[loss_name]);
-                    info!("[xml2tree] Setting event of loss node: Loss");
-                    tree.arena[loss_name].set_event(Event::Loss);
-                    tree.arena[loss_name].name = "Added Loss".to_string();
-                    info!("[xml2tree] Node loss is now {:?}",tree.arena[loss_name]);
-                    info!("[xml2tree] event Nb {} = {:?}",event_num,evenement);
-                    info!("[xml2tree] Setting event of sploss node: ObsoleteSpeciationLoss ");
+                    // parent du noeud courant:
+                    let grandparent =
+                    match tree.arena[parent].parent {
+                        Some(p) => p,
+                        None => panic!("No parent! Unable to process obsolete format"),
+                    };
+                    // Attribution d'un nom et d'un event
                     tree.arena[sploss_name].set_event(Event::ObsoleteSpeciationLoss);
                     tree.arena[sploss_name].name = "SpecOutLoss".to_string();
-                    info!("[xml2tree] Node sploss is now {:?}",tree.arena[sploss_name]);
-                    info!("[xml2tree] Check current_sploss {:?}",tree.arena[current_sploss_name]);
+                    // Attribution d'une location
                     assert!(evenement.has_attribute("speciesLocation"));
                     assert_eq!(evenement.attributes()[0].name(),"speciesLocation");
                     let location = evenement.attributes()[0].value();
                     info!("[xml2tree] Location is {}",location);
                     info!("[xml2tree] Set Location of sploss_name:");
                     tree.arena[sploss_name].location = location.to_string();
-                    info!("[xml2tree] Node sploss_name is now {:?}:",tree.arena[sploss_name]);
-                    // BIDON, JUSTE POUR VOIR
-                    // tree.arena[loss_name].location = location.to_string();
-                    current_sploss_name = sploss_name;
-                    info!("[xml2tree] New index of current father (current_sploss_name)  {}",current_sploss_name);
+                    // Ajout du nouveau noeud comme frere du noeud courant
+                    tree.arena[sploss_name].parent = Some(grandparent);
+                    // Vire le noeud courant des fils de son pere
+                    tree.arena[grandparent].children.retain(|&x| x !=  parent);
+                    // Ajoute le nouveau noeud  au pere
+                    tree.arena[grandparent].children.push(sploss_name);
+                    // Ajoute le noeud  courant au nouveau noeud
+                    tree.arena[sploss_name].children.push(parent);
+                    //  Redfinit le parent du noeud courant
+                    tree.arena[parent].parent = Some(sploss_name);
+                    info!("[xml2tree] Modified tree 2  {:?}",tree);
+
+                    // Nouveau nom Loss
+                    let loss_name = "ADDED_LOSS".to_owned()+&numero.to_string();
+                    info!("[xml2tree] Create new node loss {}",loss_name);
+                    //  index de ce nouveau nom
+                    let loss_name = tree.new_node(loss_name.to_string());
+                    info!("[xml2tree] New node loss : {:?}",tree.arena[loss_name]);
+                    //  Ajoute le Loss au nouveau noeud
+                    tree.arena[sploss_name].children.push(loss_name);
+                    tree.arena[loss_name].parent = Some(sploss_name);
+                    // Attribution d'un nom et d'un event
+                    tree.arena[loss_name].set_event(Event::Loss);
+                    tree.arena[loss_name].name = "Added Loss".to_string();
+
+
                 }
                 if evenement.has_tag_name("speciationOutLoss"){
                     panic!("Warning: taxon 'speciationOutLoss' is obsolete");
@@ -696,73 +701,60 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
     }
 }
 
+
 // chec
 pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>, species_tree:&mut ArenaTree<String>) {
     info!("[check_for_obsolete] Initial gene tree {:?}",&gene_tree);
-    let mut obs = Vec::new();
+    let mut osls = Vec::new();
     for  index in &mut gene_tree.arena {
         if index.e == Event::ObsoleteSpeciationLoss {
             info!("[check_for_obsolete] Find ObsoleteSpeciationLoss (OSL): {:?}",index);
-            let parent = match index.parent {
-                Some(p) => p,
-                None => panic!("Error when processing obsolete format"),
-            };
-            info!("[check_for_obsolete] Parent of OSL: {:?}",parent);
-            obs.push(parent);
+            osls.push(index.idx);
             // let  children =  &gene_tree.arena[parent].children;
         }
     }
-    info!("[check_for_obsolete] Find {} OSL in the tree",obs.len());
-    for no in obs {
-        info!("[check_for_obsolete] Processing parent: {:?}",no);
-        let children = &gene_tree.arena[no].children;
+    info!("[check_for_obsolete] Find {} OSL in the tree",osls.len());
+    for osl in osls {
+        info!("[check_for_obsolete] Processing: {:?}",osl);
+        info!("[check_for_obsolete] OSL = {} at species {:?}",gene_tree.arena[osl].name,gene_tree.arena[osl].location);
+        let children = &gene_tree.arena[osl].children;
         info!("[check_for_obsolete] Number of children: {:?}",children.len());
-        assert_eq!(children.len(),3);
-        let mut to_move_node = 0;    //Le Neoud de duplication a deplacer sous le noeud specaitonLoss
-        let mut specloss_node = 0;
-        // assert_eq!(gene_tree.arena[children[0]].e, Event::ObsoleteSpeciationLoss);
-        for child in children {
-            info!("[check_for_obsolete] Fils {:?}: {:?} {:?} {:?}",*child,&gene_tree.arena[*child].val, &gene_tree.arena[*child].e, &gene_tree.arena[*child].location);
-            if &gene_tree.arena[*child].e == &Event::Duplication {
-                info!("[check_for_obsolete] Find the Duplication node to move:  {:?}",child);
-                to_move_node = *child;
-            }
-            if &gene_tree.arena[*child].e == &Event::ObsoleteSpeciationLoss {
-                info!("[check_for_obsolete] Find the 'destination' OSL  node  :  {:?}",child);
-                specloss_node = *child;
-            }
-        }
-        let loss_node=gene_tree.arena[specloss_node].children[0];
-        info!("[check_for_obsolete] Adding  {:?} to {:?}",to_move_node,specloss_node);
-        gene_tree.arena[specloss_node].children.push(to_move_node);
-        info!("[check_for_obsolete] Set parent of {:?} as {:?}",to_move_node,specloss_node);
-        gene_tree.arena[to_move_node].parent =  Some(specloss_node);
-        info!("[check_for_obsolete] Remove   {:?} from  {:?}",specloss_node,no);
-        gene_tree.arena[no].children.retain(|&x| x !=  to_move_node);
-        info!("[check_for_obsolete] Chidren of the OSL {:?}: {:?}",specloss_node,gene_tree.arena[specloss_node].children);
-        info!("[check_for_obsolete] Details of the OSL {:?}: {:?}: {:?}",specloss_node,gene_tree.arena[specloss_node].val,gene_tree.arena[specloss_node].location);
-        let specloss_species = &gene_tree.arena[specloss_node].location;
-        info!("[check_for_obsolete] Species of the OSL = {}",specloss_species);
-        let to_move_species = &gene_tree.arena[to_move_node].location;
-        info!("[check_for_obsolete] Species of the node moved under OSL = {}",to_move_species);
-        let species_node = species_tree.get_index(specloss_species.to_string());// index de  specloss_species dans l'arbre d'espece
-        info!("[check_for_obsolete] Node of the OSL in the species tree : {:?}",species_tree.arena[species_node]);
+        assert_eq!(children.len(),2);
+        let left = children[0];
+        let right = children[1];
+        info!("[check_for_obsolete] Left child = {} {:?}",gene_tree.arena[left].name,gene_tree.arena[left].e);
+        info!("[check_for_obsolete] Right child = {} {:?}",gene_tree.arena[right].name,gene_tree.arena[right].e);
+
+        // Le noeud loss dont on vetconnaitre l'espece associee
+        let loss = match gene_tree.arena[left].e {
+            Event::Loss => left,
+            _ => right,
+        };
+
+        // Le esece du noeud qui n'est pas loss
+        let species_not_loss = match gene_tree.arena[left].e {
+            Event::Loss => &gene_tree.arena[right].location,
+            _ =>  &gene_tree.arena[left].location,
+        };
+        info!("[check_for_obsolete] Loss node is {:?}", gene_tree.arena[loss]);
+        info!("[check_for_obsolete] Species of the other child is {:?}", species_not_loss);
+        // Espece de l'OSL
+        let species = &gene_tree.arena[osl].location;
+        //  Index de l'espece dans l'arbre d'espece
+        let species_node = species_tree.get_index(species.to_string());
         let species_node_left =  &species_tree.arena[species_node].children[0];
         let species_node_right =  &species_tree.arena[species_node].children[1];
         let species_left =  &species_tree.arena[*species_node_left].name;
         let species_right =  &species_tree.arena[*species_node_right].name;
-        info!("[check_for_obsolete] Species under the OSL = {}, {}",species_left,species_right);
-        let loss_species = match to_move_species ==  species_left {
+        info!("[check_for_obsolete] Species under the OSL in species tree = {}, {}",species_left,species_right);
+
+        let loss_species = match species_not_loss ==  species_left {
             true => species_right,
             false => species_left,
         };
-        // TO DO : VERIFIER  L'AUTRE PARS ECUROTE
-        info!("[check_for_obsolete] Species of the loss is thus {}",loss_species);
-        gene_tree.arena[loss_node].location = loss_species.to_string();
+        info!("[check_for_obsolete] Thus species of loss node is {}",loss_species);
+        gene_tree.arena[loss].location = loss_species.to_string();
 
-    //     for child in  &mut gene_tree.arena[no].children {
-    //     println!("CHECK {:?}", &mut gene_tree.arena[*child]);
-    // }
     }
         info!("[check_for_obsolete] Final gene tree {:?}",&gene_tree);
 }
@@ -953,6 +945,20 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec
                     gene_trees[*index_node].arena[*node].set_y_noref(y);
                     shift = shift + incr;
                     shift_x = shift_x - incr;
+                },
+                Event::ObsoleteSpeciationLoss => {
+                    let x = gene_trees[*index_node].arena[*node].x;
+                    let x = match bool_left {
+                        true   => x + PIPEBLOCK*shift / ratio,
+                        false  => x + PIPEBLOCK*shift_x / ratio,
+                    };
+                    gene_trees[*index_node].arena[*node].set_x_noref(x);
+                    let y = gene_trees[*index_node].arena[*node].y;
+                    let y = y + PIPEBLOCK*shift / ratio;
+                    gene_trees[*index_node].arena[*node].set_y_noref(y);
+                    shift = shift + incr;
+                    shift_x = shift_x - incr;
+
                 },
                 _=> {},
             }
