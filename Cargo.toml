@@ -7,6 +7,9 @@ description ="Read a phylogenic tree in newick, phyloxml or recPhyloXML file and
 license="CECILL-2.1"
 license-file="LICENCE"
 keywords="phylogeny"
+homepage = "https://github.com/simonpenel/rectree2svg"
+repository = "https://github.com/simonpenel/rectree2svg"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
