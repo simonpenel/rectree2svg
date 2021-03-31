@@ -58,6 +58,15 @@ fn display_help(programe_name:String) {
     println!("    -p : build a phylogram");
     println!("    -s : drawing species tree only");
     println!("    -v : verbose");
+    println!("");
+    println!("Input format is guessed according to the file name extension:");
+
+    println!(".xml         => phyloxml");
+    println!(".phyloxml    => phyloXML");
+    println!(".recphyloxml => recPhyloXML");
+    println!(".recPhyloXML => recPhyloXML");
+    println!(".recphylo    => recPhyloXML");
+    println!("any other    => newick");
     process::exit(1);
 }
 /// enum of the possible input file Formats
