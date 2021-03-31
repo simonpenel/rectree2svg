@@ -1,11 +1,12 @@
 [package]
 name = "rectree2svg"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
 description ="Read a phylogenic tree in newick, phyloxml or recPhyloXML file and create a svg."
 license="CECILL-2.1"
 license-file="LICENCE"
+keywords="phylogeny"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
