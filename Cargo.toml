@@ -3,8 +3,7 @@ name = "rectree2svg"
 version = "0.1.8"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
-description ="Read  phylogenetic trees in newick, phyloxml or recPhyloXML file,
-build and manipulate phylogenetic trees, create svg representation of the tree."
+description ="Read  phylogenetic trees in newick, phyloxml or recPhyloXML file,build and manipulate phylogenetic trees, create svg representation of the tree."
 license="CECILL-2.1"
 keywords=["phylogeny", "recphyloxml", "tree-reconciliation", "svg", "phylogenetic-tree"]
 homepage = "https://github.com/simonpenel/rectree2svg/wiki"
