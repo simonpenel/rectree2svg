@@ -121,8 +121,9 @@ where
 }
 /// Structure ArenaTree.
 ///
-/// Taken from https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6
-/// Ben Lovy https://deciduously.com/
+/// Taken from <https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6>
+///
+/// Ben Lovy <https://deciduously.com/>
 #[derive(Debug, Default)]
 pub struct ArenaTree<T>
 where
