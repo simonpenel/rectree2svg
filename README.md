@@ -52,6 +52,8 @@ target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output f
 
 # Using the code
 
+https://crates.io/crates/rectree2svg
+
 Simple Rust example: read a newick.txt file and create the svg
 
     use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
