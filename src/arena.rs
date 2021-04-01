@@ -1,6 +1,7 @@
 use log::{info};
 pub const BLOCK: f32 = 60.0;
 pub const PIPEBLOCK: f32 = BLOCK / 4.0;
+
 // Structures
 // ==========
 
@@ -33,7 +34,6 @@ where
                                 // associated to the node in the structure ( here leaf), this is useful
                                 // for drawing the transfer.
 }
-
 impl<T> Noeud<T>
 where
     T: PartialEq
@@ -116,7 +116,6 @@ where
         self.arena.push(Noeud::new(idx, val));
         idx
     }
-
     /// Add a node and send its new index. If the
     /// node already exists, send a panic alert.
     pub fn new_node(&mut self, val: T) -> usize {
@@ -132,7 +131,6 @@ where
         // Ok(idx)
         idx
     }
-
     ///  Get index of a node from its name
     pub fn get_index(&mut self, name: String) -> usize {
         for node in &self.arena {
@@ -142,7 +140,6 @@ where
             }
         panic!("Unable to find {} in the tree",name);
     }
-
     /// Get the index of the root.
     pub fn get_root(&mut self) -> usize {
         for node in &self.arena {
@@ -153,7 +150,6 @@ where
             }
         panic!("Unable to get root of the tree");
     }
-
     /// Check if the node is a leaf.
     pub fn is_leaf(&self, idx: usize) -> bool {
         match self.arena[idx].children.len() {
@@ -161,7 +157,6 @@ where
         _ => false,
         }
     }
-
     /// Check if the node is a left node.
     pub fn is_left(&self, idx: usize) -> bool {
         match self.arena[idx].parent {
@@ -180,7 +175,6 @@ where
         None => true,
         }
     }
-
     /// Get the depth of the tree.
     pub fn depth(&self, idx: usize) -> usize {
         match self.arena[idx].parent {
@@ -188,7 +182,6 @@ where
             None => 0,
         }
     }
-
     /// Get the largest x value of a tree.
     pub fn get_largest_x(&mut self) -> f32 {
         let mut max = 0.0;
@@ -199,7 +192,6 @@ where
             }
         max
     }
-
     /// Get the largest y value of a tree.
     pub fn get_largest_y(&mut self) -> f32 {
         let mut max = 0.0;
@@ -210,7 +202,6 @@ where
             }
         max
     }
-
     /// Get the smallest x value of a tree.
     pub fn get_smallest_x(&mut self) -> f32 {
         let mut min = 1000000.0;
@@ -221,7 +212,6 @@ where
             }
         min
     }
-
     /// Get the smallest y value of a tree.
     pub fn get_smallest_y(&mut self) -> f32 {
         let mut min = 1000000.0;
@@ -233,6 +223,10 @@ where
         min
     }
 }
+
+// Enums
+// =====
+
 /// enum of the possible events in a gene tree
 #[allow(dead_code)]
 #[derive(Debug, PartialEq)]
@@ -294,8 +288,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             tree.arena[index].children.push(new_index);
             tree.arena[new_index].parent = Some(index);
             newick2tree(left, tree,new_index,num);
-        }
-            ,
+        },
         None => {
             info!("[newick2tree] {} is a leaf",left);
             *num = *num + 1;
