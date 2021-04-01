@@ -1,7 +1,8 @@
 /// name = "rectree2svg"
-/// version = "0.1.0"
+/// version = "0.1.4"
 /// authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
-/// edition = "2021"
+/// release = "30/03/2021"
+/// license = "CECILL-2.1"
 ///
 /// Usage:
 /// Draw phylogenetic trees in a svg file.
