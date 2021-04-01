@@ -56,7 +56,7 @@ See Rust documentation : https://docs.rs/rectree2svg/
 
 See http://phylariane.univ-lyon1.fr/recphyloxml/
 
-# Tree drawing algorithms and sructures
+# Tree drawing algorithms and structures
 
 "Arena" Tree structure  is inspired by the code proposed [here](https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6)
 
