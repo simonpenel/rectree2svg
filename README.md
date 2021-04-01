@@ -15,7 +15,7 @@ Currently under development.
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
 
 # Under development:
-- Possible problem with obsolete recPhyloXML format (speciationLoss is supported , speciationOutLoss and speciationOut are not supported yet)
+- Possible problem with the obsolete version of recPhyloXML format (speciationLoss is supported, speciationOutLoss and speciationOut are not supported yet)
 - Allow 2/3 reconciliation levels (host/species/gene)
 
 # Instructions:
