@@ -48,6 +48,28 @@ target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output f
     - .recphylo    => recPhyloXML
     - any other    => newick
 
+# Using the code
+
+Simple Rust example: read a newick.txt file and create the svg
+
+    use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
+                  shift_mod_xy,set_middle_postorder,draw_tree};
+
+    use std::fs;
+    fn main() {
+        let mut tree: ArenaTree<String> = ArenaTree::default();
+        let options: Options = Options::new();
+        let contents = fs::read_to_string("newick.txt")
+                .expect("Something went wrong reading the newick file");
+        let root = tree.new_node("Root".to_string());
+        newick2tree(contents, &mut tree, root, &mut 0);
+        knuth_layout(&mut tree,root, &mut 1);
+        check_contour_postorder(&mut tree, root);
+        shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
+        set_middle_postorder(&mut tree, root);
+        draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
+    }
+
 # Source documentation
 
 See Rust documentation : https://docs.rs/rectree2svg/
