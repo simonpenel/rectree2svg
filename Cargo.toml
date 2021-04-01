@@ -1,6 +1,6 @@
 [package]
 name = "rectree2svg"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
 description ="Read a phylogenetic tree in newick, phyloxml or recPhyloXML file and create a svg."
