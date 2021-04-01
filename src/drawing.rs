@@ -54,14 +54,14 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
         let  event = &index.e;
         match event {
             Event::Leaf        =>  g.append(get_carre(index.x,index.y,2.0,"red".to_string())),
-            Event::Duplication =>  g.append(get_carre(index.x,index.y,4.0,"blue".to_string())),
+            Event::Duplication =>  g.append(get_carre(index.x,index.y,6.0,"blue".to_string())),
             Event::Loss =>  {
                 let mut cross = get_cross(index.x,index.y,4.0,"blue".to_string());
                 cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()
                 + " "+&index.y.to_string()+")");
                 g.append(cross);
             },
-            _   =>  g.append(get_circle(index.x,index.y,4.0,"blue".to_string())),
+            _   =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
         };
         let mut element = Element::new("text");
         element.assign("x", index.x-5.0);
