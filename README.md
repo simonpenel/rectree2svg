@@ -39,10 +39,25 @@ target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output f
     -s : drawing species tree only
     -v : verbose
 
+`Input format is guessed according to the file name extension:`
+
+    - .xml         => phyloxml
+    - .phyloxml    => phyloXML
+    - .recphyloxml => recPhyloXML
+    - .recPhyloXML => recPhyloXML
+    - .recphylo    => recPhyloXML
+    - any other    => newick
+
 # Source documentation
 
-Rust documentation :   https://docs.rs/rectree2svg/
+See Rust documentation : https://docs.rs/rectree2svg/
 
 # RecPhyloXML documentation
 
-http://phylariane.univ-lyon1.fr/recphyloxml/
+See http://phylariane.univ-lyon1.fr/recphyloxml/
+
+# Tree drawing algorithms and sructures
+
+"Arena" Tree structure  is inspired by the code proposed [here](https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6)
+
+Tree drawing algorithms are well explained [here](https://llimllib.github.io/pymag-trees/)  and [here](https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/)
