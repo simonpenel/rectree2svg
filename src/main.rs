@@ -80,7 +80,8 @@ pub enum  Format {
 }
 
 fn main()  {
-    // Initialise Options
+    // Initialise les options
+    // Some of the program options needed several functions
     let mut options: Options = Options::new();
     // Gestion des arguments et des options
     // ------------------------------------
@@ -165,7 +166,7 @@ fn main()  {
                 .expect("Something went wrong reading the phyloxml file");
             let doc = roxmltree::Document::parse(&contents).unwrap();
             let descendants = doc.root().descendants();
-            // Search for the first occurnce of clade tag
+            // Cherche la premiere occurence du clade tag
             for node in descendants {
                 if node.has_tag_name("clade"){
                     // node est la racine
@@ -183,7 +184,6 @@ fn main()  {
         },
         // Newick
         Format::Newick => {
-                // let contents = fs::read_to_string(filename);
                 let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the newick file");
                 let root = tree.new_node("Root".to_string());
@@ -207,7 +207,7 @@ fn main()  {
             let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
             info!("spTree Id: {:?}",spnode);
             let descendants = spnode.descendants();
-            // Search for the first occurnce of clade tag
+            // Cherche la premiere occurence du  clade tag
             for node in descendants {
                 if node.has_tag_name("clade"){
                     // node est la racine
@@ -236,9 +236,9 @@ fn main()  {
                 info!("Search recGeneTree node {:?}",rgnode);
                 let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
                 info!("Associated recGeneTree  : {:?}",rgnode);
-                // Search for the first gene trees
+                // Analyse le gene tree
                 let descendants = rgnode.descendants();
-                // Search for the first occurnce of clade tag
+                // Cherche la premiere occurenvce du clade tag
                 for node in descendants {
                     if node.has_tag_name("clade"){
                         // node est la racine
@@ -253,15 +253,16 @@ fn main()  {
                         break;
                     }
                 }
-                // check for obsolete
+                // Traitement des balises obsoletes potentielles (ancien format recPhyloXML)
                 check_for_obsolete(&mut gene_tree, &mut sp_tree);
+                // Ajoute l'arbre de gene
                 gene_trees.push(gene_tree);
             }
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
             // -----------------------
-            // Traitement en 10 etapes
+            // Traitement en 12 etapes
             // -----------------------
             // Au depart l'arbre est orienté du haut vers le bas (i.e. selon Y)
             // Le svg sera tourné de -90 a la fin.
