@@ -198,7 +198,6 @@ fn main()  {
             // Creation de la structure ArenaTree pour l'arbre d'espece
             // --------------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
-            println!("The handling of this format is still under development");
             let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the recphyloxml file");
             let doc = &mut roxmltree::Document::parse(&contents).unwrap();
