@@ -74,6 +74,8 @@ Simple Rust example: read a newick.txt file and create the svg
         draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
     }
 
+Some newick examples are available here : https://github.com/simonpenel/rectree2svg/tree/master/newick_examples
+
 # Source documentation
 
 See Rust documentation : https://docs.rs/rectree2svg/
