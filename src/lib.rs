@@ -1,6 +1,8 @@
-//! # tree2svg
+//! # rectree2svg
 //!
-//! `tree2svg` Read a phylogentic trees in newick, phyloxml or recPhyloXML format and create a svg.
+//! `rectree2svg` Read  phylogenetic trees in newick, phyloxml or recPhyloXML format,
+//!  build and manipulate phylogenetic trees, create svg representation of the tree
+//!  with several options.
 
 // Pour la doc et pour facilier l'usage par les utilisateurs du module:
 
