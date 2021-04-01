@@ -59,6 +59,8 @@ fn display_help(programe_name:String) {
     println!("    -s : drawing species tree only");
     println!("    -v : verbose");
     println!("");
+    println!("    Note on -b option : you must set a browser as default application for opening svg file");
+    println!("");
     println!("Input format is guessed according to the file name extension:");
 
     println!(".xml         => phyloxml");
