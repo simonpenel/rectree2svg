@@ -391,7 +391,6 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     // fleche
     let data = data.to_owned()+ "M"+&x1.to_string() + " " + &(initial_y1- PIPEBLOCK / 4.0).to_string() + "L "+ &(x1 - PIPEBLOCK / 4.0 ).to_string() + " " + &(initial_y1 - PIPEBLOCK / 2.0 ).to_string();
     let data = data.to_owned()+ "M"+&x1.to_string() + " " + &(initial_y1- PIPEBLOCK / 4.0).to_string() + "L "+ &(x1 + PIPEBLOCK / 4.0 ).to_string() + " " + &(initial_y1 - PIPEBLOCK / 2.0 ).to_string();
-
     // bezier
     let data = data.to_owned() + "M"+&x1.to_string()+" "+&y1.to_string()+" Q "+&controle_x.to_string()+" "+&controle_y.to_string()+" "+&x2.to_string()+" "+&y2.to_string();
     let path = Path::new()
@@ -427,13 +426,11 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         .move_to((x1 + width1, y1 - height1))
         .line_to((x1 + width1, y2 + height2))
         .line_to((x2, y2 + height2));
-
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", "pink")
         .set("stroke-width", STHICKNESS)
         .set("d", data);
-
         path
     }
     else {
