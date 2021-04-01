@@ -54,8 +54,8 @@ Simple Rust example: read a newick.txt file and create the svg
 
     use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree};
-
     use std::fs;
+    
     fn main() {
         let mut tree: ArenaTree<String> = ArenaTree::default();
         let options: Options = Options::new();
