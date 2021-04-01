@@ -677,6 +677,9 @@ pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>, species_tree:&mut A
         }
     }
     info!("[check_for_obsolete] Find {} OSL in the tree",osls.len());
+    if osls.len() > 0 {
+        println!("Warning! There was {} obsolete SpeciationLoss tag in the recPhyloXML",osls.len());
+    }
     for osl in osls {
         info!("[check_for_obsolete] Processing: {:?}",osl);
         info!("[check_for_obsolete] OSL = {} at species {:?}",gene_tree.arena[osl].name,
