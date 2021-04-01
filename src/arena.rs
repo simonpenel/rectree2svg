@@ -59,64 +59,30 @@ where
             is_a_transfert:false,
         }
     }
-    #[allow(dead_code)]
-    pub fn get_val(&mut self) -> &T {
-        &self.val
-    }
-    #[allow(dead_code)]
-    pub fn get_index(&mut self) -> &usize {
-        &self.idx
-    }
-    #[allow(dead_code)]
-    pub fn get_x(&mut self) -> &f32 {
-        &self.x
-    }
-    #[allow(dead_code)]
-    pub fn get_y(&mut self) -> &f32 {
-        &self.y
-    }
-    #[allow(dead_code)]
-    pub fn get_coords(&mut self) -> ( &f32, &f32) {
-        (&self.x,&self.y)
-    }
-    #[allow(dead_code)]
-    pub fn set_x(&mut self, x: &f32)
+    /// Set node event
+    pub fn set_event(&mut self, e: Event)
     {
-        self.x = *x;
+        self.e = e;
     }
-
+    /// Set node x
     pub fn set_x_noref(&mut self, x: f32)
     {
         self.x = x;
     }
-
+    /// Set node xmod
     pub fn set_xmod_noref(&mut self, xmod: f32)
     {
         self.xmod = xmod;
     }
+    /// Set node ymod
     pub fn set_ymod_noref(&mut self, ymod: f32)
     {
         self.ymod = ymod;
     }
-
-    #[allow(dead_code)]
-    pub fn set_y(&mut self, y: &f32)
-    {
-        self.y = *y;
-    }
-
+    /// Set node y
     pub fn set_y_noref(&mut self, y: f32)
     {
         self.y = y;
-    }
-    #[allow(dead_code)]
-    pub fn get_event(&mut self) -> &Event {
-        &self.e
-    }
-    #[allow(dead_code)]
-    pub fn set_event(&mut self, e: Event)
-    {
-        self.e = e;
     }
 }
 /// Structure ArenaTree.
@@ -139,7 +105,7 @@ where
     /// Add a node and send its new index. If the
     /// node already exists, send its index.
     pub fn node(&mut self, val: T) -> usize {
-        //first see if it exists
+        // first see if it exists
         for node in &self.arena {
             if node.val == val {
                 return node.idx;
@@ -167,35 +133,25 @@ where
         idx
     }
 
-    //  Get index from name
+    ///  Get index of a node from its name
     pub fn get_index(&mut self, name: String) -> usize {
         for node in &self.arena {
-    //        match node.parent {
-    //            None => return node.idx,
-    //            Some (t) => 0,
             if node.name == name {
                 return node.idx
              }
-
             }
         panic!("Unable to find {} in the tree",name);
     }
 
-    //A AMELIORER : RENVOYER UN RESULTS
     /// Get the index of the root.
-    #[allow(unreachable_code)]
     pub fn get_root(&mut self) -> usize {
         for node in &self.arena {
-    //        match node.parent {
-    //            None => return node.idx,
-    //            Some (t) => 0,
             if node.parent == None {
                 return node.idx
              }
 
             }
         panic!("Unable to get root of the tree");
-        0
     }
 
     /// Check if the node is a leaf.
@@ -205,8 +161,8 @@ where
         _ => false,
         }
     }
+
     /// Check if the node is a left node.
-    #[allow(dead_code)]
     pub fn is_left(&self, idx: usize) -> bool {
         match self.arena[idx].parent {
         Some(p) => {
@@ -224,7 +180,6 @@ where
         None => true,
         }
     }
-
 
     /// Get the depth of the tree.
     pub fn depth(&self, idx: usize) -> usize {
@@ -703,7 +658,7 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize, m
 }
 
 
-// chec
+/// Processig potential obsolete tag from the old recPhyloXML format
 pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>, species_tree:&mut ArenaTree<String>) {
     info!("[check_for_obsolete] Initial gene tree {:?}",&gene_tree);
     let mut osls = Vec::new();
@@ -1006,7 +961,7 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std
         move_dupli_mappings( sp_tree, gene_trees,son_right);
     }
 }
-/// Center the gene nodes into specie snode
+/// Center the gene nodes into a  specie snode
 pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>, gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
     let left_sp = sp_tree.arena[index].x - sp_tree.arena[index].width / 2.0  ;
     let right_sp = sp_tree.arena[index].x + sp_tree.arena[index].width / 2.0  ;

@@ -1,13 +1,12 @@
 [package]
 name = "rectree2svg"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
 description ="Read a phylogenetic tree in newick, phyloxml or recPhyloXML file and create a svg."
 license="CECILL-2.1"
-license-file="LICENCE"
 keywords=["phylogeny", "recphyloxml", "tree-reconciliation", "svg", "phylogenetic-tree"]
-homepage = "https://github.com/simonpenel/rectree2svg"
+homepage = "https://github.com/simonpenel/rectree2svg/wiki"
 repository = "https://github.com/simonpenel/rectree2svg"
 readme = "README.md"
 

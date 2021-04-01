@@ -16,12 +16,10 @@ use random_color::{Color,RandomColor,Luminosity};
 
 const GTHICKNESS: usize = 3; // Epaisseur trait gene_
 const STHICKNESS: usize = 6; // Epaisseur trait species
-// const COLORS:Vec<Color> =  Vec::new();
-// const COLORS:Vec<Color> =  vec![Color::Red];
-// const COLORS: [ Color; 3] = [Color::Red,Color::Red,Color::Red ];
-/// Draw a svg tree
+
+/// Draw a svg simple tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options) {
-    info!("draw_tree: Drawing tree...");
+    info!("[draw_tree] Drawing tree...");
     let gene_color = "blue";
     let largest_x = tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = tree.get_largest_y() * 1.0 + 0.0 ;
@@ -88,7 +86,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
     svg::save(name, &document).unwrap();
 }
 
-/// Draw a svg pipe species tree and  gene trees inside it
+/// Draw a svg pipe species tree and  several gene trees inside it
 pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std::vec::Vec<ArenaTree<String>>, name: String, options: &Options) {
     let largest_x = sp_tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
@@ -105,13 +103,16 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )
             .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));
+
     let style = Style::new(".vert { font:  12px serif; fill: green; }");
     document.append(style);
     let style = Style::new(".jaune { font: italic 12px serif; fill: orange; }");
     document.append(style);
     let mut g = Element::new("g");
+    // Dessine l'arbre d'espece
     for index in &sp_tree.arena {
-        let _parent =  match index.parent {
+        // Dessine le tuyeau
+        match index.parent {
             Some(p) => {
                 let n = &sp_tree.arena[p];
                 let chemin = get_chemin_sp(index.x, index.y, index.width/2.0, index.height/2.0, n.x, n.y,n.width/2.0,n.height/2.0);
@@ -120,11 +121,11 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                     let chemin = close_chemin_sp(index.x, index.y, index.width/2.0, index.height/2.0);
                     g.append(chemin);
                 }
-                0
             },
-            None => {-1},
+            None => {},
         };
         let mut element = Element::new("text");
+        // Affiche le texte associe au noeud
         match sp_tree.is_leaf(index.idx) {
             true => {
                 element.assign("x", index.x-15.0);
@@ -152,7 +153,8 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
         };
      }
      let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
-     let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+     let mut idx_rcgen = 0;
+     // Boucle sur les arbres de genes
      loop {
          let base_couleur = match &idx_rcgen % 6 {
              5 => Color::Orange,
@@ -163,7 +165,6 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
              4 => Color::Yellow,
              _ => Color::Monochrome, // Jamais
          };
-         // println!("COULEUR = {:?}",toto);
         let gene_color = RandomColor::new()
             .hue(base_couleur)
             .luminosity(Luminosity::Bright) // Optional
@@ -171,9 +172,9 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
             .to_rgb_string(); //
         let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()+" { font:  10px serif; fill:"+&gene_color.to_string()+"; }");
         document.append(style);
-
         for  index in &gene_trees[idx_rcgen].arena {
-             let _parent =  match index.parent {
+            // Dessine le chemin du noeud a son pere
+            match index.parent {
                  Some(p) => {
                      let n = &gene_trees[idx_rcgen].arena[p];
                      // La forme du chemin depend de l'evenement
@@ -189,20 +190,20 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                         false => get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string()),
                      };
                      g.append(chemin);
-                     0
                  },
-                 None => {          //Racine
-                        let mut element = Element::new("text");
-                        element.assign("x", index.x+10.0);
-                         element.assign("y", index.y+0.0);
-                         element.assign("class", "gene_".to_owned()+&idx_rcgen.to_string());
-                         let txt  = Text::new(&idx_rcgen.to_string());
-                         element.append(txt);
-                         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
-                        g.append(element);
-                        1
-                     },
+                 None => {
+                    // C'est la racine
+                    let mut element = Element::new("text");
+                    element.assign("x", index.x+10.0);
+                    element.assign("y", index.y+0.0);
+                    element.assign("class", "gene_".to_owned()+&idx_rcgen.to_string());
+                    let txt  = Text::new(&idx_rcgen.to_string());
+                    element.append(txt);
+                    element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()+","+&index.y.to_string()+")");
+                    g.append(element);
+                 },
              };
+             // Dessine le symbole associe au noeud
              let  event = &index.e;
              match event {
                  Event::Leaf        =>  g.append(get_carre(index.x,index.y,1.0,"red".to_string())),
@@ -231,11 +232,12 @@ pub fn draw_sptree_gntrees (sp_tree: &mut ArenaTree<String>, gene_trees:&mut std
                     let mut diamond = get_carre(index.x,index.y,4.0,gene_color.to_string());
                     diamond.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()+" "+&index.y.to_string()+")");
                     g.append(diamond);
-                    // g.append(get_carre(index.x,index.y,1.0,"pink".to_string()))
                     },
+                // Est ce que BifurcationOut existe encore ???
                 Event::BifurcationOut  =>  g.append(get_carre(index.x,index.y,5.0,"yellow".to_string())),
                 _                  =>  g.append(get_circle(index.x,index.y,3.0,gene_color.to_string())),
             };
+            // Affiche le texte associe au noeud
             match event {
                 Event::Leaf        => {
                     let mut element = Element::new("text");
@@ -326,6 +328,7 @@ pub fn get_circle (x: f32, y:f32, r:f32, c:String) -> Circle {
     .set("stroke-width", 1);
     circle
 }
+
 /// Draw a cross  of size s at x,y
 pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
     let data = Data::new()
