@@ -108,9 +108,9 @@ pub fn draw_sptree_gntrees (
     let x_viewbox = smallest_x - 0.0 ;
     let y_viewbox = smallest_y - 0.0;
     let  mut document = Document::new()
-            .set("width",height_svg + BLOCK )
-            .set("height",width_svg + BLOCK )
-            .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));
+            .set("width",height_svg  )
+            .set("height",width_svg  )
+            .set("viewBox", (x_viewbox,y_viewbox,height_svg + 2.0 *BLOCK ,width_svg + 2.0 *BLOCK ));
 
     let style = Style::new(".vert { font:  12px serif; fill: green; }");
     document.append(style);
