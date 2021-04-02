@@ -1452,6 +1452,7 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     }
 }
 /// Send the index of the last common ancestor of 2 nodes
+#[allow(dead_code)]
 pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize {
     let p1 = tree.arena[index1].parent;
     let p2 = tree.arena[index2].parent;
@@ -1483,5 +1484,50 @@ pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize
     }
     else {
          lca(tree,index1,p2)
+    }
+}
+#[allow(dead_code)]
+pub fn summary_root(tree : &mut ArenaTree<String>, index:usize)  {
+    let children  = &tree.arena[index].children;
+    match children.len() > 0  {
+        true => {
+            let left = children[0];
+            let right = children[1];
+            println!("Node {} ({}) has 2 children: {} ({}) and {} ({})",
+            index, &tree.arena[index].name,
+            left, &tree.arena[left].name,
+            right, &tree.arena[right].name);
+            summary_root(tree,left);
+            summary_root(tree,right);
+        },
+        false => {
+            println!("Node {} ({}) has no children ",index,&tree.arena[index].name)
+        },
+    }
+
+}
+#[allow(dead_code)]
+/// Display a short summary of each node of the tree
+pub fn summary(tree : &mut ArenaTree<String>)  {
+for index in &tree.arena {
+    let children  = &index.children;
+    let parent = match index.parent {
+        Some(p) =>  &tree.arena[p].name,
+        None => "None",
+    };
+    match children.len() > 0  {
+        true => {
+            let left = children[0];
+            let right = children[1];
+            println!("Node {} ({}) has 2 children: {} ({}) and {} ({}) and its parent is {}",
+            index.idx,index.name,
+            left, &tree.arena[left].name,
+            right, &tree.arena[right].name,
+            parent);
+            },
+        false => {
+            println!("Node {} ({}) has no children and its parent is {}",index.idx,index.name,parent)
+            },
+        }
     }
 }
