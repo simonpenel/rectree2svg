@@ -39,6 +39,7 @@ pub use self::arena::set_leaves_to_bottom;
 pub use self::arena::set_middle_postorder;
 pub use self::arena::set_species_width;
 pub use self::arena::shift_mod_xy;
+pub use self::arena::summary;
 pub use self::arena::xml2tree;
 
 mod drawing;
@@ -75,6 +76,36 @@ mod tests {
         node.set_x_noref(10.0);
         let x = node.x;
         assert_eq!(x, 10.0);
+    }
+
+    #[test]
+    fn  check_lca() {
+        let mut tree: ArenaTree<String> = ArenaTree::default();
+        let root = tree.new_node("root".to_string());
+        let a1 = tree.new_node("a1".to_string());
+        let a2 = tree.new_node("a2".to_string());
+        let a = tree.new_node("a".to_string());
+        let b = tree.new_node("b".to_string());
+        let c = tree.new_node("c".to_string());
+        let d = tree.new_node("d".to_string());
+        // Set hierarchy
+        //  a1 and a2 are children of a
+        tree.arena[a1].parent = Some(a);
+        tree.arena[a2].parent = Some(a);
+        tree.arena[a].children.push(a1);
+        tree.arena[a].children.push(a2);
+        // a and b are children of c
+        tree.arena[a].parent = Some(c);
+        tree.arena[b].parent = Some(c);
+        tree.arena[c].children.push(a);
+        tree.arena[c].children.push(b);
+        // c and d are children of root
+        tree.arena[c].parent = Some(root);
+        tree.arena[d].parent = Some(root);
+        tree.arena[root].children.push(c);
+        tree.arena[root].children.push(d);
+        let lca_test = lca(&mut tree,a1,b);
+        assert_eq!(lca_test,c);
     }
 
 
