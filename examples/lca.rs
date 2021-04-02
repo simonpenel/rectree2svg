@@ -36,6 +36,6 @@ fn main() {
                 options.gene_internal = true ;
                 println!("Rotate -90 and draw tree...");
                 draw_tree(&mut tree,"lca.svg".to_string(),&options);
-                println!("Output file is lca.svg");
+                println!("Please open output file 'lca.svg' with your browser");
                 println!("OK.");
 }

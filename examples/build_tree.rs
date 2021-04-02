@@ -1,5 +1,5 @@
 use rectree2svg::{ArenaTree,Options,Event,knuth_layout,check_contour_postorder,
-                  cladogramme,shift_mod_xy,set_middle_postorder,draw_tree};
+                  cladogramme,shift_mod_xy,set_middle_postorder,draw_tree,summary};
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
@@ -13,6 +13,8 @@ fn main() {
     let b = tree.new_node("b".to_string());
     let c = tree.new_node("c".to_string());
     let d = tree.new_node("d".to_string());
+    println!("Initial tree :");
+    summary(&mut tree);
 
     // Set names
     tree.arena[root].name = "MyRoot".to_string();
@@ -22,7 +24,9 @@ fn main() {
     tree.arena[b].name = "Gene B".to_string();
     tree.arena[c].name = "Gene C".to_string();
     tree.arena[d].name = "Gene D".to_string();
-
+    println!("");
+    println!("Tree after name attribution:");
+    summary(&mut tree);
     // Set hierarchy
     //  a1 and a2 are children of a
     tree.arena[a1].parent = Some(a);
@@ -39,9 +43,14 @@ fn main() {
     tree.arena[d].parent = Some(root);
     tree.arena[root].children.push(c);
     tree.arena[root].children.push(d);
+    println!("");
+    println!("Tree after hierarchy attribution:");
+    summary(&mut tree);
 
     // set duplication
     tree.arena[a].e = Event::Duplication;
+    println!("");
+    println!("Event associated to gene {} ({}) : {:?}",a,tree.arena[a].name,tree.arena[a].e);
 
     knuth_layout(&mut tree,root, &mut 1);
     // Display cladogram
@@ -52,7 +61,7 @@ fn main() {
 
     // Display internal nodes
     options.gene_internal = true ;
-    draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
-    println!("Output file is my_svg.sv");
+    draw_tree(&mut tree,"build_tree.svg".to_string(),&options);
+    println!("Please open output file 'build_tree.svg' with your browser");
     println!("OK.");
 }
