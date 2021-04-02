@@ -177,7 +177,7 @@ where
         None => true,
         }
     }
-    /// Get the depth of the tree.
+    /// Get the depth of the node in the tree.
     pub fn depth(&self, idx: usize) -> usize {
         match self.arena[idx].parent {
             Some(id) => 1 + self.depth(id),
