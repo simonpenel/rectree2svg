@@ -141,9 +141,12 @@ Simple Rust example: build a gene tree with a duplication and creates the svg
 
 You may try the codes in the 'examples' directory:
 
-  cargo run --example lca 
+    cargo run --example read_newick
 
-
+    cargo run --example build_tree 
+    
+    cargo run --example lca
+    
 
 # Source documentation
 
