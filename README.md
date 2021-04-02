@@ -59,7 +59,7 @@ Simple Rust example: read a newick.txt file and creates the svg
     use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree};
     use std::fs;
-    
+
     fn main() {
         let mut tree: ArenaTree<String> = ArenaTree::default();
         let options: Options = Options::new();
@@ -80,7 +80,7 @@ Simple Rust example: build a gene tree with a duplication and creates the svg
 
     use rectree2svg::{ArenaTree,Options,Event,knuth_layout,check_contour_postorder,
                   cladogramme,shift_mod_xy,set_middle_postorder,draw_tree};
-    
+
     fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
@@ -136,6 +136,13 @@ Simple Rust example: build a gene tree with a duplication and creates the svg
 
     draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
     }
+
+# Code Examples
+
+You may try the codes in the 'examples' directory:
+
+  cargo run --example lca 
+
 
 
 # Source documentation
