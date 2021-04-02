@@ -25,6 +25,7 @@ pub use self::arena::get_contour_left;
 pub use self::arena::get_contour_right;
 pub use self::arena::get_maxdepth;
 pub use self::arena::knuth_layout;
+pub use self::arena::lca;
 pub use self::arena::map_gene_trees;
 pub use self::arena::map_species_trees;
 pub use self::arena::move_dupli_mappings;

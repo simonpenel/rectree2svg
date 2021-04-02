@@ -1451,3 +1451,37 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
         tree.arena[index].set_xmod_noref(x_mod);
     }
 }
+/// Send the index of the last common ancestor of 2 nodes
+pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize {
+    let p1 = tree.arena[index1].parent;
+    let p2 = tree.arena[index2].parent;
+    let p1 = match p1 {
+        Some(p) => p,
+        None => return index1,
+    };
+    let p2 = match p2 {
+        Some(p) => p,
+        None =>  return index2,
+    };
+    let d1 = tree.depth(index1);
+    let d2 = tree.depth(index2);
+    info!("[lca] Distance {}: {}",index1,d1);
+    info!("[lca] Distance {}: {}",index2,d2);
+    if d1 == d2 {
+        // lca(tree,p1,p2);
+        info!("[lca] Comparison of {:?} and {:?}",tree.arena[index1],tree.arena[index2]);
+        match p1 == p2  {
+            true => {
+                info!("[lca] LCA is {}",p1);
+                 return p1
+            },
+            false => lca(tree,p1,p2),
+        }
+    }
+    else if d1 > d2 {
+        lca(tree,p1,index2)
+    }
+    else {
+         lca(tree,index1,p2)
+    }
+}
