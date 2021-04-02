@@ -23,18 +23,12 @@ fn main() {
                 let lca_jn = lca(&mut tree,j,n);
                 println!("Index of lca betwen J and N is {}",lca_jn);
                 tree.arena[lca_jn].name = "LCA of J and N".to_string();
-                println!("Now calculate the svg x y positions...");
-                println!("Calculate initial x y positions...");
                 knuth_layout(&mut tree,root, &mut 1);
-                println!("Calculate xmod values to avoid conflicts...");
                 check_contour_postorder(&mut tree, root);
-                println!("Move nodes along x according to  xmod...");
                 shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
-                println!("Set parent horizontal position between its children...");
                 set_middle_postorder(&mut tree, root);
                 // Display internal nodes
                 options.gene_internal = true ;
-                println!("Rotate -90 and draw tree...");
                 draw_tree(&mut tree,"lca.svg".to_string(),&options);
                 println!("Please open output file 'lca.svg' with your browser");
                 println!("OK.");
