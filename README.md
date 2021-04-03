@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711
 - cargo build --release
 - target/release/rectree2svg -h
 
-# Help:
+# Run the binary:
 Read a newick, phyloxml or recPhyloXML file and create a svg.
 
 Format is guessed according to filename (default is newick)
@@ -52,7 +52,7 @@ target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output f
     - .recphylo    => recPhyloXML
     - any other    => newick
 
-# Using the code
+# Using the code:
 
 https://crates.io/crates/rectree2svg
 
