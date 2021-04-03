@@ -58,10 +58,6 @@ fn main() {
     set_middle_postorder(&mut tree, root);
     draw_tree(&mut tree,"modify_tree_ini.svg".to_string(),&options);
 
-
-    println!("Move gene A under gene B");
-    move_child(&mut tree,a,b);
-
     println!("Add a loss to C");
     let loss = tree.new_node("loss".to_string());
     tree.arena[loss].name = "Loss".to_string();
