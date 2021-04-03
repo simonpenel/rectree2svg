@@ -73,6 +73,8 @@ fn display_help(programe_name:String) {
     println!(".recPhyloXML => recPhyloXML");
     println!(".recphylo    => recPhyloXML");
     println!("any other    => newick");
+    println!("");
+    println!("About recPhyloXML format : http://phylariane.univ-lyon1.fr/recphyloxml/");
     process::exit(1);
 }
 /// enum of the possible input file Formats
