@@ -29,7 +29,7 @@ Format is guessed according to filename (default is newick)
 
 Usage:
 
-target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-s][-v]
+target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
     -b : open svg in browser
     -h : help
@@ -37,7 +37,9 @@ target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output f
     -I : display internal species nodes
     -l factor: use branch length, using the given factor
     -o outputfile : set name of output file
-    -p : build a phylogram
+    -p : build a phylogram   
+    -r ratio : set the ratio between width of species and gene tree.
+               Default 1.0, you usualy do not need to change it. 
     -s : drawing species tree only
     -v : verbose
 
