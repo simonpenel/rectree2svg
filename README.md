@@ -147,6 +147,9 @@ You may try the codes in the 'examples' directory:
     
     cargo run --example lca
     
+    cargo run --example modify_tree 
+
+    
 
 # Source documentation
 
