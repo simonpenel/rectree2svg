@@ -1504,6 +1504,16 @@ pub fn summary_root(tree : &mut ArenaTree<String>, index:usize)  {
 
 }
 #[allow(dead_code)]
+pub fn reset_pos(tree : &mut ArenaTree<String>)  {
+for index in &mut tree.arena {
+    index.x = 0.0;
+    index.y = 0.0;
+    index.xmod = 0.0;
+    index.ymod = 0.0;
+    };
+}
+
+#[allow(dead_code)]
 /// Display a short summary of each node of the tree
 pub fn summary(tree : &mut ArenaTree<String>)  {
 for index in &tree.arena {
@@ -1514,17 +1524,40 @@ for index in &tree.arena {
     };
     match children.len() > 0  {
         true => {
-            let left = children[0];
-            let right = children[1];
-            println!("Node {} ({}) has 2 children: {} ({}) and {} ({}) and its parent is {}",
-            index.idx,index.name,
-            left, &tree.arena[left].name,
-            right, &tree.arena[right].name,
-            parent);
+            print!("Node {} ({}) has {} children:",index.idx,index.name,children.len());
+            for child in children {
+                print!(" {} ({})", child, &tree.arena[*child].name);
+            };
+            println!(" and its parent is {}",parent);
             },
         false => {
             println!("Node {} ({}) has no children and its parent is {}",index.idx,index.name,parent)
             },
         }
     }
+}
+#[allow(dead_code)]
+/// Add a node to another node
+pub fn add_child(tree : &mut ArenaTree<String>, parent:usize, child:usize)  {
+    info!("[add_child] adding {} to {}",child,parent);
+    tree.arena[child].parent = Some(parent);
+    tree.arena[parent].children.push(child);
+    info!("[add_child] parent node : {:?}",tree.arena[parent]);
+
+}
+
+#[allow(dead_code)]
+/// Move a node from a parent node to another node
+pub fn move_child(tree : &mut ArenaTree<String>, child:usize, new_parent:usize)  {
+    let parent =  match tree.arena[child].parent {
+        Some(p) => p,
+        None => panic!("Node {:?} has no parent"),
+    };
+    info!("[move_child] moving {} from {} to {}",child,parent,new_parent);
+    tree.arena[child].parent = Some(new_parent);
+    tree.arena[new_parent].children.push(child);
+    tree.arena[parent].children.retain(|&x| x !=  child);
+    info!("[move_child] parent node : {:?}",tree.arena[parent]);
+    info!("[move_child] new parent node : {:?}",tree.arena[new_parent]);
+
 }
