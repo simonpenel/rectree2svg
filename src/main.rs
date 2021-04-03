@@ -49,14 +49,17 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
     println!("    -I : display internal species nodes");
-    println!("    -l factor: use branch length, using the given factor");
+    println!("    -l factor : use branch length, using the given factor (default 1.0)");
     println!("    -o outputfile : set name of output file");
     println!("    -p : build a phylogram");
+    println!("    -r ratio : set the ratio between width of species and gene tree.");
+    println!("               Default 1.0, you usualy do not need to change it. ");
+
     println!("    -s : drawing species tree only");
     println!("    -v : verbose");
     println!("");
@@ -90,7 +93,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:l:o:bhiIspv");
+    let mut opts = getopt::Parser::new(&args, "f:l:o:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
@@ -106,6 +109,9 @@ fn main()  {
                 Opt('i', None) => options.gene_internal = true,
                 Opt('I', None) => options.species_internal = true,
                 Opt('b', None) => open_browser = true,
+                Opt('r', Some(string)) => {
+                    options.ratio = string.parse().unwrap();
+                    },
                 Opt('p', None) => clado_flag = false,
                 Opt('s', None) => species_only_flag = true,
                 Opt('l', Some(string)) => {
@@ -224,7 +230,7 @@ fn main()  {
             }
             if verbose {
                 info!("Drawing tree species verbose-species.svg");
-                drawing::draw_tree(&mut sp_tree,"verbose-species.svg".to_string(),&options);
+                drawing::draw_tree(&mut sp_tree, "verbose-species.svg".to_string(), & options);
             }
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
@@ -320,7 +326,7 @@ fn main()  {
             // 9ème etape : décale les noeuds de gene associés à un
             // noeud d'especes pour éviter qu'ils soit superposés
             // ---------------------------------------------------------
-            bilan_mappings(&mut sp_tree, &mut gene_trees,root);
+            bilan_mappings(&mut sp_tree, &mut gene_trees,root, & options);
             // ---------------------------------------------------------
             // 10ème étape : recalcule les coordonnées svg de tous les
             // arbres de gènes
@@ -354,10 +360,11 @@ fn main()  {
                 true => {
                     if options.species_internal {
                          options.gene_internal = true;}
-                         drawing::draw_tree(&mut sp_tree, outfile,&options);
+                         drawing::draw_tree(&mut sp_tree, outfile, & options);
 
                 },
-                false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,&options),
+                false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,
+                    & options),
             };
 
             // EXIT
@@ -418,7 +425,7 @@ fn main()  {
 
     let path = env::current_dir().expect("Unable to get current dir");
     let url_file = format!("file:///{}/{}", path.display(),outfile);
-    drawing::draw_tree(&mut tree,outfile,&options);
+    drawing::draw_tree(&mut tree, outfile, & options);
     // EXIT
     // On s'arrete la, le reste du programme concerne les autres formats
     if open_browser {

@@ -248,12 +248,13 @@ impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
-//  Structure Options
+///  Structure Options
 #[derive(Debug)]
 pub struct Options{
     pub gene_internal :bool,
     pub species_internal :bool,
     pub scale :f32,
+    pub ratio: f32,
 }
 impl Options {
     pub fn new() -> Self {
@@ -261,6 +262,7 @@ impl Options {
             gene_internal:false,
             species_internal:false,
             scale:1.0,
+            ratio:1.0,
         }
     }
 }
@@ -560,12 +562,6 @@ pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize,
                     if evenement.has_tag_name("speciation"){
                         event_num += 1;
                         info!("[xml2tree] event Nb {} = {:?}",event_num,evenement);
-                        // TODO
-                        // Traitement speciationloss:
-                        if sploss_num > 0 {
-                            panic!("Old format not supported yet");
-                        }
-
                         tree.arena[parent].set_event(Event::Speciation);
                         info!("[xml2tree] setting event of {:?} : {:?}",tree.arena[parent].name,
                          tree.arena[parent].e);
@@ -802,9 +798,10 @@ pub fn map_species_trees(sp_tree: &mut ArenaTree<String>,
 
 /// Shift the gene nodes in a given species node to avoid superposition.
 pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>,
-                      gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
+                      gene_trees: &mut std::vec::Vec<ArenaTree<String>>,
+                      index: usize, options: &Options) {
     info!("[bilan_mappings] Species Node {}",sp_tree.arena[index].name);
-        let ratio = 1.0 ;   // permet de regler l'ecartement entre les noeuds de genes dans
+        let ratio = options.ratio ;   // permet de regler l'ecartement entre les noeuds de genes dans
                             // l'arbre d'espece
         let  mut shift = 0.0;
         let  mut shift_x = sp_tree.arena[index].nbg as f32 -1.0 ;
@@ -943,8 +940,8 @@ pub fn bilan_mappings(sp_tree: &mut ArenaTree<String>,
     if children.len() > 0 {
         let son_left = children[0];
         let son_right = children[1];
-         bilan_mappings( sp_tree, gene_trees,son_left);
-         bilan_mappings( sp_tree, gene_trees,son_right);
+         bilan_mappings( sp_tree, gene_trees,son_left, options);
+         bilan_mappings( sp_tree, gene_trees,son_right, options);
          // bilan_mapping(&mut sp_tree, &mut gene_tree,children[1]);
     }
 }
