@@ -248,7 +248,7 @@ impl Default for Event {
     fn default() -> Self { Event::Undef }
 }
 
-///  Structure Options
+///  Structure Options: drawing options.
 #[derive(Debug)]
 pub struct Options{
     pub gene_internal :bool,
@@ -1504,7 +1504,7 @@ pub fn summary_root(tree : &mut ArenaTree<String>, index:usize)  {
 
 }
 #[allow(dead_code)]
-/// Reset the position of the tree  
+/// Reset the position of the tree
 pub fn reset_pos(tree : &mut ArenaTree<String>)  {
 for index in &mut tree.arena {
     index.x = 0.0;
