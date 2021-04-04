@@ -12,14 +12,10 @@ You may use the rectree2svg binary as well as the rust rectree2svg funtions to m
 Currently under development.
 
 # Output example
+
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
 
-# Under development:
-- Possible problem with the obsolete version of recPhyloXML format (speciationLoss is supported, speciationOutLoss and speciationOut are not supported yet)
-- Allow 2/3 reconciliation levels (host/species/gene)
-
 # Install:
-
 
 rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io. 
 Once Cargo is installed just open a terminal and type:
@@ -169,6 +165,10 @@ See Rust documentation : https://docs.rs/rectree2svg/
 # RecPhyloXML documentation
 
 See http://phylariane.univ-lyon1.fr/recphyloxml/
+
+# Under development:
+- Possible problem with the obsolete version of recPhyloXML format (speciationLoss is supported, speciationOutLoss and speciationOut are not supported yet)
+- Allow 2/3 reconciliation levels (host/species/gene)
 
 # Tree drawing algorithms and structures
 
