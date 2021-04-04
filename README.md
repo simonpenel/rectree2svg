@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711
 
 
 rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io. 
-Once Cargo is alread just open a terminal and type:
+Once Cargo is installed just open a terminal and type:
 
     - cargo install rectree2svg
 
@@ -38,7 +38,7 @@ Format is guessed according to filename (default is newick)
 
 Usage:
 
-target/release/rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
+rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
     -b : open svg in browser
     -h : help
