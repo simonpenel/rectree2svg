@@ -18,9 +18,18 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711
 - Possible problem with the obsolete version of recPhyloXML format (speciationLoss is supported, speciationOutLoss and speciationOut are not supported yet)
 - Allow 2/3 reconciliation levels (host/species/gene)
 
-# Instructions:
-- cargo build --release
-- target/release/rectree2svg -h
+# Install:
+
+
+rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io. 
+Once Cargo is alread just open a terminal and type:
+
+    - cargo install rectree2svg
+
+You may as well install from the sources. Clone or download  the sources here https://github.com/simonpenel/rectree2svg and type:
+
+    - cargo build --release
+    - target/release/rectree2svg -h
 
 # Run the binary:
 Read a newick, phyloxml or recPhyloXML file and create a svg.
