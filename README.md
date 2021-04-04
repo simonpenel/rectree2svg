@@ -1,13 +1,16 @@
 # rectree2svg
-Build a svg representation of a phylogenetic reconciled (or not) tree
 
-Keywords:  phylogeny, reconciled trees, phylogenetic trees
+Read, build, displays as svg and manipulates phylogenetic trees.
+
+Build a svg representation of a phylogenetic reconciled (or not) tree
 
 Read a recphyloxml file:  create a svg representation of the  gene trees and species tree with events (loss, duplication, speciation, transfer).
 
 Read a newick or phyloxml file: create a svg representation of the tree.
 
-You may use the rectree2svg binary as well as the rust rectree2svg funtions to manipulate or draw phylogenetic trees (see "Using the code")
+You may use the rectree2svg binary as well as the rust rectree2svg funtions to build, manipulate or draw phylogenetic trees (see "Using the code")
+
+Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
 Currently under development.
 
