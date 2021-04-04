@@ -178,3 +178,6 @@ See http://phylariane.univ-lyon1.fr/recphyloxml/
 "Arena" Tree structure  is inspired by the code proposed [here](https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6)
 
 Tree drawing algorithms are well explained [here](https://llimllib.github.io/pymag-trees/)  and [here](https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/)
+
+# Licence
+CECILL: https://choosealicense.com/licenses/cecill-2.1/
