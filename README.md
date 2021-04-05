@@ -12,6 +12,8 @@ You may use the rectree2svg binary as well as the rust rectree2svg funtions to b
 
 Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
+Formats: newick, phyloXML, recPhyloXML (nhx will be available on 7th April)
+
 # Output example
 
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
