@@ -329,7 +329,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             tree.arena[right_index].parent = Some(index);
             match  right.find(':') {
                 Some(i)=> {
-                    tree.arena[right_index].name = right[0..i].to_string();
+                    tree.arena[right_index].name = right[0..i+1].to_string();
                     tree.arena[right_index].l = right[i+1..].to_string().parse::<f32>().unwrap();
                 },
                 None => {
@@ -363,7 +363,7 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
          };
     }
     let left = (&arbre[1..i-1]).to_string();
-    let right = (&arbre[i..len]).to_string();
+    let right = (&arbre[i..len+1]).to_string();
     let trail =  match right.rfind(')'){
         Some(k) =>  right[k+1..].to_string(),
         None => "".to_string(),
