@@ -193,10 +193,10 @@ fn main()  {
         },
         // Newick
         Format::Newick => {
-                println!("============================================================");
-                println!("WARNING: 06 April 2021:  Reading  Newick format is still under development,
-                 please use another format wait for next release");
-                println!("============================================================");
+                println!("==============================================================================");
+                println!("WARNING: 06 April 2021: Reading  Newick format is still under development,");
+                println!("                        please use another format or  wait for next release");
+                println!("==============================================================================");
                 let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the newick file");
                 let root = tree.new_node("Root".to_string());
