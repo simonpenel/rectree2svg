@@ -18,7 +18,7 @@ Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
 phyloXML, recPhyloXML
 
-nhx still under development, nhx will be available soon
+nhx  under development, nhx will be available soon
 
 
 # Output example
