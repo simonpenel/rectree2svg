@@ -2,6 +2,8 @@
 
 Read, build, displays as svg and manipulates phylogenetic trees.
 
+Trees must be rooted.
+
 Build a svg representation of a phylogenetic reconciled (or not) tree
 
 Read a recphyloxml file:  create a svg representation of the  gene trees and species tree with events (loss, duplication, speciation, transfer).
