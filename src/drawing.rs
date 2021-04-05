@@ -16,6 +16,7 @@ use random_color::{Color,RandomColor,Luminosity};
 
 const GTHICKNESS: usize = 3; // Epaisseur trait gene_
 const STHICKNESS: usize = 6; // Epaisseur trait species
+const SQUARESIZE: f32 = 6.0; // taille carre dupli
 
 /// Draw a svg simple tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options) {
@@ -54,7 +55,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
         let  event = &index.e;
         match event {
             Event::Leaf        =>  g.append(get_carre(index.x,index.y,2.0,"red".to_string())),
-            Event::Duplication =>  g.append(get_carre(index.x,index.y,6.0,"blue".to_string())),
+            Event::Duplication =>  g.append(get_carre(index.x,index.y,SQUARESIZE,"blue".to_string())),
             Event::Loss =>  {
                 let mut cross = get_cross(index.x,index.y,4.0,"blue".to_string());
                 cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()
@@ -210,7 +211,7 @@ pub fn draw_sptree_gntrees (
                                 BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
                             }
                         },
-                        false => get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string()),
+                        false => get_chemin_carre(index.x,index.y,n.x,n.y ,gene_color.to_string()),
                      };
                      g.append(chemin);
                  },
@@ -231,9 +232,8 @@ pub fn draw_sptree_gntrees (
              let  event = &index.e;
              match event {
                  Event::Leaf        =>  g.append(get_carre(index.x,index.y,1.0,"red".to_string())),
-                 Event::Duplication =>  g.append(get_carre(index.x,index.y,4.0,
-                                                 gene_color.to_string())
-                                                 ),
+                 Event::Duplication =>  g.append(get_carre(index.x,index.y,SQUARESIZE,
+                                                 gene_color.to_string())),
                  Event::Loss => {
                      let mut cross = get_cross(index.x,index.y,2.0,gene_color.to_string());
                      cross.assign("transform","rotate(45 ".to_owned() + &index.x.to_string()
