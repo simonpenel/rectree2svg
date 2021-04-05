@@ -12,8 +12,6 @@ You may use the rectree2svg binary as well as the rust rectree2svg funtions to b
 
 Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
-Currently under development.
-
 # Output example
 
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
