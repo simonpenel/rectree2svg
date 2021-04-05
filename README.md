@@ -14,7 +14,11 @@ You may use the rectree2svg binary as well as the rust rectree2svg funtions to b
 
 Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
-Formats: newick, phyloXML, recPhyloXML (nhx will be available on 7th April)
+# Formats:
+
+phyloXML, recPhyloXML
+nhx still under development, nhx will be available soon
+
 
 # Output example
 
