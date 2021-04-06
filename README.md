@@ -18,9 +18,19 @@ Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
 phyloXML, recPhyloXML, rooted newick ( NHX balises will not be considered ).
 
-# Output example
+# Output examples
+
+multiple genes reconciliation recphyloxml:
 
 https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
+
+single gene reconciliation recphyloxml:
+
+https://github.com/simonpenel/rectree2svg/blob/master/FAM000696_reconciliated_recphyloxml.svg
+
+the same gene reconciliation in phyloxml:
+
+https://github.com/simonpenel/rectree2svg/blob/master/FAM000696_reconciliated_xml.svg
 
 # Install:
 
