@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/c75848cc0bbcf32aafb619e
 
 the same gene reconciliation in phyloxml:
 
-https://github.com/simonpenel/rectree2svg/blob/master/FAM000696_reconciliated_xml.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/e784162ea8cb4926d77e5748e74fddae036818b2/FAM000696_reconciliated_xml.svg
 
 # Install:
 
