@@ -46,7 +46,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
         let _parent =  match index.parent {
             Some(p) => {
                 let n = &tree.arena[p];
-                let chemin = get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string());
+                let chemin = match index.is_a_transfert {
+                true => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),true)},
+                false => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),false)},
+                };
                 g.append(chemin);
                 0
             },
@@ -62,8 +65,20 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
                 + " "+&index.y.to_string()+")");
                 g.append(cross);
             },
+            Event::BranchingOut =>  {
+                let mut diamond = get_carre(index.x,index.y,12.0,"orange".to_string());
+                diamond.assign("transform","rotate(45 ".to_owned() + &index.x.to_string()
+                     + " " + &index.y.to_string() + ")" );
+                g.append(diamond);
+            },
+
             _   =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
         };
+        match index.is_a_transfert {
+            true => { g.append(get_triangle(index.x,index.y - 6.0,12.0,"yellow".to_string())) },
+            false => {},
+        };
+
         let mut element = Element::new("text");
         element.assign("x", index.x-5.0);
         element.assign("y", index.y+10.0);
@@ -211,7 +226,7 @@ pub fn draw_sptree_gntrees (
                                 BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
                             }
                         },
-                        false => get_chemin_carre(index.x,index.y,n.x,n.y ,gene_color.to_string()),
+                        false => get_chemin_carre(index.x,index.y,n.x,n.y ,gene_color.to_string(),false),
                      };
                      g.append(chemin);
                  },
@@ -336,6 +351,23 @@ pub fn get_carre (x: f32, y:f32, s:f32, c:String) -> Path {
     path
 }
 
+/// Draw a triangle  of size s at x,y
+pub fn get_triangle (x: f32, y:f32, s:f32, c:String) -> Path {
+    let data = Data::new()
+    .move_to((x*1.0, y*1.0))
+    .line_by((-s, -s))
+    .line_by((2.0 * s, 0))
+    // .line_by((0, -s))
+    .close();
+    let fill = c.clone();
+    let path = Path::new()
+    .set("fill", fill)
+    .set("stroke", c)
+    .set("stroke-width", 1)
+    .set("d", data);
+    path
+}
+
 /// Draw a circle  of size s at x,y
 pub fn get_circle (x: f32, y:f32, r:f32, c:String) -> Circle {
     let fill = c.clone();
@@ -382,7 +414,7 @@ pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
 }
 
 /// Draw a square path between x1,y1 ad x2,y2
-pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
+pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bool) -> Path {
     let data = Data::new()
     .move_to((x1*1.0, y1*1.0))
     .line_to((x1*1.0, y2*1.0))
@@ -390,8 +422,12 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String) -> Path {
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", c)
-    .set("stroke-width", GTHICKNESS)
-    .set("d", data);
+    .set("stroke-width", GTHICKNESS);
+    let path = match stroke {
+        true => path.set("stroke-dasharray","1, 1"),
+        false => path,
+    };
+    let path  = path.set("d", data);
     path
 }
 
