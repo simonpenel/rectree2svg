@@ -64,6 +64,8 @@ Usage:
     - .recphylo    => recPhyloXML
     - any other    => newick
 
+You will find several inout file examples in newick_examples  recphylo_examples xml_examples directories.
+
 # Using the code:
 
 https://crates.io/crates/rectree2svg
