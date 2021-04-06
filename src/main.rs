@@ -193,10 +193,9 @@ fn main()  {
         },
         // Newick
         Format::Newick => {
-                println!("=================================================================================");
-                println!("WARNING: 06 April 2021: Reading Extended Newick (NHX )format is under development,");
-                println!("                        please use another format or  wait for next release");
-                println!("=================================================================================");
+                println!("=================================================================");
+                println!("WARNING: 06 April 2021: NHX balises if any will not be considered");
+                println!("=================================================================");
                 let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the newick file");
                 let root = tree.new_node("Root".to_string());

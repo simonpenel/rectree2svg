@@ -304,6 +304,12 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             let left_index = tree.new_node(name);
             tree.arena[index].children.push(left_index);
             tree.arena[left_index].parent = Some(index);
+            // Suppression des balise NHX (tres sale)
+            // TODO a ameliorer
+            let left =  match left.find("[&&"){
+                Some(k) =>  left[..k].to_string(),
+                None => left[..].to_string(),
+            };
             match  left.find(':') {
                 Some(i)=> {
                     tree.arena[left_index].name = left[0..i].to_string();
@@ -331,6 +337,12 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             let right_index = tree.new_node(name);
             tree.arena[index].children.push(right_index);
             tree.arena[right_index].parent = Some(index);
+            // Suppression des balise NHX (tres sale)
+            // TODO a ameliorer
+            let right =  match right.find("[&&"){
+                Some(k) =>  right[..k].to_string(),
+                None => right[..].to_string(),
+            };
             match  right.find(':') {
                 Some(i)=> {
                     tree.arena[right_index].name = right[0..i].to_string();
@@ -394,12 +406,18 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
         Some(k) =>  trail[0..k].to_string(),
         None => trail,
     };
-    let right_clean =  match right.rfind(')'){
+    let right =  match right.rfind(')'){
         Some(k) =>  right[..k].to_string(),
         None => right[..].to_string(),
     };
+    // Suppression des balise NHX (tres sale)
+    // TODO a ameliorer
+    let trail =  match trail.find("[&&"){
+        Some(k) =>  trail[..k].to_string(),
+        None => trail[..].to_string(),
+    };
 
-    (left,right_clean,trail)
+    (left,right,trail)
 }
 
 /// Fill an ArenaTree structure with the contents of a roxmltre::Node structure
