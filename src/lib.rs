@@ -17,6 +17,7 @@ pub use self::arena::bilan_mappings;
 pub use self::arena::center_gene_nodes;
 pub use self::arena::check_contour_postorder;
 pub use self::arena::check_for_obsolete;
+pub use self::arena::check_is_rooted;
 pub use self::arena::check_vertical_contour_postorder;
 pub use self::arena::cladogramme;
 pub use self::arena::find_left_right;

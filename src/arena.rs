@@ -1,3 +1,4 @@
+use std::process;
 use log::{info};
 pub const BLOCK: f32 = 60.0;
 pub const PIPEBLOCK: f32 = BLOCK / 4.0;
@@ -273,6 +274,8 @@ impl Options {
 /// Fill an ArenaTree structure with the contents of a parentheses  tree.
 pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num: &mut usize) {
     info!("[newick2tree] Tree = {}",arbre);
+    let arbre = arbre;
+    check_is_rooted(&arbre);
     let (left,right,trail) = find_left_right(arbre);
     info!("[newick2tree] Left = {} Right = {} Trail = {}",left,right,trail);
     match trail.find(':') {
@@ -341,6 +344,24 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
     };
 }
 
+/// Check is tree in newick format is rooted
+pub fn check_is_rooted(arbre: &String) {
+let p = arbre.matches('(').count();
+let c = arbre.matches(',').count();
+if p == c {
+    info!("Tree is rooted.");
+}
+else
+if p + 1 == c  {
+    println!("Tree is unrooted.");
+    println!("Please use a rooted tree.");
+    process::exit(0);
+}
+else {
+    println!("Unable to determine if tree is rooted, file is incorrect");
+    process::exit(1);
+}
+}
 /// Split a parenthesed tree into  left and right  parenthsed trees and trailing  string
 pub fn find_left_right(arbre:String)-> (String,String,String){
     let mut len = arbre.len() - 1;
