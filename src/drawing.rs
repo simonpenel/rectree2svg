@@ -37,7 +37,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
     let  mut document = Document::new()
             .set("width",height_svg + BLOCK )
             .set("height",width_svg + BLOCK )
-            .set("viewBox", (x_viewbox,y_viewbox,height_svg + BLOCK ,width_svg + BLOCK ));
+            .set("viewBox", (x_viewbox,y_viewbox,height_svg + 2.0 * BLOCK ,width_svg + 2.0 * BLOCK ));
 
     let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
     document.append(style);
