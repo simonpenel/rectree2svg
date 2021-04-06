@@ -64,7 +64,7 @@ Usage:
     - .recphylo    => recPhyloXML
     - any other    => newick
 
-You will find several inout file examples in newick_examples  recphylo_examples xml_examples directories.
+You will find several input file examples in newick_examples, recphylo_examples and xml_examples directories.
 
 # Using the code:
 
