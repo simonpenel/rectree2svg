@@ -369,10 +369,15 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
         Some(k) =>  right[k+1..].to_string(),
         None => "".to_string(),
     };
+    let trail =  match trail.find(';'){
+        Some(k) =>  trail[0..k].to_string(),
+        None => trail,
+    };
     let right_clean =  match right.rfind(')'){
         Some(k) =>  right[..k].to_string(),
         None => right[..].to_string(),
     };
+
     (left,right_clean,trail)
 }
 
