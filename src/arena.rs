@@ -330,7 +330,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             tree.arena[right_index].parent = Some(index);
             match  right.find(':') {
                 Some(i)=> {
-                    tree.arena[right_index].name = right[0..i+1].to_string();
+                    tree.arena[right_index].name = right[0..i].to_string();
                     tree.arena[right_index].l = right[i+1..].to_string().parse::<f32>().unwrap();
                 },
                 None => {
