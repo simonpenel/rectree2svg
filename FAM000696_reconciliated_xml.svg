@@ -1,0 +1,803 @@
+<svg height="6795" viewBox="-7.5 52.5 1875 6855" width="1815" xmlns="http://www.w3.org/2000/svg">
+<style>
+.vert { font: italic 12px serif; fill: green; }
+</style>
+<g transform="translate(  -7.5 6787.5) rotate(-90 0 0 ) ">
+<circle cx="3717.8892" cy="60" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M715.7782,120 L715.7782,60 L3717.8892,60" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="715.7782" cy="120" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M0,1680 L0,120 L715.7782,120" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M-1,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 -5,1690)" x="-5" y="1690">
+PCAUD_0020.PE222
+</text>
+<path d="M1431.5564,180 L1431.5564,120 L715.7782,120" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1431.5564" cy="180" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M60,1680 L60,180 L1431.5564,180" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M59,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 55,1690)" x="55" y="1690">
+PMUL_0057.PE49
+</text>
+<path d="M2803.1128,240 L2803.1128,180 L1431.5564,180" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2800.1128,237 l0,6 l6,0 l0,-6 z" fill="blue" stroke="blue" stroke-width="3"/>
+<path d="M338.4375,300 L338.4375,240 L2803.1128,240" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="338.4375" cy="300" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M120,1620 L120,300 L338.4375,300" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M120,1612 l0,16 M112,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 120 1620)"/>
+<text class="vert" transform="rotate(90 115,1630)" x="115" y="1630">
+loss
+</text>
+<path d="M556.875,360 L556.875,300 L338.4375,300" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="556.875" cy="360" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M401.25,420 L401.25,360 L556.875,360" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="401.25" cy="420" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M292.5,480 L292.5,420 L401.25,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="292.5" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M210,540 L210,480 L292.5,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="210" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M180,1680 L180,540 L210,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M179,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 175,1690)" x="175" y="1690">
+POCTA138_061.PE213
+</text>
+<path d="M240,1680 L240,540 L210,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M239,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 235,1690)" x="235" y="1690">
+POCTAK8_276958.PE192
+</text>
+<path d="M375,540 L375,480 L292.5,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="375" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M330,600 L330,540 L375,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="330" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M300,1680 L300,600 L330,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M299,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 295,1690)" x="295" y="1690">
+PTETRD4_62.PE186
+</text>
+<path d="M360,1680 L360,600 L330,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M359,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 355,1690)" x="355" y="1690">
+PTETR51_62.PE188
+</text>
+<path d="M420,1680 L420,540 L375,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M419,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 415,1690)" x="415" y="1690">
+PTETR32_064.PE76
+</text>
+<path d="M510,480 L510,420 L401.25,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="510" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M480,1680 L480,480 L510,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M479,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 475,1690)" x="475" y="1690">
+PDECA_0194.PE7
+</text>
+<path d="M540,1680 L540,480 L510,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M539,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 535,1690)" x="535" y="1690">
+PDODE_0040.PE75
+</text>
+<path d="M712.5,420 L712.5,360 L556.875,360" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="712.5" cy="420" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M600,1680 L600,420 L712.5,420" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M599,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 595,1690)" x="595" y="1690">
+PBIAU_0142.PE42
+</text>
+<path d="M825,480 L825,420 L712.5,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="825" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M735,540 L735,480 L825,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="735" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M690,600 L690,540 L735,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="690" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M660,1680 L660,600 L690,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M659,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 655,1690)" x="655" y="1690">
+PPRIMAZ9_040.PE210
+</text>
+<path d="M720,1680 L720,600 L690,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M719,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 715,1690)" x="715" y="1690">
+PPRIMIR4_055.PE164
+</text>
+<path d="M780,1680 L780,540 L735,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M779,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 775,1690)" x="775" y="1690">
+PPENT_037.PE79
+</text>
+<path d="M915,540 L915,480 L825,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="915" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M870,600 L870,540 L915,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="870" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M840,1620 L840,600 L870,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M840,1612 l0,16 M832,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 840 1620)"/>
+<text class="vert" transform="rotate(90 835,1630)" x="835" y="1630">
+loss
+</text>
+<path d="M900,1680 L900,600 L870,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M899,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 895,1690)" x="895" y="1690">
+PQUAD_0081.PE77
+</text>
+<path d="M960,1680 L960,540 L915,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M959,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 955,1690)" x="955" y="1690">
+PNOVA_0457.PE7
+</text>
+<path d="M5267.788,300 L5267.788,240 L2803.1128,240" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5267.788" cy="300" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4248.7007,360 L4248.7007,300 L5267.788,300" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4248.7007" cy="360" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2767.4014,420 L2767.4014,360 L4248.7007,360" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2761.4014,414 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 2767.4014 420)"/>
+<path d="M1020,1680 L1020,420 L2767.4014,420" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1019,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1015,1690)" x="1015" y="1690">
+PSEXA_059.PE165
+</text>
+<path d="M4514.8027,480 L4514.8027,420 L2767.4014,420" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<circle cx="4514.8027" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4514.8027,474 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M3479.605,540 L3479.605,480 L4514.8027,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3479.605" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1499.2102,600 L1499.2102,540 L3479.605,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1499.2102" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1080,1680 L1080,600 L1499.2102,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1079,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1075,1690)" x="1075" y="1690">
+PPOLY_014.PE219
+</text>
+<path d="M1918.4203,660 L1918.4203,600 L1499.2102,600" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1918.4203" cy="660" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1140,1620 L1140,660 L1918.4203,660" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1140,1612 l0,16 M1132,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 1140 1620)"/>
+<text class="vert" transform="rotate(90 1135,1630)" x="1135" y="1630">
+loss
+</text>
+<path d="M2696.8406,720 L2696.8406,660 L1918.4203,660" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2696.8406" cy="720" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1200,1620 L1200,720 L2696.8406,720" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1200,1612 l0,16 M1192,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 1200 1620)"/>
+<text class="vert" transform="rotate(90 1195,1630)" x="1195" y="1630">
+loss
+</text>
+<path d="M4193.681,780 L4193.681,720 L2696.8406,720" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4193.681" cy="780" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2987.362,840 L2987.362,780 L4193.681,780" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2984.362,837 l0,6 l6,0 l0,-6 z" fill="blue" stroke="blue" stroke-width="3"/>
+<path d="M1774.1675,900 L1774.1675,840 L2987.362,840" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1774.1675" cy="900" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1290,960 L1290,900 L1774.1675,900" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1290" cy="960" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1260,1620 L1260,960 L1290,960" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1260,1612 l0,16 M1252,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 1260 1620)"/>
+<text class="vert" transform="rotate(90 1255,1630)" x="1255" y="1630">
+loss
+</text>
+<path d="M1320,1680 L1320,960 L1290,960" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1319,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1315,1690)" x="1315" y="1690">
+PSEXA_003.PE166
+</text>
+<path d="M2258.335,960 L2258.335,900 L1774.1675,900" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2258.335" cy="960" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1518.75,1020 L1518.75,960 L2258.335,960" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1518.75" cy="1020" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1410,1080 L1410,1020 L1518.75,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1410" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1380,1680 L1380,1080 L1410,1080" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1379,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1375,1690)" x="1375" y="1690">
+PDECA_0373.PE18
+</text>
+<path d="M1440,1680 L1440,1080 L1410,1080" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1439,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1435,1690)" x="1435" y="1690">
+PDODE_0124.PE104
+</text>
+<path d="M1627.5,1080 L1627.5,1020 L1518.75,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1627.5" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1545,1140 L1545,1080 L1627.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1545" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1500,1680 L1500,1140 L1545,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1499,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1495,1690)" x="1495" y="1690">
+PTETR32_010.PE170
+</text>
+<path d="M1590,1200 L1590,1140 L1545,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1590" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1560,1680 L1560,1200 L1590,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1559,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1555,1690)" x="1555" y="1690">
+PTETRD4_22.PE19
+</text>
+<path d="M1620,1680 L1620,1200 L1590,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1619,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1615,1690)" x="1615" y="1690">
+PTETR51_22.PE20
+</text>
+<path d="M1710,1140 L1710,1080 L1627.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1710" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1680,1680 L1680,1140 L1710,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1679,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1675,1690)" x="1675" y="1690">
+POCTAK8_276972.PE161
+</text>
+<path d="M1740,1680 L1740,1140 L1710,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1739,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1735,1690)" x="1735" y="1690">
+POCTA138_036.PE20
+</text>
+<path d="M2997.92,1020 L2997.92,960 L2258.335,960" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2997.92" cy="1020" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2815.8398,1080 L2815.8398,1020 L2997.92,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2815.8398" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2556.6797,1140 L2556.6797,1080 L2815.8398,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2556.6797" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2173.3594,1200 L2173.3594,1140 L2556.6797,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2173.3594" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1800,1680 L1800,1200 L2173.3594,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1799,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1795,1690)" x="1795" y="1690">
+PQUAD_0040.PE84
+</text>
+<path d="M2546.7188,1260 L2546.7188,1200 L2173.3594,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2540.7188,1254 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 2546.7188 1260)"/>
+<path d="M2213.4375,1320 L2213.4375,1260 L2546.7188,1260" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<path d="M2207.4375,1314 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 2213.4375 1320)"/>
+<path d="M2213.4375,1314 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M1935,1380 L1935,1320 L2213.4375,1320" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1935" cy="1380" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1890,1440 L1890,1380 L1935,1380" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="1890" cy="1440" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M1860,1680 L1860,1440 L1890,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1859,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1855,1690)" x="1855" y="1690">
+PJENN_0237.PE44
+</text>
+<path d="M1920,1680 L1920,1440 L1890,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1919,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1915,1690)" x="1915" y="1690">
+PSONN_004.PE214
+</text>
+<path d="M1980,1680 L1980,1380 L1935,1380" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M1979,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 1975,1690)" x="1975" y="1690">
+PSEXA_011.PE179
+</text>
+<path d="M2491.875,1380 L2491.875,1320 L2213.4375,1320" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<circle cx="2491.875" cy="1380" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2491.875,1374 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M2287.5,1440 L2287.5,1380 L2491.875,1380" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2287.5" cy="1440" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2175,1500 L2175,1440 L2287.5,1440" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2175" cy="1500" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2085,1560 L2085,1500 L2175,1500" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2085" cy="1560" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2040,1680 L2040,1560 L2085,1560" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2039,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2035,1690)" x="2035" y="1690">
+PPENT_003.PE208
+</text>
+<path d="M2130,1620 L2130,1560 L2085,1560" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2130" cy="1620" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2100,1680 L2100,1620 L2130,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2099,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2095,1690)" x="2095" y="1690">
+PPRIMIR4_001.PE308
+</text>
+<path d="M2160,1680 L2160,1620 L2130,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2159,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2155,1690)" x="2155" y="1690">
+PPRIMAZ9_021.PE46
+</text>
+<path d="M2265,1560 L2265,1500 L2175,1500" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2265" cy="1560" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2220,1680 L2220,1560 L2265,1560" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2219,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2215,1690)" x="2215" y="1690">
+PNOVA_0524.PE15
+</text>
+<path d="M2310,1620 L2310,1560 L2265,1560" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2310" cy="1620" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2280,1680 L2280,1620 L2310,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2279,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2275,1690)" x="2275" y="1690">
+PQUAD_0120.PE49
+</text>
+<path d="M2340,1680 L2340,1620 L2310,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2339,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2335,1690)" x="2335" y="1690">
+PTRED_129141.PE308
+</text>
+<path d="M2400,1680 L2400,1440 L2287.5,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2399,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2395,1690)" x="2395" y="1690">
+PBIAU_0420.PE13
+</text>
+<path d="M2696.25,1440 L2696.25,1380 L2491.875,1380" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2696.25" cy="1440" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2602.5,1500 L2602.5,1440 L2696.25,1440" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2602.5" cy="1500" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2535,1560 L2535,1500 L2602.5,1500" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2535" cy="1560" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2490,1620 L2490,1560 L2535,1560" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2490" cy="1620" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2460,1680 L2460,1620 L2490,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2459,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2455,1690)" x="2455" y="1690">
+PTETRD4_2.PE201
+</text>
+<path d="M2520,1680 L2520,1620 L2490,1620" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2519,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2515,1690)" x="2515" y="1690">
+PTETR51_2.PE208
+</text>
+<path d="M2580,1680 L2580,1560 L2535,1560" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2579,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2575,1690)" x="2575" y="1690">
+PTETR32_007.PE203
+</text>
+<path d="M2670,1560 L2670,1500 L2602.5,1500" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2670" cy="1560" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2640,1680 L2640,1560 L2670,1560" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2639,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2635,1690)" x="2635" y="1690">
+POCTA138_005.PE207
+</text>
+<path d="M2700,1680 L2700,1560 L2670,1560" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2699,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2695,1690)" x="2695" y="1690">
+POCTAK8_277061.PE326
+</text>
+<path d="M2790,1500 L2790,1440 L2696.25,1440" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="2790" cy="1500" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M2760,1680 L2760,1500 L2790,1500" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2759,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2755,1690)" x="2755" y="1690">
+PDECA_0010.PE36
+</text>
+<path d="M2820,1680 L2820,1500 L2790,1500" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2819,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2815,1690)" x="2815" y="1690">
+PDODE_0002.PE348
+</text>
+<path d="M2880,1680 L2880,1260 L2546.7188,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2879,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2875,1690)" x="2875" y="1690">
+PTRED_129445.PE167
+</text>
+<path d="M2940,1680 L2940,1140 L2556.6797,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M2939,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 2935,1690)" x="2935" y="1690">
+PNOVA_0719.PE14
+</text>
+<path d="M3075,1140 L3075,1080 L2815.8398,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3075" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3030,1200 L3030,1140 L3075,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3030" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3000,1620 L3000,1200 L3030,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3000,1612 l0,16 M2992,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 3000 1620)"/>
+<text class="vert" transform="rotate(90 2995,1630)" x="2995" y="1630">
+loss
+</text>
+<path d="M3060,1680 L3060,1200 L3030,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3059,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3055,1690)" x="3055" y="1690">
+PPRIMAZ9_010.PE341
+</text>
+<path d="M3120,1680 L3120,1140 L3075,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3119,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3115,1690)" x="3115" y="1690">
+PPENT_012.PE166
+</text>
+<path d="M3180,1680 L3180,1020 L2997.92,1020" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3179,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3175,1690)" x="3175" y="1690">
+PBIAU_0002.PE169
+</text>
+<path d="M4200.5566,900 L4200.5566,840 L2987.362,840" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4200.5566" cy="900" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3623.6133,960 L3623.6133,900 L4200.5566,900" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3623.6133" cy="960" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3240,1680 L3240,960 L3623.6133,960" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3239,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3235,1690)" x="3235" y="1690">
+PSEXA_007.PE287
+</text>
+<path d="M4007.2266,1020 L4007.2266,960 L3623.6133,960" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4001.2266,1014 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 4007.2266 1020)"/>
+<path d="M3784.4531,1080 L3784.4531,1020 L4007.2266,1020" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<circle cx="3784.4531" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3784.4531,1074 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M3488.9063,1140 L3488.9063,1080 L3784.4531,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3488.9063" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3375,1200 L3375,1140 L3488.9063,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3375" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3330,1260 L3330,1200 L3375,1200" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3330" cy="1260" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3300,1680 L3300,1260 L3330,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3299,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3295,1690)" x="3295" y="1690">
+PQUAD_0134.PE51
+</text>
+<path d="M3360,1680 L3360,1260 L3330,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3359,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3355,1690)" x="3355" y="1690">
+PTRED_129390.PE279
+</text>
+<path d="M3420,1680 L3420,1200 L3375,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3419,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3415,1690)" x="3415" y="1690">
+PNOVA_0523.PE9
+</text>
+<path d="M3602.8125,1200 L3602.8125,1140 L3488.9063,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3602.8125" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3480,1620 L3480,1200 L3602.8125,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3480,1612 l0,16 M3472,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 3480 1620)"/>
+<text class="vert" transform="rotate(90 3475,1630)" x="3475" y="1630">
+loss
+</text>
+<path d="M3725.625,1260 L3725.625,1200 L3602.8125,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3719.625,1254 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 3725.625 1260)"/>
+<path d="M3570,1320 L3570,1260 L3725.625,1260" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3570" cy="1320" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3540,1680 L3540,1320 L3570,1320" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3539,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3535,1690)" x="3535" y="1690">
+PPRIMIR4_003.PE284
+</text>
+<path d="M3600,1680 L3600,1320 L3570,1320" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3599,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3595,1690)" x="3595" y="1690">
+PPRIMAZ9_005.PE201
+</text>
+<path d="M3881.25,1320 L3881.25,1260 L3725.625,1260" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<circle cx="3881.25" cy="1320" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3881.25,1314 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M3772.5,1380 L3772.5,1320 L3881.25,1320" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3772.5" cy="1380" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3690,1440 L3690,1380 L3772.5,1380" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3690" cy="1440" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3660,1620 L3660,1440 L3690,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3660,1612 l0,16 M3652,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 3660 1620)"/>
+<text class="vert" transform="rotate(90 3655,1630)" x="3655" y="1630">
+loss
+</text>
+<path d="M3720,1680 L3720,1440 L3690,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3719,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3715,1690)" x="3715" y="1690">
+POCTAK8_277051.PE317
+</text>
+<path d="M3855,1440 L3855,1380 L3772.5,1380" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3855" cy="1440" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3810,1500 L3810,1440 L3855,1440" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3810" cy="1500" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3780,1680 L3780,1500 L3810,1500" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3779,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3775,1690)" x="3775" y="1690">
+PTETRD4_1.PE359
+</text>
+<path d="M3840,1680 L3840,1500 L3810,1500" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3839,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3835,1690)" x="3835" y="1690">
+PTETR51_1.PE369
+</text>
+<path d="M3900,1680 L3900,1440 L3855,1440" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3899,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3895,1690)" x="3895" y="1690">
+PTETR32_006.PE376
+</text>
+<path d="M3990,1380 L3990,1320 L3881.25,1320" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="3990" cy="1380" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M3960,1680 L3960,1380 L3990,1380" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M3959,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 3955,1690)" x="3955" y="1690">
+PDECA_0211.PE28
+</text>
+<path d="M4020,1680 L4020,1380 L3990,1380" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4019,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4015,1690)" x="4015" y="1690">
+PDODE_0037.PE30
+</text>
+<path d="M4080,1680 L4080,1080 L3784.4531,1080" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4079,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4075,1690)" x="4075" y="1690">
+PBIAU_0340.PE7
+</text>
+<path d="M4230,1080 L4230,1020 L4007.2266,1020" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4227,1077 l0,6 l6,0 l0,-6 z" fill="blue" stroke="blue" stroke-width="3"/>
+<path d="M4170,1140 L4170,1080 L4230,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4170" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4140,1680 L4140,1140 L4170,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4139,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4135,1690)" x="4135" y="1690">
+PSONN_003.PE207
+</text>
+<path d="M4200,1680 L4200,1140 L4170,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4199,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4195,1690)" x="4195" y="1690">
+PJENN_0137.PE8
+</text>
+<path d="M4290,1140 L4290,1080 L4230,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4290" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4260,1620 L4260,1140 L4290,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4260,1612 l0,16 M4252,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 4260 1620)"/>
+<text class="vert" transform="rotate(90 4255,1630)" x="4255" y="1630">
+loss
+</text>
+<path d="M4320,1680 L4320,1140 L4290,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4319,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4315,1690)" x="4315" y="1690">
+PSONN_006.PE369
+</text>
+<path d="M4777.5,960 L4777.5,900 L4200.5566,900" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4777.5" cy="960" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4601.25,1020 L4601.25,960 L4777.5,960" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4601.25" cy="1020" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4492.5,1080 L4492.5,1020 L4601.25,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4492.5" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4410,1140 L4410,1080 L4492.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4410" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4380,1680 L4380,1140 L4410,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4379,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4375,1690)" x="4375" y="1690">
+POCTA138_013.PE146
+</text>
+<path d="M4440,1680 L4440,1140 L4410,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4439,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4435,1690)" x="4435" y="1690">
+POCTAK8_277081.PE132
+</text>
+<path d="M4575,1140 L4575,1080 L4492.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4575" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4530,1200 L4530,1140 L4575,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4530" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4500,1680 L4500,1200 L4530,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4499,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4495,1690)" x="4495" y="1690">
+PTETR51_8.PE304
+</text>
+<path d="M4560,1680 L4560,1200 L4530,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4559,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4555,1690)" x="4555" y="1690">
+PTETRD4_8.PE298
+</text>
+<path d="M4620,1680 L4620,1140 L4575,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4619,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4615,1690)" x="4615" y="1690">
+PTETR32_014.PE318
+</text>
+<path d="M4710,1080 L4710,1020 L4601.25,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4710" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4680,1680 L4680,1080 L4710,1080" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4679,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4675,1690)" x="4675" y="1690">
+PDECA_0056.PE15
+</text>
+<path d="M4740,1680 L4740,1080 L4710,1080" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4739,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4735,1690)" x="4735" y="1690">
+PDODE_0253.PE49
+</text>
+<path d="M4953.75,1020 L4953.75,960 L4777.5,960" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="4953.75" cy="1020" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4800,1680 L4800,1020 L4953.75,1020" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4799,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4795,1690)" x="4795" y="1690">
+PBIAU_0366.PE12
+</text>
+<path d="M5107.5,1080 L5107.5,1020 L4953.75,1020" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5107.5" cy="1080" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5002.5,1140 L5002.5,1080 L5107.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5002.5" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M4935,1200 L4935,1140 L5002.5,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4929,1194 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 4935 1200)"/>
+<path d="M4890,1260 L4890,1200 L4935,1200" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<path d="M4884,1254 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 4890 1260)"/>
+<path d="M4890,1254 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<path d="M4860,1680 L4860,1260 L4890,1260" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<path d="M4859,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<path d="M4860,1674 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<text class="vert" transform="rotate(90 4855,1690)" x="4855" y="1690">
+PCAUD_0071.PE86
+</text>
+<path d="M4920,1680 L4920,1260 L4890,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4919,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4915,1690)" x="4915" y="1690">
+PGOER_053.PE27
+</text>
+<path d="M4980,1680 L4980,1200 L4935,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M4979,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 4975,1690)" x="4975" y="1690">
+PNOVA_0776.PE6
+</text>
+<path d="M5070,1200 L5070,1140 L5002.5,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5070" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5040,1620 L5040,1200 L5070,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5040,1612 l0,16 M5032,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 5040 1620)"/>
+<text class="vert" transform="rotate(90 5035,1630)" x="5035" y="1630">
+loss
+</text>
+<path d="M5100,1680 L5100,1200 L5070,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5099,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5095,1690)" x="5095" y="1690">
+PQUAD_0057.PE100
+</text>
+<path d="M5212.5,1140 L5212.5,1080 L5107.5,1080" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5212.5" cy="1140" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5160,1620 L5160,1140 L5212.5,1140" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5160,1612 l0,16 M5152,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 5160 1620)"/>
+<text class="vert" transform="rotate(90 5155,1630)" x="5155" y="1630">
+loss
+</text>
+<path d="M5265,1200 L5265,1140 L5212.5,1140" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5265" cy="1200" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5220,1620 L5220,1200 L5265,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5220,1612 l0,16 M5212,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 5220 1620)"/>
+<text class="vert" transform="rotate(90 5215,1630)" x="5215" y="1630">
+loss
+</text>
+<path d="M5310,1260 L5310,1200 L5265,1200" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5307,1257 l0,6 l6,0 l0,-6 z" fill="blue" stroke="blue" stroke-width="3"/>
+<path d="M5280,1680 L5280,1260 L5310,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5279,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5275,1690)" x="5275" y="1690">
+PPRIMAZ9_005.PE204
+</text>
+<path d="M5340,1680 L5340,1260 L5310,1260" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5339,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5335,1690)" x="5335" y="1690">
+PPRIMAZ9_014.PE313
+</text>
+<path d="M5400,1680 L5400,780 L4193.681,780" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5399,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5395,1690)" x="5395" y="1690">
+PMUL_0028.PE251
+</text>
+<path d="M5460,1680 L5460,540 L3479.605,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5459,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5455,1690)" x="5455" y="1690">
+PBURS_077.PE58
+</text>
+<path d="M5550,540 L5550,480 L4514.8027,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5544,534 l0,12 l12,0 l0,-12 z" fill="orange" stroke="orange" stroke-width="3" transform="rotate(45 5550 540)"/>
+<path d="M5520,1620 L5520,540 L5550,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5520,1612 l0,16 M5512,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 5520 1620)"/>
+<text class="vert" transform="rotate(90 5515,1630)" x="5515" y="1630">
+loss
+</text>
+<path d="M5580,1680 L5580,540 L5550,540" fill="none" stroke="blue" stroke-dasharray="1, 1" stroke-width="3"/>
+<path d="M5579,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<path d="M5580,1674 l-12,-12 l24,0 z" fill="yellow" stroke="yellow" stroke-width="1"/>
+<text class="vert" transform="rotate(90 5575,1690)" x="5575" y="1690">
+PSEXA_035.PE77
+</text>
+<path d="M5730,420 L5730,360 L4248.7007,360" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5727,417 l0,6 l6,0 l0,-6 z" fill="blue" stroke="blue" stroke-width="3"/>
+<path d="M5670,480 L5670,420 L5730,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5670" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5640,1680 L5640,480 L5670,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5639,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5635,1690)" x="5635" y="1690">
+PSONN_051.PE94
+</text>
+<path d="M5700,1680 L5700,480 L5670,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5699,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5695,1690)" x="5695" y="1690">
+PJENN_0069.PE78
+</text>
+<path d="M5790,480 L5790,420 L5730,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5790" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5760,1680 L5760,480 L5790,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5759,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5755,1690)" x="5755" y="1690">
+PJENN_0086.PE82
+</text>
+<path d="M5820,1680 L5820,480 L5790,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5819,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5815,1690)" x="5815" y="1690">
+PSONN_041.PE234
+</text>
+<path d="M6286.875,360 L6286.875,300 L5267.788,300" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6286.875" cy="360" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6011.25,420 L6011.25,360 L6286.875,360" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6011.25" cy="420" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5910,480 L5910,420 L6011.25,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="5910" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M5880,1680 L5880,480 L5910,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5879,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5875,1690)" x="5875" y="1690">
+PDODE_0054.PE49
+</text>
+<path d="M5940,1680 L5940,480 L5910,480" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5939,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5935,1690)" x="5935" y="1690">
+PDECA_0359.PE36
+</text>
+<path d="M6112.5,480 L6112.5,420 L6011.25,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6112.5" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6030,540 L6030,480 L6112.5,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6030" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6000,1680 L6000,540 L6030,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M5999,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 5995,1690)" x="5995" y="1690">
+POCTAK8_276717.PE91
+</text>
+<path d="M6060,1680 L6060,540 L6030,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6059,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6055,1690)" x="6055" y="1690">
+POCTA138_025.PE227
+</text>
+<path d="M6195,540 L6195,480 L6112.5,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6195" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6150,600 L6150,540 L6195,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6150" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6120,1680 L6120,600 L6150,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6119,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6115,1690)" x="6115" y="1690">
+PTETRD4_24.PE216
+</text>
+<path d="M6180,1680 L6180,600 L6150,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6179,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6175,1690)" x="6175" y="1690">
+PTETR51_24.PE216
+</text>
+<path d="M6240,1680 L6240,540 L6195,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6239,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6235,1690)" x="6235" y="1690">
+PTETR32_033.PE230
+</text>
+<path d="M6562.5,420 L6562.5,360 L6286.875,360" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6562.5" cy="420" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6465,480 L6465,420 L6562.5,420" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6465" cy="480" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6375,540 L6375,480 L6465,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6375" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6330,600 L6330,540 L6375,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6330" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6300,1620 L6300,600 L6330,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6300,1612 l0,16 M6292,1620 l16,0" fill="blue" stroke="blue" stroke-width="4" transform="rotate(45 6300 1620)"/>
+<text class="vert" transform="rotate(90 6295,1630)" x="6295" y="1630">
+loss
+</text>
+<path d="M6360,1680 L6360,600 L6330,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6359,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6355,1690)" x="6355" y="1690">
+PPRIMAZ9_031.PE98
+</text>
+<path d="M6420,1680 L6420,540 L6375,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6419,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6415,1690)" x="6415" y="1690">
+PPENT_084.PE202
+</text>
+<path d="M6555,540 L6555,480 L6465,480" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6555" cy="540" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6510,600 L6510,540 L6555,540" fill="none" stroke="blue" stroke-width="3"/>
+<circle cx="6510" cy="600" fill="blue" r="3" stroke="blue" stroke-width="1"/>
+<path d="M6480,1680 L6480,600 L6510,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6479,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6475,1690)" x="6475" y="1690">
+PQUAD_0137.PE36
+</text>
+<path d="M6540,1680 L6540,600 L6510,600" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6539,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6535,1690)" x="6535" y="1690">
+PTRED_129393.PE96
+</text>
+<path d="M6600,1680 L6600,540 L6555,540" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6599,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6595,1690)" x="6595" y="1690">
+PNOVA_0665.PE6
+</text>
+<path d="M6660,1680 L6660,420 L6562.5,420" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6659,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6655,1690)" x="6655" y="1690">
+PBIAU_0375.PE6
+</text>
+<path d="M6720,1680 L6720,60 L3717.8892,60" fill="none" stroke="blue" stroke-width="3"/>
+<path d="M6719,1679 l0,2 l2,0 l0,-2 z" fill="red" stroke="red" stroke-width="3"/>
+<text class="vert" transform="rotate(90 6715,1690)" x="6715" y="1690">
+PGOER_003.PE53
+</text>
+</g>
+</svg>
