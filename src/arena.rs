@@ -272,6 +272,7 @@ impl Options {
 
 /// Fill an ArenaTree structure with the contents of a parentheses  tree.
 pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num: &mut usize) {
+    info!("[newick2tree] Tree = {}",arbre);
     let (left,right,trail) = find_left_right(arbre);
     info!("[newick2tree] Left = {} Right = {} Trail = {}",left,right,trail);
     match trail.find(':') {
@@ -279,7 +280,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
             tree.arena[index].l = trail[j+1..].to_string().parse::<f32>().unwrap();
             tree.arena[index].name = trail[0..j].to_string();
         },
-        None => {},
+        None => {tree.arena[index].name = trail[..].to_string();},
     };
 
     match  left.find(',') {
