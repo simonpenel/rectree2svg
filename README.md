@@ -16,10 +16,7 @@ Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
 # Formats:
 
-phyloXML, recPhyloXML
-
-newick  under development, nhx will be available soon
-
+phyloXML, recPhyloXML, rooted newick ( NHX balises will no be considered ).
 
 # Output example
 
@@ -27,7 +24,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711
 
 # Install:
 
-rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io. 
+rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io.
 Once Cargo is installed just open a terminal and type:
 
     cargo install rectree2svg
@@ -54,7 +51,7 @@ Usage:
     -o outputfile : set name of output file
     -p : build a phylogram   
     -r ratio : set the ratio between width of species and gene tree.
-               Default 1.0, you usualy do not need to change it. 
+               Default 1.0, you usualy do not need to change it.
     -s : drawing species tree only
     -v : verbose
 
@@ -160,13 +157,13 @@ You may try the codes in the 'examples' directory:
 
     cargo run --example read_newick
 
-    cargo run --example build_tree 
-    
-    cargo run --example lca
-    
-    cargo run --example modify_tree 
+    cargo run --example build_tree
 
-    
+    cargo run --example lca
+
+    cargo run --example modify_tree
+
+
 
 # Source documentation
 
