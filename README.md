@@ -83,7 +83,7 @@ You will find several input file examples in newick_examples, recphylo_examples 
 https://crates.io/crates/rectree2svg
 
 Simple Rust example: read a newick.txt file and creates the svg
-
+```
     use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree};
     use std::fs;
@@ -101,6 +101,7 @@ Simple Rust example: read a newick.txt file and creates the svg
         set_middle_postorder(&mut tree, root);
         draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
     }
+```
 
 Some newick examples are available here : https://github.com/simonpenel/rectree2svg/tree/master/newick_examples
 
