@@ -193,13 +193,13 @@ fn main()  {
         },
         // Newick
         Format::Newick => {
-                println!("=================================================================");
-                println!("WARNING: 06 April 2021: NHX balises if any will not be considered");
-                println!("=================================================================");
-                let contents = fs::read_to_string(filename)
+            println!("=================================================================");
+            println!("WARNING: 06 April 2021: NHX balises if any will not be considered");
+            println!("=================================================================");
+            let contents = fs::read_to_string(filename)
                 .expect("Something went wrong reading the newick file");
-                let root = tree.new_node("Root".to_string());
-                newick2tree(contents, &mut tree, root, &mut 0);
+            let root = tree.new_node("Root".to_string());
+            newick2tree(contents, &mut tree, root, &mut 0);
         },
         // Recphyloxml
         Format::Recphyloxml => {
