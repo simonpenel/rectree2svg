@@ -994,6 +994,7 @@ pub fn move_dupli_mappings(sp_tree: &mut ArenaTree<String>,
         move_dupli_mappings( sp_tree, gene_trees,son_right);
     }
 }
+
 /// Center the gene nodes into a  specie snode
 pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>,
                          gene_trees: &mut std::vec::Vec<ArenaTree<String>>, index: usize) {
@@ -1020,37 +1021,16 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>,
         if  gene_trees[*index_node].arena[*node].ymod > 0.0 {
             panic!("Unexpected ymod value");
         }
-        // match gene_trees[*index_node].arena[*node].e {
-
-
-            // Event::Undef => {
-            //     // Seulement dans le cas ou le seul node de gene associé au neod d'espece
-            //     // est ce loss
-            //     if sp_tree.arena[index].nbg == 1 {
-            //         if gene_trees[*index_node].arena[*node].y    > down_gene {
-            //                 down_gene =  gene_trees[*index_node].arena[*node].y  ;
-            //         }
-            //         if  gene_trees[*index_node].arena[*node].y    < up_gene {
-            //                 up_gene =  gene_trees[*index_node].arena[*node].y  ;
-            //         }
-            //
-            //     }
-            //
-            // },
-            // _ => {
-                if gene_trees[*index_node].arena[*node].y    > down_gene {
-                        down_gene =  gene_trees[*index_node].arena[*node].y  ;
-                }
-                if  gene_trees[*index_node].arena[*node].y    < up_gene {
-                        up_gene =  gene_trees[*index_node].arena[*node].y  ;
-                }
-            // },
-        // }
+        if gene_trees[*index_node].arena[*node].y    > down_gene {
+            down_gene =  gene_trees[*index_node].arena[*node].y  ;
+        }
+        if  gene_trees[*index_node].arena[*node].y    < up_gene {
+            up_gene =  gene_trees[*index_node].arena[*node].y  ;
+        }
     }
     let middle_sp = (left_sp + right_sp) / 2.0;
     let middle_gn = (left_gene  + right_gene)  / 2.0;
     let shift = middle_gn  - middle_sp;
-
     let y_middle_sp = (up_sp + down_sp) / 2.0;
     let y_middle_gn = (up_gene  + down_gene)  / 2.0;
     let y_shift = y_middle_gn  - y_middle_sp;
@@ -1062,7 +1042,6 @@ pub fn center_gene_nodes(sp_tree: &mut ArenaTree<String>,
         let y = y - y_shift ;
         gene_trees[*index_node].arena[*node].set_y_noref(y);
     }
-
     let children =  &mut  sp_tree.arena[index].children;
     if children.len() > 0 {
         let son_left = children[0];
