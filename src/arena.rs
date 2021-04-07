@@ -1073,7 +1073,6 @@ pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::
     // Search for the first occurnce of clade tag
     for  node in descendants {
         if node.has_tag_name("clade"){
-            // return Ok(node.id().get())
             return Ok(node.id())
         }
     }
@@ -1086,7 +1085,6 @@ pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId
     // Search for the first occurnce of clade spTree
     for  node in descendants {
         if node.has_tag_name("spTree"){
-            // return Ok(node.id().get())
             return Ok(node.id())
         }
     }
@@ -1100,8 +1098,6 @@ pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::N
     // Search for the first occurnce of clade spTree
     for  node in descendants {
         if node.has_tag_name("recGeneTree"){
-            // return Ok(node.id().get())
-            // return Ok(node.id())
             gene_nodes.push(node.id());
         }
     }
@@ -1112,15 +1108,12 @@ pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::N
     }
 }
 
-
-
-
 /// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
     tree.arena[index].set_y_noref(BLOCK* (*depth as f32));
     let children  = &mut  tree.arena[index].children;
     if children.len() > 2 {
-        panic!("The tree must be binary")
+        panic!("The tree must be binary.")
     }
     if children.len() > 0 {
         let son_left = children[0];
@@ -1186,7 +1179,6 @@ pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mu
             Event::Loss => tree.arena[index].set_y_noref(BLOCK* (*max as f32 )),
             _ => tree.arena[index].set_y_noref(BLOCK* (*max as f32 + 1.0)),
         };
-        // tree.arena[index].set_y_noref(BLOCK* (*max as f32 + 1.0));
     }
 }
 
@@ -1197,12 +1189,10 @@ pub fn shift_mod_xy( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32,
     let  xmod_father = tree.arena[index].xmod;
     let mut xmod = *xmod + xmod_father;
     tree.arena[index].set_x_noref(x_father+xmod);
-    // tree.arena[index].set_xmod_noref(xmod);inutile
     let y_father = tree.arena[index].y;
     let  ymod_father = tree.arena[index].ymod;
     let mut ymod = *ymod + ymod_father;
     tree.arena[index].set_y_noref(y_father+ymod);
-    // tree.arena[index].set_ymod_noref(ymod);inutile
     let children  = &mut  tree.arena[index].children;
     if children.len() > 2 {
         panic!("The tree must be binary")
