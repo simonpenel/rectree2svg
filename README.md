@@ -1,5 +1,7 @@
 # rectree2svg
 
+[![rectree2svg at crates.io](https://img.shields.io/crates/v/rectree2svg.svg)](https://crates.io/crates/rectree2svg)
+
 Read, build, displays as svg and manipulates phylogenetic trees.
 
 Trees must be rooted.
