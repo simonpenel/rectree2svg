@@ -56,6 +56,7 @@ pub use self::drawing::get_chemin_carre;
 pub use self::drawing::get_chemin_sp;
 pub use self::drawing::get_chemin_transfer;
 pub use self::drawing::get_cross;
+pub use self::drawing::get_triangle;
 
 
 #[cfg(test)]
