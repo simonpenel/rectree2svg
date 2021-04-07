@@ -11,11 +11,11 @@ fn main() {
                 let root = tree.new_node("Root".to_string());
                 println!("Build the tree from the file contents...");
                 newick2tree(contents, &mut tree, root, &mut 0);
-                let j = tree.get_index("J".to_string());
+                let j = tree.get_index("J".to_string()).expect("Error : unable to find J");
                 println!("Index of leaf J is {}",j);
-                let l = tree.get_index("L".to_string());
+                let l = tree.get_index("L".to_string()).expect("Error : unable to find L");
                 println!("Index of leaf L is {}",l);
-                let n = tree.get_index("N".to_string());
+                let n = tree.get_index("N".to_string()).expect("Error : unable to find N");
                 println!("Index of leaf N is {}",n);
                 let lca_jl = lca(&mut tree,j,l);
                 println!("Index of lca betwen J and L is {}",lca_jl);
