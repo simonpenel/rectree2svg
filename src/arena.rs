@@ -1261,7 +1261,6 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
         };
         if shift_down <= PIPEBLOCK {
             shift_down = PIPEBLOCK;
-
         }
         // TODO configurable
         let shift_down = shift_down + 4.0 * PIPEBLOCK;
@@ -1308,13 +1307,13 @@ pub fn  get_contour_left(tree: &mut ArenaTree<String>,index:usize,depth:usize,
     let node_left_pos = node_xpos(tree,index,parent_xmod,-1);
     if contour_left.len() <= local_depth {
         if tree.arena[index].xmod < 0.0 {
-            panic!("error: negative xmod");
+            panic!("Error: negative xmod.");
         }
         contour_left.push(node_left_pos);
         info!("[get_contour_left] increment contour is now {:?}",contour_left);
     }
     if tree.arena[index].xmod < 0.0 {
-        panic!("erreur: negative  xmod");
+        panic!("Error: negative  xmod.");
     }
     if node_left_pos <= contour_left[local_depth] {
         contour_left[local_depth] = node_left_pos;
@@ -1341,7 +1340,7 @@ pub fn  get_contour_right(tree: &mut ArenaTree<String>,index:usize,depth:usize,
             info!("[get_contour_right] increment contour is now {:?}",contour_right);
     }
     if tree.arena[index].xmod < 0.0 {
-        panic!("erreur: negative xmod");
+        panic!("Error: negative xmod");
     }
     if node_right_pos >= contour_right[local_depth] {
         contour_right[local_depth] = node_right_pos ;
@@ -1431,6 +1430,7 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
         tree.arena[index].set_xmod_noref(x_mod);
     }
 }
+
 /// Send the index of the last common ancestor of 2 nodes
 #[allow(dead_code)]
 pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize {
@@ -1466,6 +1466,7 @@ pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize
          lca(tree,index1,p2)
     }
 }
+
 #[allow(dead_code)]
 pub fn summary_root(tree : &mut ArenaTree<String>, index:usize)  {
     let children  = &tree.arena[index].children;
@@ -1486,6 +1487,7 @@ pub fn summary_root(tree : &mut ArenaTree<String>, index:usize)  {
     }
 
 }
+
 #[allow(dead_code)]
 /// Reset the position of the tree
 pub fn reset_pos(tree : &mut ArenaTree<String>)  {
@@ -1520,6 +1522,7 @@ for index in &tree.arena {
         }
     }
 }
+
 #[allow(dead_code)]
 /// Add a node to another node
 pub fn add_child(tree : &mut ArenaTree<String>, parent:usize, child:usize)  {
