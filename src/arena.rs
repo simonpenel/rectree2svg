@@ -1538,7 +1538,7 @@ pub fn add_child(tree : &mut ArenaTree<String>, parent:usize, child:usize)  {
 pub fn move_child(tree : &mut ArenaTree<String>, child:usize, new_parent:usize)  {
     let parent =  match tree.arena[child].parent {
         Some(p) => p,
-        None => panic!("Node {:?} has no parent"),
+        None => panic!("Node {:?} has no parent.",child),
     };
     info!("[move_child] moving {} from {} to {}",child,parent,new_parent);
     tree.arena[child].parent = Some(new_parent);
