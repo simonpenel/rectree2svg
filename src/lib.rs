@@ -122,9 +122,12 @@ mod tests {
         newick2tree(contents, &mut tree, root, &mut 0);
         println!("Tree {:?}",tree);
     }
-
-
-
-
-
+    #[test]
+    fn  check_get_index() {
+        let mut tree: ArenaTree<String> = ArenaTree::default();
+        let index = tree.new_node("test".to_string());
+        tree.arena[index].name = "Test".to_string();
+        let test = tree.get_index("Test".to_string()).expect("Error in test check_get_index");
+        assert_eq!(test,index);
+    }
 }
