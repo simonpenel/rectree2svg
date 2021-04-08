@@ -195,6 +195,8 @@ fn main()  {
                     break;
                 }
             }
+            phyloxml_processing(&mut tree, options, clado_flag, open_browser,
+                 real_length_flag,outfile );
         },
         // Newick
         Format::Newick => {
@@ -205,6 +207,8 @@ fn main()  {
                 .expect("Something went wrong reading the newick file");
             let root = tree.new_node("Root".to_string());
             newick2tree(contents, &mut tree, root, &mut 0);
+            phyloxml_processing(&mut tree, options, clado_flag, open_browser,
+                 real_length_flag,outfile );
         },
         // Recphyloxml
         Format::Recphyloxml => {
@@ -286,61 +290,8 @@ fn main()  {
                     process::exit(1);
                 }
                 let  mut tree = &mut gene_trees[disp_gene-1];
-                info!("Tree : {:?}",tree);
-                // -----------------------
-                // Traitement en 4 étapes
-                // -----------------------
-                // Au départ l'arbre est orienté du haut vers le bas (i.e. selon Y)
-                // Le svg sera tourné de -90 a la fin.
-                //
-                //----------------------------------------------------------
-                // 1ère étape :initialisation des x,y de l'arbre :
-                // profondeur => Y, left => X= 0, right X=1
-                // ---------------------------------------------------------
-                let  root = tree.get_root();
-                knuth_layout(&mut tree,root, &mut 1);
-
-                // ---------------------------------------------------------
-                // Option : Cladogramme
-                // ---------------------------------------------------------
-                if clado_flag {
-                    cladogramme(&mut tree);
-                }
-                // ---------------------------------------------------------
-                // 2ème étape : Vérifie les contours
-                // ---------------------------------------------------------
-                 check_contour_postorder(&mut tree, root);
-                // ---------------------------------------------------------
-                // 3eme etape : Decale toutes les valeurs de x en fonction
-                // de xmod
-                // ---------------------------------------------------------
-                shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
-
-                // ---------------------------------------------------------
-                // 4ème étape : Place le parent entre les enfants
-                // ---------------------------------------------------------
-                set_middle_postorder(&mut tree, root);
-                // ---------------------------------------------------------
-                // Option : real_length
-                // ---------------------------------------------------------
-                if real_length_flag {
-                    real_length(&mut tree, root, &mut 0.0, & options);
-                }
-                // ---------------------------------------------------------
-                // Fin: Ecriture du fichier svg
-                // ---------------------------------------------------------
-                println!("Output filename is {}",outfile);
-
-                let path = env::current_dir().expect("Unable to get current dir");
-                let url_file = format!("file:///{}/{}", path.display(),outfile);
-                drawing::draw_tree(&mut tree, outfile, & options);
-                // EXIT
-                // On s'arrete la, le reste du programme concerne les autres formats
-                if open_browser {
-                    if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
-                        info!("Browser OK");
-                    }
-                }
+                phyloxml_processing(&mut tree, options, clado_flag, open_browser,
+                    real_length_flag, outfile);
                 process::exit(0);
 
             }
@@ -443,18 +394,16 @@ fn main()  {
                 false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,
                     & options),
             };
-
-            // EXIT
-            // On s'arrete la, le reste du programme concerne les autres formats
             if open_browser {
                 if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
                     info!("Browser OK");
                 }
             }
-
-            process::exit(0);
         },
     }
+}
+fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options ,clado_flag:bool,
+    open_browser: bool, real_length_flag:bool,outfile: String ) {
     info!("Tree : {:?}",tree);
     // -----------------------
     // Traitement en 4 étapes
@@ -510,4 +459,5 @@ fn main()  {
             info!("Browser OK");
         }
     }
+
 }
