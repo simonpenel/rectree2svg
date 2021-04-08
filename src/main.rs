@@ -49,8 +49,9 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
+    println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
     println!("    -I : display internal species nodes");
@@ -95,7 +96,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:l:o:bhiIsr:pv");
+    let mut opts = getopt::Parser::new(&args, "f:g:l:o:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut clado_flag = true;
@@ -104,10 +105,14 @@ fn main()  {
     let mut real_length_flag = false;
     let mut verbose = false;
     let mut nb_args = 0;
+    let mut disp_gene = 0;
     loop {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
+                Opt('g', Some(string)) => {
+                    disp_gene = string.parse().unwrap();
+                    },
                 Opt('i', None) => options.gene_internal = true,
                 Opt('I', None) => options.species_internal = true,
                 Opt('b', None) => open_browser = true,
@@ -272,6 +277,73 @@ fn main()  {
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
+
+            if disp_gene  > 0 {
+                // On traite l'arbre de gene comme un arbre au format phylxoml
+                if disp_gene > nb_gntree {
+                    println!("There are only {} genes in the file, unable to display gene #{}",
+                    nb_gntree,disp_gene);
+                    process::exit(1);
+                }
+                let  mut tree = &mut gene_trees[disp_gene-1];
+                info!("Tree : {:?}",tree);
+                // -----------------------
+                // Traitement en 4 étapes
+                // -----------------------
+                // Au départ l'arbre est orienté du haut vers le bas (i.e. selon Y)
+                // Le svg sera tourné de -90 a la fin.
+                //
+                //----------------------------------------------------------
+                // 1ère étape :initialisation des x,y de l'arbre :
+                // profondeur => Y, left => X= 0, right X=1
+                // ---------------------------------------------------------
+                let  root = tree.get_root();
+                knuth_layout(&mut tree,root, &mut 1);
+
+                // ---------------------------------------------------------
+                // Option : Cladogramme
+                // ---------------------------------------------------------
+                if clado_flag {
+                    cladogramme(&mut tree);
+                }
+                // ---------------------------------------------------------
+                // 2ème étape : Vérifie les contours
+                // ---------------------------------------------------------
+                 check_contour_postorder(&mut tree, root);
+                // ---------------------------------------------------------
+                // 3eme etape : Decale toutes les valeurs de x en fonction
+                // de xmod
+                // ---------------------------------------------------------
+                shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
+
+                // ---------------------------------------------------------
+                // 4ème étape : Place le parent entre les enfants
+                // ---------------------------------------------------------
+                set_middle_postorder(&mut tree, root);
+                // ---------------------------------------------------------
+                // Option : real_length
+                // ---------------------------------------------------------
+                if real_length_flag {
+                    real_length(&mut tree, root, &mut 0.0, & options);
+                }
+                // ---------------------------------------------------------
+                // Fin: Ecriture du fichier svg
+                // ---------------------------------------------------------
+                println!("Output filename is {}",outfile);
+
+                let path = env::current_dir().expect("Unable to get current dir");
+                let url_file = format!("file:///{}/{}", path.display(),outfile);
+                drawing::draw_tree(&mut tree, outfile, & options);
+                // EXIT
+                // On s'arrete la, le reste du programme concerne les autres formats
+                if open_browser {
+                    if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
+                        info!("Browser OK");
+                    }
+                }
+                process::exit(0);
+
+            }
             // -----------------------
             // Traitement en 12 etapes
             // -----------------------
