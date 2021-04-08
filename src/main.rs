@@ -141,9 +141,6 @@ fn main()  {
             }
         }
     }
-    if args.len() == 1 {
-         display_help(args[0].to_string());
-    }
     if nb_args != 1 {
          display_help(args[0].to_string());
     }
