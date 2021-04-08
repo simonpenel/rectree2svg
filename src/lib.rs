@@ -64,7 +64,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn  check_event() {
+    fn  check_set_event() {
         let mut tree: ArenaTree<String> = ArenaTree::default();
         let test = String::from("Test");
         let index = tree.new_node(test);
@@ -111,6 +111,16 @@ mod tests {
         tree.arena[root].children.push(d);
         let lca_test = lca(&mut tree,a1,b);
         assert_eq!(lca_test,c);
+    }
+    #[test]
+    fn  check_read_newick() {
+        use std::fs;
+        let mut tree: ArenaTree<String> = ArenaTree::default();
+        let contents = fs::read_to_string("examples/newick.txt")
+                    .expect("Something went wrong reading the newick file");
+        let root = tree.new_node("Root".to_string());
+        newick2tree(contents, &mut tree, root, &mut 0);
+        println!("Tree {:?}",tree);
     }
 
 
