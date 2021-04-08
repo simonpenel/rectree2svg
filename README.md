@@ -57,9 +57,10 @@ Format is guessed according to filename (default is newick)
 
 Usage:
 
-    rectree2svg -f input file [-b][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
+    rectree2svg -f input file [-b][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
-    -b : open svg in browser
+    -b : open svg in browser    
+    -g <n> : display the gene #n in phyloxml style (no species tree)
     -h : help
     -i : display internal gene nodes
     -I : display internal species nodes
