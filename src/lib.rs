@@ -8,6 +8,7 @@
 
 mod arena;
 pub use self::arena::Options;
+pub use self::arena::Config;
 pub use self::arena::Event;
 pub use self::arena::Noeud;
 pub use self::arena::ArenaTree;

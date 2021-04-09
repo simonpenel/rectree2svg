@@ -1,8 +1,9 @@
-use rectree2svg::{ArenaTree,Options,Event,knuth_layout,check_contour_postorder,
+use rectree2svg::{ArenaTree,Options,Config,Event,knuth_layout,check_contour_postorder,
                   cladogramme,shift_mod_xy,set_middle_postorder,draw_tree,summary};
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
+    let config: Config = Config::new();
 
     // Create a new node root
     let root = tree.new_node("root".to_string());
@@ -61,7 +62,7 @@ fn main() {
 
     // Display internal nodes
     options.gene_internal = true ;
-    draw_tree(&mut tree,"build_tree.svg".to_string(),&options);
+    draw_tree(&mut tree,"build_tree.svg".to_string(),&options,&config);
     println!("Please open output file 'build_tree.svg' with your browser");
     println!("OK.");
 }

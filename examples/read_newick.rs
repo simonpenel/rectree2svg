@@ -1,9 +1,10 @@
-use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
+use rectree2svg::{ArenaTree,Options,Config,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree,real_length};
 use std::fs;
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let options: Options = Options::new();
+    let config: Config = Config::new();
     println!("Reading newick file examples/newick.txt...");
     let contents = fs::read_to_string("examples/newick.txt")
                 .expect("Something went wrong reading the newick file");
@@ -20,11 +21,11 @@ fn main() {
     println!("Set parent horizontal position between its children...");
     set_middle_postorder(&mut tree, root);
     println!("Rotate -90 and draw cladogram tree...");
-    draw_tree(&mut tree,"read_newick-clado.svg".to_string(),&options);
+    draw_tree(&mut tree,"read_newick-clado.svg".to_string(),&options,&config);
     println!("Please open output file 'read_newick-clado.svg' with your browser");
     real_length(&mut tree, root, &mut 0.0, & options);
     println!("Rotate -90 and draw real length tree...");
-    draw_tree(&mut tree,"read_newick-real_length.svg".to_string(),&options);
+    draw_tree(&mut tree,"read_newick-real_length.svg".to_string(),&options,&config);
     println!("Please open output file 'read_newick-real_length.svg' with your browser");
     println!("OK.");
 }

@@ -1,8 +1,9 @@
-use rectree2svg::{ArenaTree,Options,Event,add_child,move_child,knuth_layout,check_contour_postorder,
+use rectree2svg::{ArenaTree,Options,Config,Event,add_child,move_child,knuth_layout,check_contour_postorder,
                   cladogramme,shift_mod_xy,set_middle_postorder,draw_tree,summary,reset_pos};
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
+    let config: Config = Config::new();
 
     // Create a new node root
     let root = tree.new_node("root".to_string());
@@ -56,7 +57,7 @@ fn main() {
     check_contour_postorder(&mut tree, root);
     shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
     set_middle_postorder(&mut tree, root);
-    draw_tree(&mut tree,"modify_tree_ini.svg".to_string(),&options);
+    draw_tree(&mut tree,"modify_tree_ini.svg".to_string(),&options,&config);
 
     println!("Add a loss to C");
     let loss = tree.new_node("loss".to_string());
@@ -82,7 +83,7 @@ fn main() {
     check_contour_postorder(&mut tree, root);
     shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
     set_middle_postorder(&mut tree, root);
-    draw_tree(&mut tree,"modify_tree_mod.svg".to_string(),&options);
+    draw_tree(&mut tree,"modify_tree_mod.svg".to_string(),&options,&config);
     println!("Please open output files  'modify_tree_ini.svg' and 'modify_tree_mod.svg' with your browser");
     println!("OK.");
 }

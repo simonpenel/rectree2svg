@@ -103,15 +103,18 @@ rectree2svg -f recphylo_examples/FAM000600_reconciliated_big.recphylo -c my_conf
 
 https://crates.io/crates/rectree2svg
 
+You may find more code  examples in the "examples" directory.
+
 Simple Rust example: read a newick.txt file and creates the svg
 ```
-    use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
+    use rectree2svg::{ArenaTree,Options,Config,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree};
     use std::fs;
 
     fn main() {
         let mut tree: ArenaTree<String> = ArenaTree::default();
         let options: Options = Options::new();
+        let config: Config = Config::new();
         let contents = fs::read_to_string("newick.txt")
                 .expect("Something went wrong reading the newick file");
         let root = tree.new_node("Root".to_string());
@@ -120,21 +123,21 @@ Simple Rust example: read a newick.txt file and creates the svg
         check_contour_postorder(&mut tree, root);
         shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
         set_middle_postorder(&mut tree, root);
-        draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
+        draw_tree(&mut tree,"my_svg.svg".to_string(),&options,&config);
     }
 ```
 
 Some newick examples are available here : https://github.com/simonpenel/rectree2svg/tree/master/newick_examples
 
 Simple Rust example: build a gene tree with a duplication and creates the svg
-
-    use rectree2svg::{ArenaTree,Options,Event,knuth_layout,check_contour_postorder,
+```
+    use rectree2svg::{ArenaTree,Options,Config,Event,knuth_layout,check_contour_postorder,
                   cladogramme,shift_mod_xy,set_middle_postorder,draw_tree};
 
     fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
-
+    let config: Config = Config::new();
     // Create a new node root
     let root = tree.new_node("root".to_string());
     // Create  new nodes
@@ -184,9 +187,9 @@ Simple Rust example: build a gene tree with a duplication and creates the svg
     // Display internal nodes
     options.gene_internal = true ;
 
-    draw_tree(&mut tree,"my_svg.svg".to_string(),&options);
+    draw_tree(&mut tree,"my_svg.svg".to_string(),&options,&config);
     }
-
+```
 # Code Examples
 
 You may try the codes in the 'examples' directory:

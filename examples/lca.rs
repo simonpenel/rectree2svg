@@ -1,9 +1,10 @@
-use rectree2svg::{ArenaTree,Options,newick2tree,knuth_layout,check_contour_postorder,
+use rectree2svg::{ArenaTree,Options,Config,newick2tree,knuth_layout,check_contour_postorder,
                   shift_mod_xy,set_middle_postorder,draw_tree,lca};
 use std::fs;
 fn main() {
     let mut tree: ArenaTree<String> = ArenaTree::default();
     let mut options: Options = Options::new();
+    let config: Config = Config::new();
     println!("Reading newick file examples/newick.A4.txt...");
     let contents = fs::read_to_string("examples/newick.A4.txt")
                 .expect("Something went wrong reading the newick file");
@@ -29,7 +30,7 @@ fn main() {
                 set_middle_postorder(&mut tree, root);
                 // Display internal nodes
                 options.gene_internal = true ;
-                draw_tree(&mut tree,"lca.svg".to_string(),&options);
+                draw_tree(&mut tree,"lca.svg".to_string(),&options,&config);
                 println!("Please open output file 'lca.svg' with your browser");
                 println!("OK.");
 }
