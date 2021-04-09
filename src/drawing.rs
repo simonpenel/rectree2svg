@@ -1,6 +1,7 @@
 use log::{info};
 use crate::arena::Options;
 use crate::arena::ArenaTree;
+use crate::arena::Config;
 use crate::arena::Event;
 use crate::arena::BLOCK;
 use crate::arena::PIPEBLOCK;
@@ -19,9 +20,10 @@ const STHICKNESS: usize = 6; // Epaisseur trait species
 const SQUARESIZE: f32 = 6.0; // taille carre dupli
 
 /// Draw a svg simple tree
-pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options) {
+pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options,
+    config: &Config) {
     info!("[draw_tree] Drawing tree...");
-    let gene_color = "blue";
+    let gene_color = & config.single_gene_color;
     let largest_x = tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = tree.get_largest_y() * 1.0 + 0.0 ;
     let smallest_x = tree.get_smallest_x() * 1.0 + 0.0 ;
@@ -39,7 +41,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
             .set("height",width_svg + BLOCK )
             .set("viewBox", (x_viewbox,y_viewbox,height_svg + 2.0 * BLOCK ,width_svg + 2.0 * BLOCK ));
 
-    let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    // let style = Style::new(".vert { font: italic 12px serif; fill: green; }");
+    let style = Style::new(".gene { font:  ".to_owned()
+        + &config.gene_police_size.to_string()+"px serif; fill:"
+        + &gene_color.to_string() + "; }" );
     document.append(style);
     let mut g = Element::new("g");
     for  index in &tree.arena {
@@ -58,9 +63,9 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
         let  event = &index.e;
         match event {
             Event::Leaf        =>  g.append(get_carre(index.x,index.y,2.0,"red".to_string())),
-            Event::Duplication =>  g.append(get_carre(index.x,index.y,SQUARESIZE,"blue".to_string())),
+            Event::Duplication =>  g.append(get_carre(index.x,index.y,SQUARESIZE,gene_color.to_string())),
             Event::Loss =>  {
-                let mut cross = get_cross(index.x,index.y,4.0,"blue".to_string());
+                let mut cross = get_cross(index.x,index.y,4.0,gene_color.to_string());
                 cross.assign("transform","rotate(45 ".to_owned()+&index.x.to_string()
                 + " "+&index.y.to_string()+")");
                 g.append(cross);
@@ -72,7 +77,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
                 g.append(diamond);
             },
 
-            _   =>  g.append(get_circle(index.x,index.y,3.0,"blue".to_string())),
+            _   =>  g.append(get_circle(index.x,index.y,3.0,gene_color.to_string())),
         };
         match index.is_a_transfert {
             true => { g.append(get_triangle(index.x,index.y - 6.0,12.0,"yellow".to_string())) },
@@ -82,7 +87,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
         let mut element = Element::new("text");
         element.assign("x", index.x-5.0);
         element.assign("y", index.y+10.0);
-        element.assign("class", "vert");
+        element.assign("class", "gene");
         let txt  = Text::new(&index.name);
         element.append(txt);
         element.assign("transform","rotate(90 ".to_owned()+&(index.x - 5.0).to_string()
@@ -109,7 +114,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options)
 pub fn draw_sptree_gntrees (
     sp_tree: &mut ArenaTree<String>,
     gene_trees:&mut std::vec::Vec<ArenaTree<String>>,
-    name: String, options: &Options
+    name: String, options: &Options, config: &Config
     ) {
     let largest_x = sp_tree.get_largest_x() * 1.0 + 0.0 ;
     let largest_y = sp_tree.get_largest_y() * 1.0 + 0.0 ;
@@ -128,9 +133,11 @@ pub fn draw_sptree_gntrees (
             .set("height",width_svg  )
             .set("viewBox", (x_viewbox,y_viewbox,height_svg + 2.0 *BLOCK ,width_svg + 2.0 *BLOCK ));
 
-    let style = Style::new(".vert { font:  12px serif; fill: green; }");
-    document.append(style);
-    let style = Style::new(".jaune { font: italic 12px serif; fill: orange; }");
+    // let style = Style::new(".vert { font:  12px serif; fill: green; }");
+    // document.append(style);
+    let style = Style::new(".species { font: italic ".to_owned()
+        + &config.species_police_size.to_string()+"px serif; fill: "
+        + &config.species_police_color.to_string()+"; }");
     document.append(style);
     let mut g = Element::new("g");
     // Dessine l'arbre d'espece
@@ -143,12 +150,12 @@ pub fn draw_sptree_gntrees (
                                            index.width/2.0, index.height/2.0,
                                            n.x, n.y,
                                            n.width/2.0, n.height/2.0,
-                                           "pink".to_string());
+                                           config.species_color.to_string());
                 g.append(chemin);
                 if sp_tree.is_leaf(index.idx) {
                     let chemin = close_chemin_sp(index.x, index.y,
                                                  index.width/2.0, index.height/2.0,
-                                                 "pink".to_string());
+                                                 config.species_color.to_string());
                     g.append(chemin);
                 }
             },
@@ -160,7 +167,7 @@ pub fn draw_sptree_gntrees (
             true => {
                 element.assign("x", index.x-15.0);
                 element.assign("y", index.y - index.width /2.0 - 10.0);
-                element.assign("class", "jaune");
+                element.assign("class", "species");
                 let txt  = Text::new(&index.name);
                 element.append(txt);
                 element.assign("transform","rotate(90 ".to_owned() + &index.x.to_string()
@@ -172,7 +179,7 @@ pub fn draw_sptree_gntrees (
                     true => {
                         element.assign("x", index.x+15.0);
                         element.assign("y", index.y+20.0);
-                        element.assign("class", "jaune");
+                        element.assign("class", "species");
                         let txt  = Text::new(&index.name);
                         element.append(txt);
                         element.assign("transform","rotate(90 ".to_owned()+&index.x.to_string()
@@ -203,7 +210,7 @@ pub fn draw_sptree_gntrees (
             .alpha(1.0) // Optional
             .to_rgb_string(); //
         let style = Style::new(".gene_".to_owned()+&idx_rcgen.to_string()
-            + " { font:  10px serif; fill:" + &gene_color.to_string() + "; }" );
+            + " { font: "+ &config.gene_police_size.to_string()+"px serif; fill:" + &gene_color.to_string() + "; }" );
         document.append(style);
         for  index in &gene_trees[idx_rcgen].arena {
             // Dessine le chemin du noeud a son pere
@@ -403,19 +410,19 @@ pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
 
 #[allow(dead_code)]
 /// Draw a semisquare path between x1,y1 ad x2,y2
-pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
-    let data = Data::new()
-    .move_to((x1*1.0, y1*1.0))
-    .line_to((x1*1.0, (y1+y2)*1.0/2.0))
-    .line_to((x2*1.0, (y1+y2)*1.0/2.0))
-    .line_to((x2*1.0, y2*1.0));
-    let path = Path::new()
-    .set("fill", "none")
-    .set("stroke", "blue")
-    .set("stroke-width", GTHICKNESS)
-    .set("d", data);
-    path
-}
+// pub fn get_chemin_semisquare (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+//     let data = Data::new()
+//     .move_to((x1*1.0, y1*1.0))
+//     .line_to((x1*1.0, (y1+y2)*1.0/2.0))
+//     .line_to((x2*1.0, (y1+y2)*1.0/2.0))
+//     .line_to((x2*1.0, y2*1.0));
+//     let path = Path::new()
+//     .set("fill", "none")
+//     .set("stroke", "blue")
+//     .set("stroke-width", GTHICKNESS)
+//     .set("d", data);
+//     path
+// }
 
 /// Draw a square path between x1,y1 ad x2,y2
 pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bool) -> Path {
@@ -476,17 +483,17 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bo
 
 #[allow(dead_code)]
 /// Draw a direct path between x1,y1 ad x2,y2
-pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
-    let data = Data::new()
-    .move_to((x1*1.0, y1*1.0))
-    .line_to((x2*1.0, y2*1.0));
-    let path = Path::new()
-    .set("fill", "none")
-    .set("stroke", "blue")
-    .set("stroke-width", 1)
-    .set("d", data);
-    path
-}
+// pub fn get_chemin_simple (x1: f32, y1:f32,x2: f32, y2:f32) -> Path {
+//     let data = Data::new()
+//     .move_to((x1*1.0, y1*1.0))
+//     .line_to((x2*1.0, y2*1.0));
+//     let path = Path::new()
+//     .set("fill", "none")
+//     .set("stroke", "blue")
+//     .set("stroke-width", 1)
+//     .set("d", data);
+//     path
+// }
 
 /// Draw a square pipe path between x1,y1 ad x2,y2
 pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,

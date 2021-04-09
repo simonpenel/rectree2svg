@@ -19,6 +19,7 @@ use webbrowser::{Browser};
 mod arena;
 use crate::arena::Options;
 use crate::arena::ArenaTree;
+use crate::arena::Config;
 use crate::arena::newick2tree;
 use crate::arena::xml2tree;
 use crate::arena::check_for_obsolete;
@@ -49,8 +50,9 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
+    println!("    -c configfile: use a configuration file");
     println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
@@ -93,15 +95,16 @@ pub enum  Format {
 
 fn main()  {
     // Initialise les options
-    // Some of the program options needed several functions
     let mut options: Options = Options::new();
+    // Initialise la config
+    let mut config: Config = Config::new();
     // Gestion des arguments et des options
     // ------------------------------------
     let args: Vec<String> = std::env::args().collect();
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "f:g:l:o:bhiIsr:pv");
+    let mut opts = getopt::Parser::new(&args, "c:f:g:l:o:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     // let mut clado_flag = true;
@@ -136,6 +139,9 @@ fn main()  {
                     env_logger::init();
                     info!("Verbosity set to Info");
                     },
+                Opt('c', Some(string)) => {
+                        set_config(string, &mut config);
+                        },
                 Opt('f', Some(string)) => {
                     infile = string.clone();
                     nb_args += 1;
@@ -197,7 +203,7 @@ fn main()  {
                     break;
                 }
             }
-            phyloxml_processing(&mut tree, options,outfile );
+            phyloxml_processing(&mut tree, options, config, outfile);
         },
         // Newick
         Format::Newick => {
@@ -208,7 +214,7 @@ fn main()  {
                 .expect("Something went wrong reading the newick file");
             let root = tree.new_node("Root".to_string());
             newick2tree(contents, &mut tree, root, &mut 0);
-            phyloxml_processing(&mut tree, options,outfile );
+            phyloxml_processing(&mut tree, options, config, outfile);
         },
         // Recphyloxml
         Format::Recphyloxml => {
@@ -244,7 +250,7 @@ fn main()  {
             }
             if options.verbose {
                 info!("Drawing tree species verbose-species.svg");
-                drawing::draw_tree(&mut sp_tree, "verbose-species.svg".to_string(), & options);
+                drawing::draw_tree(&mut sp_tree, "verbose-species.svg".to_string(), &options, &config);
             }
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
@@ -290,15 +296,16 @@ fn main()  {
                     process::exit(1);
                 }
                 let  mut tree = &mut gene_trees[options.disp_gene-1];
-                phyloxml_processing(&mut tree, options, outfile);
+                phyloxml_processing(&mut tree, options, config, outfile);
             }
             else {
-                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, options, outfile);
+                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, options, config, outfile);
             }
         },
     }
 }
-fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, outfile: String ) {
+fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, config:Config,
+     outfile: String ) {
     info!("Tree : {:?}",tree);
     // -----------------------
     // Traitement en 4 étapes
@@ -346,7 +353,7 @@ fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, outfil
 
     let path = env::current_dir().expect("Unable to get current dir");
     let url_file = format!("file:///{}/{}", path.display(),outfile);
-    drawing::draw_tree(&mut tree, outfile, & options);
+    drawing::draw_tree(&mut tree, outfile, & options, & config);
     // EXIT
     // On s'arrete la, le reste du programme concerne les autres formats
     if options.open_browser {
@@ -358,7 +365,7 @@ fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, outfil
 }
 fn recphyloxml_processing(mut sp_tree: &mut ArenaTree<String>,
     mut gene_trees:&mut std::vec::Vec<ArenaTree<String>>,
-    mut options:Options, outfile: String ) {
+    mut options:Options, config:Config, outfile: String ) {
 // -----------------------
 // Traitement en 12 etapes
 // -----------------------
@@ -452,15 +459,55 @@ match options.species_only_flag {
     true => {
         if options.species_internal {
              options.gene_internal = true;}
-             drawing::draw_tree(&mut sp_tree, outfile, & options);
+             drawing::draw_tree(&mut sp_tree, outfile, &options,  &config);
 
     },
-    false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,
-        & options),
+    false => drawing::draw_sptree_gntrees(&mut sp_tree, &mut gene_trees, outfile,
+        &options, &config),
 };
 if options.open_browser {
     if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
         info!("Browser OK");
     }
 }
+}
+
+fn set_config(configfile: String, config: &mut Config) {
+    let contents = fs::read_to_string(configfile)
+                .expect("Something went wrong reading the config file");
+    let conf = contents.split('\n');
+    for line in conf {
+        let test: Vec<&str> = line.split(':').collect();
+        if test.len() == 2 {
+            match test[0] {
+                "species_color" => {
+                    info!("[set_config] species_color was {}",config.species_color);
+                    config.species_color=test[1].to_string();
+                    info!("[set_config] species_color is now {}",config.species_color);
+                },
+                "single_gene_color" => {
+                    info!("[set_config] single_gene_color was {}",config.single_gene_color);
+                    config.single_gene_color=test[1].to_string();
+                    info!("[set_config] single_gene_color is now {}",config.single_gene_color);
+                },
+                "species_police_color" => {
+                    info!("[set_config] species_police_color was {}",config.species_police_color);
+                    config.species_police_color=test[1].to_string();
+                    info!("[set_config] species_police_color is now {}",config.species_police_color);
+                },
+                "species_police_size" => {
+                    info!("[set_config] species_police_size was {}",config.species_police_size);
+                    config.species_police_size=test[1].to_string();
+                    info!("[set_config] species_police_size is now {}",config.species_police_size);
+                },
+                "gene_police_size" => {
+                    info!("[set_config] gene_police_size was {}",config.gene_police_size);
+                    config.gene_police_size=test[1].to_string();
+                    info!("[set_config] gene_police_size is now {}",config.gene_police_size);
+                },
+                _ => {},
+            }
+        }
+
+    }
 }

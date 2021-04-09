@@ -1,0 +1,5 @@
+species_color:pink
+single_gene_color:blue
+species_police_color:orange
+species_police_size:12
+gene_police_size:10
