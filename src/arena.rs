@@ -228,28 +228,6 @@ where
     }
 }
 
-// Enums
-// =====
-
-/// enum of the possible events in a gene tree
-#[allow(dead_code)]
-#[derive(Debug, PartialEq)]
-pub enum Event {
-    Speciation,
-    Duplication,
-    Loss,
-    BranchingOut,
-    TransferBack,
-    BifurcationOut,
-    Leaf,
-    ObsoleteSpeciationLoss,
-    Undef,
-}
-/// There  is no Default pour enum, we define one.
-impl Default for Event {
-    fn default() -> Self { Event::Undef }
-}
-
 ///  Structure Options: drawing options.
 #[derive(Debug)]
 pub struct Options{
@@ -280,6 +258,29 @@ impl Options {
         }
     }
 }
+
+// Enums
+// =====
+
+/// enum of the possible events in a gene tree
+#[allow(dead_code)]
+#[derive(Debug, PartialEq)]
+pub enum Event {
+    Speciation,
+    Duplication,
+    Loss,
+    BranchingOut,
+    TransferBack,
+    BifurcationOut,
+    Leaf,
+    ObsoleteSpeciationLoss,
+    Undef,
+}
+/// There  is no Default pour enum, we define one.
+impl Default for Event {
+    fn default() -> Self { Event::Undef }
+}
+
 
 // Fonctions
 // =========
