@@ -203,14 +203,21 @@ You may try the codes in the 'examples' directory:
     cargo run --example modify_tree
 
 
-
 # Source documentation
 
 See Rust documentation : https://docs.rs/rectree2svg/
 
-# RecPhyloXML documentation
+# recPhyloXML documentation
 
 See http://phylariane.univ-lyon1.fr/recphyloxml/
+
+recPhyloXML paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198865/
+
+# phyloXML documentation
+
+See: http://www.phyloxml.org/
+
+phyloXML paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2774328/
 
 # Under development:
 - Possible problem with the obsolete version of recPhyloXML format (speciationLoss is supported, speciationOutLoss and speciationOut are not supported yet)
