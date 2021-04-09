@@ -5,7 +5,7 @@
 [![rectree2svg at docs.rs](https://github.com/simonpenel/rectree2svg/actions/workflows/rust.yml/badge.svg)](https://github.com/simonpenel/rectree2svg/actions/workflows/rust.yml)
 [![rectree2svg at docs.rs](https://github.com/simonpenel/rectree2svg/actions/workflows/example.yml/badge.svg)](https://github.com/simonpenel/rectree2svg/actions/workflows/example.yml)
 
-    
+
 Read, build, displays as svg and manipulates phylogenetic trees.
 
 Trees must be rooted.
@@ -57,9 +57,10 @@ Format is guessed according to filename (default is newick)
 
 Usage:
 
-    rectree2svg -f input file [-b][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
+    rectree2svg -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
-    -b : open svg in browser    
+    -b : open svg in browser
+    -c configfile: use a configuration file
     -g <n> : display the gene #n in phyloxml style (no species tree)
     -h : help
     -i : display internal gene nodes
@@ -82,6 +83,21 @@ Usage:
     - any other    => newick
 
 You will find several input file examples in newick_examples, recphylo_examples and xml_examples directories.
+
+
+# Configuration file:
+
+You may configure some of the features of the svg with the -c option.
+
+The default values are the values of the "config_default.txt" file.
+
+Modify the default values and save it into  "my_config.txt" then type:
+
+```
+rectree2svg -f recphylo_examples/FAM000600_reconciliated_big.recphylo -c my_config.txt -b
+
+```
+
 
 # Using the code:
 
