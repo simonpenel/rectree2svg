@@ -75,7 +75,12 @@ fn display_help(programe_name:String) {
     println!(".recphylo    => recPhyloXML");
     println!("any other    => newick");
     println!("");
-    println!("About recPhyloXML format : http://phylariane.univ-lyon1.fr/recphyloxml/");
+    println!("About recPhyloXML format: http://phylariane.univ-lyon1.fr/recphyloxml/");
+    println!("recPhyloXML paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198865/");
+    println!("About phyloXML format: http://www.phyloxml.org/");
+    println!("phyloXML paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2774328/");
+
+
     process::exit(1);
 }
 /// enum of the possible input file Formats
