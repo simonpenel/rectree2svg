@@ -253,9 +253,15 @@ impl Default for Event {
 ///  Structure Options: drawing options.
 #[derive(Debug)]
 pub struct Options{
-    pub gene_internal :bool,
-    pub species_internal :bool,
-    pub scale :f32,
+    pub gene_internal: bool,
+    pub species_internal: bool,
+    pub clado_flag: bool,
+    pub species_only_flag: bool,
+    pub real_length_flag: bool,
+    pub open_browser: bool,
+    pub verbose: bool,
+    pub disp_gene: usize,
+    pub scale: f32,
     pub ratio: f32,
 }
 impl Options {
@@ -263,6 +269,12 @@ impl Options {
         Self {
             gene_internal:false,
             species_internal:false,
+            clado_flag:true,
+            species_only_flag:false,
+            real_length_flag:false,
+            open_browser:false,
+            verbose:false,
+            disp_gene:0,
             scale:1.0,
             ratio:1.0,
         }

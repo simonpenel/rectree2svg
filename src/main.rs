@@ -99,34 +99,34 @@ fn main()  {
     let mut opts = getopt::Parser::new(&args, "f:g:l:o:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
-    let mut clado_flag = true;
-    let mut species_only_flag = false;
-    let mut open_browser = false;
-    let mut real_length_flag = false;
-    let mut verbose = false;
+    // let mut clado_flag = true;
+    // let mut species_only_flag = false;
+    // let mut open_browser = false;
+    // let mut real_length_flag = false;
+    // let mut verbose = false;
     let mut nb_args = 0;
-    let mut disp_gene = 0;
+    // let mut disp_gene = 0;
     loop {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
             Some(opt) => match opt {
                 Opt('g', Some(string)) => {
-                    disp_gene = string.parse().unwrap();
+                    options.disp_gene = string.parse().unwrap();
                     },
                 Opt('i', None) => options.gene_internal = true,
                 Opt('I', None) => options.species_internal = true,
-                Opt('b', None) => open_browser = true,
+                Opt('b', None) => options.open_browser = true,
                 Opt('r', Some(string)) => {
                     options.ratio = string.parse().unwrap();
                     },
-                Opt('p', None) => clado_flag = false,
-                Opt('s', None) => species_only_flag = true,
+                Opt('p', None) => options.clado_flag = false,
+                Opt('s', None) => options.species_only_flag = true,
                 Opt('l', Some(string)) => {
-                    real_length_flag = true;
+                    options.real_length_flag = true;
                     options.scale = string.parse().unwrap();
                     },
                 Opt('v', None) => {
-                    verbose = true;
+                    options.verbose = true;
                     env::set_var("RUST_LOG", "info");
                     env_logger::init();
                     info!("Verbosity set to Info");
@@ -192,8 +192,7 @@ fn main()  {
                     break;
                 }
             }
-            phyloxml_processing(&mut tree, options, clado_flag, open_browser,
-                 real_length_flag,outfile );
+            phyloxml_processing(&mut tree, options,outfile );
         },
         // Newick
         Format::Newick => {
@@ -204,8 +203,7 @@ fn main()  {
                 .expect("Something went wrong reading the newick file");
             let root = tree.new_node("Root".to_string());
             newick2tree(contents, &mut tree, root, &mut 0);
-            phyloxml_processing(&mut tree, options, clado_flag, open_browser,
-                 real_length_flag,outfile );
+            phyloxml_processing(&mut tree, options,outfile );
         },
         // Recphyloxml
         Format::Recphyloxml => {
@@ -239,7 +237,7 @@ fn main()  {
                     break;
                 }
             }
-            if verbose {
+            if options.verbose {
                 info!("Drawing tree species verbose-species.svg");
                 drawing::draw_tree(&mut sp_tree, "verbose-species.svg".to_string(), & options);
             }
@@ -279,16 +277,15 @@ fn main()  {
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
 
-            if disp_gene  > 0 {
+            if options.disp_gene  > 0 {
                 // On traite l'arbre de gene comme un arbre au format phylxoml
-                if disp_gene > nb_gntree {
+                if options.disp_gene > nb_gntree {
                     println!("There are only {} genes in the file, unable to display gene #{}",
-                    nb_gntree,disp_gene);
+                    nb_gntree,options.disp_gene);
                     process::exit(1);
                 }
-                let  mut tree = &mut gene_trees[disp_gene-1];
-                phyloxml_processing(&mut tree, options, clado_flag, open_browser,
-                    real_length_flag, outfile);
+                let  mut tree = &mut gene_trees[options.disp_gene-1];
+                phyloxml_processing(&mut tree, options, outfile);
                 process::exit(0);
 
             }
@@ -307,7 +304,7 @@ fn main()  {
             // --------------------
             // Option : Cladogramme
             // --------------------
-            if clado_flag {
+            if options.clado_flag {
                 cladogramme(&mut sp_tree);
             }
             // ---------------------------------------------------------
@@ -381,7 +378,7 @@ fn main()  {
             println!("Output filename is {}",outfile);
             let path = env::current_dir().expect("Unable to get current dir");
             let url_file = format!("file:///{}/{}", path.display(),outfile);
-            match species_only_flag {
+            match options.species_only_flag {
                 true => {
                     if options.species_internal {
                          options.gene_internal = true;}
@@ -391,7 +388,7 @@ fn main()  {
                 false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,
                     & options),
             };
-            if open_browser {
+            if options.open_browser {
                 if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
                     info!("Browser OK");
                 }
@@ -399,8 +396,7 @@ fn main()  {
         },
     }
 }
-fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options ,clado_flag:bool,
-    open_browser: bool, real_length_flag:bool,outfile: String ) {
+fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, outfile: String ) {
     info!("Tree : {:?}",tree);
     // -----------------------
     // Traitement en 4 étapes
@@ -418,7 +414,7 @@ fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options ,clado_
     // ---------------------------------------------------------
     // Option : Cladogramme
     // ---------------------------------------------------------
-    if clado_flag {
+    if options.clado_flag {
         cladogramme(&mut tree);
     }
     // ---------------------------------------------------------
@@ -438,7 +434,7 @@ fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options ,clado_
     // ---------------------------------------------------------
     // Option : real_length
     // ---------------------------------------------------------
-    if real_length_flag {
+    if options.real_length_flag {
         real_length(&mut tree, root, &mut 0.0, & options);
     }
     // ---------------------------------------------------------
@@ -451,10 +447,115 @@ fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options ,clado_
     drawing::draw_tree(&mut tree, outfile, & options);
     // EXIT
     // On s'arrete la, le reste du programme concerne les autres formats
-    if open_browser {
+    if options.open_browser {
         if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
             info!("Browser OK");
         }
     }
 
 }
+
+// // -----------------------
+// // Traitement en 12 etapes
+// // -----------------------
+// // Au depart l'arbre est orienté du haut vers le bas (i.e. selon Y)
+// // Le svg sera tourné de -90 a la fin.
+// //
+// //----------------------------------------------------------
+// // 1ere étape :initialisation des x,y de l'arbre d'espèces :
+// // profondeur => Y, left => X= 0, right X=1
+// // ---------------------------------------------------------
+// let  root = sp_tree.get_root();
+// knuth_layout(&mut sp_tree,root, &mut 1);
+// // --------------------
+// // Option : Cladogramme
+// // --------------------
+// if clado_flag {
+//     cladogramme(&mut sp_tree);
+// }
+// // ---------------------------------------------------------
+// // 2eme étape :  mapping des genes sur l'espèce pour
+// // connaître le nombre de noeuds d'arbre de gènes associés à
+// // chaque noeud de l'arbre d'espèces
+// // ---------------------------------------------------------
+// map_species_trees(&mut sp_tree,&mut gene_trees);
+// info!("Species tree after mapping : {:?}",sp_tree);
+// // ---------------------------------------------------------
+// // 3eme étape : Vérifie les conflits dans l'arbre d'espèces
+// // au niveau horizontal -> valeurs xmod
+// // ---------------------------------------------------------
+//  check_contour_postorder(&mut sp_tree, root);
+// // ---------------------------------------------------------
+// // 4eme étape : Décale toutes les valeurs de x en fonction
+// // de xmod dans l'abre d'espèces
+// // ---------------------------------------------------------
+// shift_mod_xy(&mut sp_tree, root, &mut 0.0, &mut 0.0);
+// // ---------------------------------------------------------
+// // 5eme étape : Place le parent entre les enfants dans
+// // l'arbre d'espèces
+// // ---------------------------------------------------------
+// set_middle_postorder(&mut sp_tree, root);
+// // ---------------------------------------------------------
+// // 6ème etape : Fixe l'épaisseur de l'arbre d'espèces
+// // ---------------------------------------------------------
+// set_species_width(&mut sp_tree);
+// // ---------------------------------------------------------
+// // 7ème étape :  Vérifie les conflits verticaux dans
+// // l'arbre d'espèces
+// // ---------------------------------------------------------
+// check_vertical_contour_postorder(&mut sp_tree, root, 0.0);
+// // ---------------------------------------------------------
+// // 8ème étape :  mapping des noeuds de genes sur les noeuds
+// // d'espèce pour initialiser les coordonées des noeuds des
+// // arbres de gènes
+// // ---------------------------------------------------------
+// map_gene_trees(&mut sp_tree,&mut gene_trees);
+// // ---------------------------------------------------------
+// // 9ème etape : décale les noeuds de gene associés à un
+// // noeud d'especes pour éviter qu'ils soit superposés
+// // ---------------------------------------------------------
+// bilan_mappings(&mut sp_tree, &mut gene_trees,root, & options);
+// // ---------------------------------------------------------
+// // 10ème étape : recalcule les coordonnées svg de tous les
+// // arbres de gènes
+// // ---------------------------------------------------------
+// let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
+// info!("map_species_trees: {} gene trees to be processed",nb_gntree);
+// let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
+// loop {
+//     let  groot = gene_trees[idx_rcgen].get_root();
+//     shift_mod_xy(&mut gene_trees[idx_rcgen], groot, &mut 0.0, &mut 0.0);
+//     idx_rcgen += 1;
+//     if idx_rcgen == nb_gntree {
+//         break;
+//     }
+// }
+// // ---------------------------------------------------------
+// // 11eme etape : centre les noeuds de genes dans le noeud de l'espece
+// // ---------------------------------------------------------
+// center_gene_nodes(&mut sp_tree,&mut gene_trees,root);
+// // ---------------------------------------------------------
+// // 12eme etape traite spécifiquement les duplications et les feuilles
+// // ---------------------------------------------------------
+// move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
+// // ---------------------------------------------------------
+// // Fin: Ecriture du fichier svg
+// // ---------------------------------------------------------
+// println!("Output filename is {}",outfile);
+// let path = env::current_dir().expect("Unable to get current dir");
+// let url_file = format!("file:///{}/{}", path.display(),outfile);
+// match species_only_flag {
+//     true => {
+//         if options.species_internal {
+//              options.gene_internal = true;}
+//              drawing::draw_tree(&mut sp_tree, outfile, & options);
+//
+//     },
+//     false => drawing::draw_sptree_gntrees(&mut sp_tree,&mut gene_trees, outfile,
+//         & options),
+// };
+// if open_browser {
+//     if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
+//         info!("Browser OK");
+//     }
+// }
