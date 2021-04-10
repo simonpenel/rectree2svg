@@ -10,11 +10,11 @@ Read, build, displays as svg and manipulates phylogenetic trees.
 
 Trees must be rooted.
 
-Build a svg representation of a phylogenetic reconciled (or not) tree
+Build a svg representation of a phylogenetic reconciled (or not) tree with events (loss, duplication, speciation, transfer).
 
-Read a recphyloxml file:  create a svg representation of the  gene trees and species tree with events (loss, duplication, speciation, transfer).
+Read a recphyloxml file:  create a svg representation of the  gene tree(s) and the associated species tree.
 
-Read a newick or phyloxml file: create a svg representation of the tree.
+Read a newick or phyloxml file: create a svg representation of the gene tree only .
 
 You may use the rectree2svg binary to draw trees to as well as the rust rectree2svg funtions to build, manipulate or draw phylogenetic trees (see "Using the code")
 
