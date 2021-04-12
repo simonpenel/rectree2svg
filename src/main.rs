@@ -1,7 +1,7 @@
 /// name = "rectree2svg"
-/// version = "0.8.0"
+/// version = "1.0.0"
 /// authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
-/// release = "09/04/2021"
+/// release = "12/04/2021"
 /// license = "CECILL-2.1"
 ///
 /// Usage:
