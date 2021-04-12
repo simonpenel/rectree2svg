@@ -1,5 +1,5 @@
 species_color:pink
-single_gene_color:blue
+single_gene_color:bmue
 species_police_color:orange
 species_police_size:12
 gene_police_size:10

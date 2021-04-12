@@ -98,6 +98,12 @@ fn main()  {
     let mut options: Options = Options::new();
     // Initialise la config
     let mut config: Config = Config::new();
+    // Charge la config par deuakt si elle existe
+    let fconf = "config_default.txt";
+     if fs::metadata(fconf).is_ok() {
+         set_config(fconf.to_string(), &mut config);
+
+     }
     // Gestion des arguments et des options
     // ------------------------------------
     let args: Vec<String> = std::env::args().collect();
@@ -107,13 +113,7 @@ fn main()  {
     let mut opts = getopt::Parser::new(&args, "c:f:g:l:o:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
-    // let mut clado_flag = true;
-    // let mut species_only_flag = false;
-    // let mut open_browser = false;
-    // let mut real_length_flag = false;
-    // let mut verbose = false;
     let mut nb_args = 0;
-    // let mut disp_gene = 0;
     loop {
         match opts.next().transpose().expect("Unknown option") {
             None => break,
