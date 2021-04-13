@@ -66,6 +66,12 @@ where
     {
         self.e = e;
     }
+
+    // /// Set node event
+    // pub fn set_event_ref(&mut self,  e: &Event)
+    // {
+    //     self.e = *e;
+    // }
     /// Set node x
     pub fn set_x_noref(&mut self, x: f32)
     {
@@ -135,13 +141,14 @@ where
         idx
     }
     ///  Get index of a node from its name
-    pub fn get_index(&mut self, name: String) -> usize {
+    pub fn get_index(&mut self, name: String) -> Result <usize, usize> {
         for node in &self.arena {
             if node.name == name {
-                return node.idx
+                return Ok(node.idx)
              }
             }
-        panic!("Unable to find {} in the tree",name);
+        println!("Error: Unable to find {} in the tree.",name);
+        Err(0)
     }
     /// Get the index of the root.
     pub fn get_root(&mut self) -> usize {
@@ -751,7 +758,7 @@ pub fn check_for_obsolete( gene_tree:&mut ArenaTree<String>, species_tree:&mut A
         // Espece de l'OSL
         let species = &gene_tree.arena[osl].location;
         //  Index de l'espece dans l'arbre d'espece
-        let species_node = species_tree.get_index(species.to_string());
+        let species_node = species_tree.get_index(species.to_string()).expect("[check_for_obsolete] Error in mapping");
         let species_node_left =  &species_tree.arena[species_node].children[0];
         let species_node_right =  &species_tree.arena[species_node].children[1];
         let species_left =  &species_tree.arena[*species_node_left].name;
