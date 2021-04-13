@@ -1,5 +1,5 @@
 [package]
-name = "rectree2svg"
+name = "rectree3"
 version = "1.0.0"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"

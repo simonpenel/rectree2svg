@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="510px" height="385px" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+	<polygon points="50,150 50,300 160,300 160,375 325,375 385,375 385,300 325,300 250,300 250,300 250,225 250,225 325,225 385,225 385,150 325,150 160,150 160,225 110,225 110,150 110,100 110,100 160,100 385,100 385,50 160,50 50,50 50,100 " fill="rgb(255,255,255)" stroke-width="10" stroke="rgb(120,120,120)" />
+	<text x="372" y="282" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >A</text>
+	<text x="372" y="132" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >B</text>
+	<text x="372" y="32" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >D</text>
+	<polygon points="185,250 179.045,247.061 178.09,240.489 173.455,245.245 166.91,244.122 170,250 166.91,255.878 173.455,254.755 178.09,259.511 179.045,252.939 185,250 " fill="rgb(255,255,255)" stroke-width="3.125" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="250" x2="190" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="325" x2="385" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="410" y="325" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >p5a</text>
+	<line x1="190" y1="250" x2="190" y2="175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="175" x2="385" y2="175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="410" y="175" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >p5b</text>
+	<circle cx="190" cy="250" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<polygon points="75,125 69.0451,122.061 68.0902,115.489 63.4549,120.245 56.9098,119.122 60,125 56.9098,130.878 63.4549,129.755 68.0902,134.511 69.0451,127.939 75,125 " fill="rgb(255,255,255)" stroke-width="3.125" stroke="rgb(78,91,127)" />
+	<line x1="80" y1="125" x2="80" y2="275" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="80" y1="275" x2="220" y2="275" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="220" y1="275" x2="220" y2="350" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="220" y1="350" x2="385" y2="350" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="410" y="350" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >p4a</text>
+	<line x1="220" y1="275" x2="220" y2="200" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="220" y1="200" x2="385" y2="200" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="410" y="200" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >p4b</text>
+	<circle cx="220" cy="275" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="80" y1="125" x2="80" y2="75" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="80" y1="75" x2="385" y2="75" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="410" y="75" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >p4d</text>
+	<circle cx="80" cy="125" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+</svg>

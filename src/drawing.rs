@@ -158,6 +158,41 @@ pub fn draw_sptree_gntrees (
                                                  config.species_color.to_string());
                     g.append(chemin);
                 }
+                match  index.e {
+                    Event::Loss => {
+                        let chemin = get_chemin_sp(index.x, index.y,
+                                                   index.width/2.0, index.height/2.0,
+                                                   n.x, n.y,
+                                                   n.width/2.0, n.height/2.0,
+                                                   "black".to_string());
+                        g.append(chemin);
+                        let chemin = close_chemin_sp(index.x, index.y,
+                                                     index.width/2.0, index.height/2.0,
+                                                     "black".to_string());
+                        g.append(chemin);
+
+                    }
+                    Event::Duplication => {
+                        println!("Duplication!!");
+                        let carre = get_carre(index.x,index.y,PIPEBLOCK,"yellow".to_string());
+                        g.append(carre);
+
+                    }
+                    _=> {},
+                }
+                match  index.is_a_transfert {
+                    true => {
+                        println!("TRANSFERT!!");
+                        let chemin = get_chemin_sp(index.x, index.y,
+                                                   index.width/2.0, index.height/2.0,
+                                                   n.x, n.y,
+                                                   n.width/2.0, n.height/2.0,
+                                                   "green".to_string());
+                        g.append(chemin);
+
+                    },
+                    false => {},
+                }
             },
             None => {},
         };

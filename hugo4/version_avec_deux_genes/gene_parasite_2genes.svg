@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="775px" height="1060px" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+	<polygon points="50,800 50,900 130,900 130,1000 210,1000 210,1050 290,1050 650,1050 650,1000 290,1000 240,1000 240,1000 240,950 240,950 290,950 650,950 650,900 290,900 210,900 210,950 160,950 160,900 160,850 160,850 210,850 650,850 650,800 210,800 130,800 130,850 80,850 80,800 80,750 80,325 130,325 130,675 210,675 210,750 375,750 650,750 650,675 375,675 300,675 300,675 300,600 300,525 375,525 375,600 590,600 650,600 650,525 590,525 465,525 465,525 465,400 465,400 590,400 650,400 650,325 590,325 375,325 375,400 210,400 210,600 160,600 160,325 160,275 160,200 210,200 210,275 375,275 650,275 650,200 375,200 300,200 300,200 300,125 300,125 375,125 650,125 650,50 375,50 210,50 210,125 130,125 130,275 50,275 50,750 " fill="rgb(255,255,255)" stroke-width="10" stroke="rgb(120,120,120)" />
+	<text x="637" y="982" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >A</text>
+	<text x="637" y="882" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >B</text>
+	<text x="637" y="782" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >D</text>
+	<text x="611" y="657" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >p4d</text>
+	<text x="611" y="507" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >p4b</text>
+	<text x="611" y="307" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >p4a</text>
+	<text x="611" y="182" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >p5a</text>
+	<text x="611" y="32" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >p5b</text>
+	<polygon points="235,625 229.045,622.061 228.09,615.489 223.455,620.245 216.91,619.122 220,625 216.91,630.878 223.455,629.755 228.09,634.511 229.045,627.939 235,625 " fill="rgb(255,255,255)" stroke-width="3.125" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="625" x2="240" y2="700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="700" x2="650" y2="700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="700" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4d</text>
+	<line x1="240" y1="625" x2="240" y2="450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="450" x2="390" y2="450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="390" y1="450" x2="390" y2="425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="390" y1="425" x2="405" y2="425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="425" x2="405" y2="550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="550" x2="650" y2="550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="550" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4f</text>
+	<line x1="405" y1="425" x2="405" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="350" x2="650" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="350" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4e</text>
+	<circle cx="405" cy="425" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<path d="M 390 450 Q 307.5 200 225 150" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="225" y1="150" x2="240" y2="150" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="228.75" y1="145" x2="233.75" y2="150" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="228.75" y1="155" x2="233.75" y2="150" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="150" x2="240" y2="225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="225" x2="650" y2="225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="225" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4a</text>
+	<line x1="240" y1="150" x2="240" y2="75" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="240" y1="75" x2="650" y2="75" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="75" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4b</text>
+	<circle cx="240" cy="150" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="425" x2="405" y2="550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="550" x2="650" y2="550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="550" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4f</text>
+	<line x1="405" y1="425" x2="405" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="405" y1="350" x2="650" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="675" y="350" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >g4e</text>
+	<circle cx="405" cy="425" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="390" y1="437.5" x2="377.5" y2="450" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="402.5" y1="450" x2="390" y2="437.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="402.5" y1="450" x2="390" y2="462.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="390" y1="462.5" x2="377.5" y2="450" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<circle cx="240" cy="625" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<polygon points="265,650 259.045,647.061 258.09,640.489 253.455,645.245 246.91,644.122 250,650 246.91,655.878 253.455,654.755 258.09,659.511 259.045,652.939 265,650 " fill="rgb(255,255,255)" stroke-width="3.125" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="650" x2="270" y2="725" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="725" x2="650" y2="725" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="725" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4d</text>
+	<line x1="270" y1="650" x2="270" y2="500" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="500" x2="420" y2="500" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="420" y1="500" x2="420" y2="475" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="420" y1="475" x2="435" y2="475" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="475" x2="435" y2="575" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="575" x2="650" y2="575" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="575" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4f</text>
+	<line x1="435" y1="475" x2="435" y2="375" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="375" x2="650" y2="375" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="375" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4e</text>
+	<circle cx="435" cy="475" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+	<path d="M 420 500 Q 337.5 237.5 255 175" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(78,91,127)" />
+	<line x1="255" y1="175" x2="270" y2="175" stroke-width="0.7" stroke="rgb(78,91,127)" />
+	<line x1="258.75" y1="170" x2="263.75" y2="175" stroke-width="0.7" stroke="rgb(78,91,127)" />
+	<line x1="258.75" y1="180" x2="263.75" y2="175" stroke-width="0.7" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="175" x2="270" y2="250" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="250" x2="650" y2="250" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="250" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4a</text>
+	<line x1="270" y1="175" x2="270" y2="100" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="270" y1="100" x2="650" y2="100" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="100" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4b</text>
+	<circle cx="270" cy="175" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="475" x2="435" y2="575" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="575" x2="650" y2="575" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="575" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4f</text>
+	<line x1="435" y1="475" x2="435" y2="375" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="435" y1="375" x2="650" y2="375" stroke-width="3" stroke="rgb(78,91,127)" />
+	<text x="675" y="375" fill="rgb(78,91,127)" font-size="18" font-family="Verdana" >g4e</text>
+	<circle cx="435" cy="475" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+	<line x1="420" y1="487.5" x2="407.5" y2="500" stroke-width="2.77778" stroke="rgb(78,91,127)" />
+	<line x1="432.5" y1="500" x2="420" y2="487.5" stroke-width="2.77778" stroke="rgb(78,91,127)" />
+	<line x1="432.5" y1="500" x2="420" y2="512.5" stroke-width="2.77778" stroke="rgb(78,91,127)" />
+	<line x1="420" y1="512.5" x2="407.5" y2="500" stroke-width="2.77778" stroke="rgb(78,91,127)" />
+	<circle cx="270" cy="650" r="4.16667" fill="rgb(78,91,127)" stroke-width="3" stroke="rgb(78,91,127)" />
+</svg>

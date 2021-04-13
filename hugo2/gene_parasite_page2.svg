@@ -1,0 +1,424 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="2720px" height="2835px" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+	<polygon points="50,250 50,500 160,500 160,1000 295,1000 295,2775 405,2775 405,2825 515,2825 1820,2825 1820,2775 515,2775 465,2775 465,2775 465,2725 465,1250 515,1250 515,1400 710,1400 710,1625 875,1625 875,1725 1040,1725 1040,1950 1150,1950 1150,2350 1260,2350 1260,2650 1370,2650 1370,2725 1565,2725 1820,2725 1820,2650 1565,2650 1490,2650 1490,2650 1490,2575 1490,2500 1565,2500 1565,2575 1730,2575 1820,2575 1820,2500 1730,2500 1655,2500 1655,2500 1655,2425 1655,2425 1730,2425 1820,2425 1820,2350 1730,2350 1565,2350 1565,2425 1370,2425 1370,2575 1320,2575 1320,2350 1320,2300 1320,2050 1370,2050 1370,2250 1480,2250 1480,2300 1590,2300 1820,2300 1820,2250 1590,2250 1540,2250 1540,2250 1540,2200 1540,2150 1590,2150 1590,2200 1700,2200 1820,2200 1820,2150 1700,2150 1650,2150 1650,2150 1650,2100 1650,2100 1700,2100 1820,2100 1820,2050 1700,2050 1590,2050 1590,2100 1480,2100 1480,2200 1430,2200 1430,2050 1430,2000 1430,2000 1480,2000 1820,2000 1820,1950 1480,1950 1370,1950 1370,2000 1260,2000 1260,2300 1210,2300 1210,1950 1210,1900 1210,1850 1260,1850 1260,1900 1395,1900 1820,1900 1820,1850 1395,1850 1320,1850 1320,1850 1320,1775 1320,1775 1395,1775 1820,1775 1820,1725 1395,1725 1260,1725 1260,1775 1150,1775 1150,1900 1100,1900 1100,1725 1100,1675 1100,1675 1150,1675 1820,1675 1820,1625 1150,1625 1040,1625 1040,1675 965,1675 965,1625 965,1550 965,1500 1040,1500 1040,1550 1150,1550 1820,1550 1820,1500 1150,1500 1100,1500 1100,1500 1100,1450 1100,1450 1150,1450 1820,1450 1820,1400 1150,1400 1040,1400 1040,1450 875,1450 875,1550 800,1550 800,1400 800,1325 800,1325 875,1325 1820,1325 1820,1250 875,1250 710,1250 710,1325 635,1325 635,1250 635,1175 635,1125 710,1125 710,1175 875,1175 1820,1175 1820,1125 875,1125 800,1125 800,1125 800,1050 800,1050 875,1050 1820,1050 1820,1000 875,1000 710,1000 710,1050 515,1050 515,1175 405,1175 405,2725 355,2725 355,1000 355,950 355,600 405,600 405,800 515,800 515,900 595,900 595,950 705,950 1820,950 1820,900 705,900 655,900 655,900 655,850 655,850 705,850 1820,850 1820,800 705,800 595,800 595,850 545,850 545,800 545,750 545,700 595,700 595,750 675,750 1820,750 1820,700 675,700 625,700 625,700 625,650 625,650 675,650 1820,650 1820,600 675,600 595,600 595,650 515,650 515,750 465,750 465,600 465,550 465,550 515,550 1820,550 1820,500 515,500 405,500 405,550 295,550 295,950 220,950 220,500 220,425 220,375 295,375 295,425 430,425 1820,425 1820,375 430,375 355,375 355,375 355,300 355,300 430,300 1820,300 1820,250 430,250 295,250 295,300 160,300 160,425 110,425 110,250 110,200 110,150 160,150 160,200 270,200 1820,200 1820,150 270,150 220,150 220,150 220,100 220,100 270,100 1820,100 1820,50 270,50 160,50 160,100 50,100 50,200 " fill="rgb(255,255,255)" stroke-width="10" stroke="rgb(120,120,120)" />
+	<text x="1469" y="2757" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Escherichia_coli_K12_MG1655</text>
+	<text x="1755" y="2632" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ECUMA</text>
+	<text x="1755" y="2482" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EKOCA</text>
+	<text x="1755" y="2332" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ELAFE</text>
+	<text x="1755" y="2232" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EPSPA</text>
+	<text x="1755" y="2132" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ESPPA</text>
+	<text x="1755" y="2032" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ESPPS</text>
+	<text x="1755" y="1932" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EPSTX</text>
+	<text x="1755" y="1832" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ECURT</text>
+	<text x="1755" y="1707" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >ECURV</text>
+	<text x="1755" y="1607" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EwAmC</text>
+	<text x="1755" y="1482" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EwApS</text>
+	<text x="1755" y="1382" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EwDaI</text>
+	<text x="1755" y="1232" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >EwBiE</text>
+	<text x="1482" y="1107" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Pantoea_gaviniae_DSM_22758</text>
+	<text x="1508" y="982" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Pantoea_calida_DSM_22759</text>
+	<text x="1755" y="882" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >HCURT</text>
+	<text x="1755" y="782" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >HCURV</text>
+	<text x="1495" y="682" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Hamiltonella_defensa_ZA17</text>
+	<text x="1508" y="582" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Hamiltonella_defensa_5AT</text>
+	<text x="1560" y="482" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Yersinia_pestis_CO92</text>
+	<text x="1508" y="357" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Sodalis_praecaptivus_HS1</text>
+	<text x="1495" y="232" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Sodalis_pierantonius_SOPE</text>
+	<text x="1443" y="132" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Photorhabdus_luminescens_TTO1</text>
+	<text x="1378" y="32" fill="rgb(0,0,0)" font-size="24" font-family="Verdana" >Photorhabdus_asymbiotica_ATCC43949</text>
+	<polygon points="75,225 69.0451,222.061 68.0902,215.489 63.4549,220.245 56.9098,219.122 60,225 56.9098,230.878 63.4549,229.755 68.0902,234.511 69.0451,227.939 75,225 " fill="rgb(255,255,255)" stroke-width="3.125" stroke="rgb(65,170,190)" />
+	<line x1="80" y1="225" x2="80" y2="475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="80" y1="475" x2="175" y2="475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="175" y1="475" x2="175" y2="450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="175" y1="450" x2="190" y2="450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="450" x2="190" y2="975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="975" x2="325" y2="975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="975" x2="325" y2="2750" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="2750" x2="435" y2="2750" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="2750" x2="435" y2="2800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="2800" x2="1820" y2="2800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2800" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Escherichia_coli_K12_MG1655</text>
+	<line x1="435" y1="2750" x2="435" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="1225" x2="545" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="545" y2="1200" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1200" x2="575" y2="1200" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1200" x2="575" y2="1350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1350" x2="740" y2="1350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1350" x2="740" y2="1575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1575" x2="905" y2="1575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1575" x2="905" y2="1475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1475" x2="1070" y2="1475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1475" x2="1070" y2="1525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1525" x2="1820" y2="1525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1525" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EwApS.l.l.l</text>
+	<line x1="1070" y1="1475" x2="1070" y2="1425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1425" x2="1180" y2="1425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1186.25" y1="1418.75" x2="1173.75" y2="1431.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1186.25" y1="1431.25" x2="1173.75" y2="1418.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1070" cy="1475" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1575" x2="905" y2="1700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1700" x2="1070" y2="1700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1076.25" y1="1693.75" x2="1063.75" y2="1706.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1076.25" y1="1706.25" x2="1063.75" y2="1693.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="905" cy="1575" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1350" x2="740" y2="1275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1275" x2="905" y2="1275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1268.75" x2="898.75" y2="1281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1281.25" x2="898.75" y2="1268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="740" cy="1350" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1200" x2="575" y2="1075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1075" x2="740" y2="1075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1075" x2="740" y2="1025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1025" x2="1820" y2="1025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1025" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Pantoea_calida_DSM_22759.l</text>
+	<line x1="740" y1="1075" x2="740" y2="1150" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1150" x2="905" y2="1150" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1143.75" x2="898.75" y2="1156.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1156.25" x2="898.75" y2="1143.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="740" cy="1075" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="575" cy="1200" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="545" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="605" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1225" x2="605" y2="1375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1375" x2="770" y2="1375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1375" x2="770" y2="1300" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1300" x2="1820" y2="1300" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1300" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EwBiE.l.l</text>
+	<line x1="770" y1="1375" x2="770" y2="1600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1600" x2="935" y2="1600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="941.25" y1="1593.75" x2="928.75" y2="1606.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="941.25" y1="1606.25" x2="928.75" y2="1593.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="770" cy="1375" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1225" x2="605" y2="1100" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1100" x2="770" y2="1100" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="776.25" y1="1093.75" x2="763.75" y2="1106.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="776.25" y1="1106.25" x2="763.75" y2="1093.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="605" cy="1225" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<rect x="538.75" y="1218.75" width="12.5" height="12.5" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="541.75" y="1228.25" fill="rgb(255,255,255)" font-size="10" font-family="Verdana" >D</text>
+	<circle cx="435" cy="2750" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="975" x2="325" y2="575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="575" x2="435" y2="575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="441.25" y1="568.75" x2="428.75" y2="581.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="441.25" y1="581.25" x2="428.75" y2="568.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="975" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="450" x2="190" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="350" x2="310" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="350" x2="310" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="325" x2="325" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="325" x2="325" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="400" x2="1820" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Sodalis_praecaptivus_HS1.l</text>
+	<line x1="325" y1="325" x2="325" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="275" x2="460" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="268.75" x2="453.75" y2="281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="281.25" x2="453.75" y2="268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<path d="M 310 350 Q 737.5 1037.5 1165 1925" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1165" y1="1925" x2="1180" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1168.75" y1="1920" x2="1173.75" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1168.75" y1="1930" x2="1173.75" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1925" x2="1180" y2="2325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="2325" x2="1290" y2="2325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2325" x2="1290" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2625" x2="1400" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1400" y2="2600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2600" x2="1430" y2="2600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2600" x2="1430" y2="2675" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2675" x2="1820" y2="2675" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2675" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ECUMA</text>
+	<line x1="1430" y1="2600" x2="1430" y2="2450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2450" x2="1595" y2="2450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2450" x2="1595" y2="2525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2525" x2="1820" y2="2525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2525" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EKOCA.l</text>
+	<line x1="1595" y1="2450" x2="1595" y2="2375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2375" x2="1760" y2="2375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2368.75" x2="1753.75" y2="2381.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2381.25" x2="1753.75" y2="2368.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1595" cy="2450" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1430" cy="2600" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1400" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1460" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2625" x2="1460" y2="2475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2475" x2="1625" y2="2475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2475" x2="1625" y2="2400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2400" x2="1820" y2="2400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ELAFE.l.l</text>
+	<line x1="1625" y1="2475" x2="1625" y2="2550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2550" x2="1760" y2="2550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2543.75" x2="1753.75" y2="2556.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2556.25" x2="1753.75" y2="2543.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1625" cy="2475" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2625" x2="1460" y2="2700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2700" x2="1595" y2="2700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1601.25" y1="2693.75" x2="1588.75" y2="2706.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1601.25" y1="2706.25" x2="1588.75" y2="2693.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1460" cy="2625" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<rect x="1393.75" y="2618.75" width="12.5" height="12.5" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1396.75" y="2628.25" fill="rgb(255,255,255)" font-size="10" font-family="Verdana" >D</text>
+	<line x1="1290" y1="2325" x2="1290" y2="2025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2025" x2="1400" y2="2025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2025" x2="1400" y2="2225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2225" x2="1510" y2="2225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2225" x2="1510" y2="2275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2275" x2="1820" y2="2275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2275" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EPSPA</text>
+	<line x1="1510" y1="2225" x2="1510" y2="2125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2125" x2="1620" y2="2125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2125" x2="1620" y2="2175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2175" x2="1820" y2="2175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2175" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ESPPA</text>
+	<line x1="1620" y1="2125" x2="1620" y2="2075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2075" x2="1820" y2="2075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2075" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ESPPS</text>
+	<circle cx="1620" cy="2125" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1510" cy="2225" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2025" x2="1400" y2="1975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="1975" x2="1820" y2="1975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1975" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EPSTX</text>
+	<circle cx="1400" cy="2025" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1290" cy="2325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1925" x2="1180" y2="1825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1825" x2="1275" y2="1825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1825" x2="1275" y2="1800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1800" x2="1290" y2="1800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1793.75" x2="1283.75" y2="1806.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1806.25" x2="1283.75" y2="1793.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<path d="M 1275 1825 Q 942.5 1250 610 875" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="610" y1="875" x2="625" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="613.75" y1="870" x2="618.75" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="613.75" y1="880" x2="618.75" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="875" x2="625" y2="925" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="925" x2="1820" y2="925" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="925" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >HCURT</text>
+	<line x1="625" y1="875" x2="625" y2="825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="825" x2="1820" y2="825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="825" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >HCURV</text>
+	<circle cx="625" cy="875" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1793.75" x2="1283.75" y2="1806.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1806.25" x2="1283.75" y2="1793.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1812.5" x2="1262.5" y2="1825" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1287.5" y1="1825" x2="1275" y2="1812.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1287.5" y1="1825" x2="1275" y2="1837.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1837.5" x2="1262.5" y2="1825" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<circle cx="1180" cy="1925" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="325" x2="325" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="400" x2="1820" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Sodalis_praecaptivus_HS1.l</text>
+	<line x1="325" y1="325" x2="325" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="275" x2="460" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="268.75" x2="453.75" y2="281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="281.25" x2="453.75" y2="268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="337.5" x2="297.5" y2="350" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="322.5" y1="350" x2="310" y2="337.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="322.5" y1="350" x2="310" y2="362.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="362.5" x2="297.5" y2="350" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<circle cx="190" cy="450" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<path d="M 175 475 Q 990 400 1805 525" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1805" y1="525" x2="1820" y2="525" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1808.75" y1="520" x2="1813.75" y2="525" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1808.75" y1="530" x2="1813.75" y2="525" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<text x="1845" y="525" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Yersinia_pestis_CO92</text>
+	<line x1="190" y1="450" x2="190" y2="975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="975" x2="325" y2="975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="975" x2="325" y2="2750" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="2750" x2="435" y2="2750" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="2750" x2="435" y2="2800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="2800" x2="1820" y2="2800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2800" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Escherichia_coli_K12_MG1655</text>
+	<line x1="435" y1="2750" x2="435" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="435" y1="1225" x2="545" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="545" y2="1200" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1200" x2="575" y2="1200" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1200" x2="575" y2="1350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1350" x2="740" y2="1350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1350" x2="740" y2="1575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1575" x2="905" y2="1575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1575" x2="905" y2="1475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1475" x2="1070" y2="1475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1475" x2="1070" y2="1525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1525" x2="1820" y2="1525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1525" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EwApS.l.l.l</text>
+	<line x1="1070" y1="1475" x2="1070" y2="1425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1070" y1="1425" x2="1180" y2="1425" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1186.25" y1="1418.75" x2="1173.75" y2="1431.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1186.25" y1="1431.25" x2="1173.75" y2="1418.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1070" cy="1475" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1575" x2="905" y2="1700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="905" y1="1700" x2="1070" y2="1700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1076.25" y1="1693.75" x2="1063.75" y2="1706.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1076.25" y1="1706.25" x2="1063.75" y2="1693.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="905" cy="1575" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1350" x2="740" y2="1275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1275" x2="905" y2="1275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1268.75" x2="898.75" y2="1281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1281.25" x2="898.75" y2="1268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="740" cy="1350" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1200" x2="575" y2="1075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="575" y1="1075" x2="740" y2="1075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1075" x2="740" y2="1025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1025" x2="1820" y2="1025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1025" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Pantoea_calida_DSM_22759.l</text>
+	<line x1="740" y1="1075" x2="740" y2="1150" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="740" y1="1150" x2="905" y2="1150" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1143.75" x2="898.75" y2="1156.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="911.25" y1="1156.25" x2="898.75" y2="1143.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="740" cy="1075" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="575" cy="1200" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="545" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="545" y1="1225" x2="605" y2="1225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1225" x2="605" y2="1375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1375" x2="770" y2="1375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1375" x2="770" y2="1300" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1300" x2="1820" y2="1300" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1300" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EwBiE.l.l</text>
+	<line x1="770" y1="1375" x2="770" y2="1600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="770" y1="1600" x2="935" y2="1600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="941.25" y1="1593.75" x2="928.75" y2="1606.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="941.25" y1="1606.25" x2="928.75" y2="1593.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="770" cy="1375" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1225" x2="605" y2="1100" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="605" y1="1100" x2="770" y2="1100" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="776.25" y1="1093.75" x2="763.75" y2="1106.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="776.25" y1="1106.25" x2="763.75" y2="1093.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="605" cy="1225" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<rect x="538.75" y="1218.75" width="12.5" height="12.5" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="541.75" y="1228.25" fill="rgb(255,255,255)" font-size="10" font-family="Verdana" >D</text>
+	<circle cx="435" cy="2750" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="975" x2="325" y2="575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="575" x2="435" y2="575" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="441.25" y1="568.75" x2="428.75" y2="581.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="441.25" y1="581.25" x2="428.75" y2="568.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="975" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="450" x2="190" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="350" x2="310" y2="350" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="350" x2="310" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="325" x2="325" y2="325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="325" x2="325" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="400" x2="1820" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Sodalis_praecaptivus_HS1.l</text>
+	<line x1="325" y1="325" x2="325" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="275" x2="460" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="268.75" x2="453.75" y2="281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="281.25" x2="453.75" y2="268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<path d="M 310 350 Q 737.5 1037.5 1165 1925" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1165" y1="1925" x2="1180" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1168.75" y1="1920" x2="1173.75" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1168.75" y1="1930" x2="1173.75" y2="1925" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1925" x2="1180" y2="2325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="2325" x2="1290" y2="2325" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2325" x2="1290" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2625" x2="1400" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1400" y2="2600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2600" x2="1430" y2="2600" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2600" x2="1430" y2="2675" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2675" x2="1820" y2="2675" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2675" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ECUMA</text>
+	<line x1="1430" y1="2600" x2="1430" y2="2450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1430" y1="2450" x2="1595" y2="2450" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2450" x2="1595" y2="2525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2525" x2="1820" y2="2525" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2525" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EKOCA.l</text>
+	<line x1="1595" y1="2450" x2="1595" y2="2375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1595" y1="2375" x2="1760" y2="2375" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2368.75" x2="1753.75" y2="2381.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2381.25" x2="1753.75" y2="2368.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1595" cy="2450" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1430" cy="2600" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1400" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2625" x2="1460" y2="2625" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2625" x2="1460" y2="2475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2475" x2="1625" y2="2475" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2475" x2="1625" y2="2400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2400" x2="1820" y2="2400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ELAFE.l.l</text>
+	<line x1="1625" y1="2475" x2="1625" y2="2550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1625" y1="2550" x2="1760" y2="2550" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2543.75" x2="1753.75" y2="2556.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1766.25" y1="2556.25" x2="1753.75" y2="2543.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1625" cy="2475" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2625" x2="1460" y2="2700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1460" y1="2700" x2="1595" y2="2700" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1601.25" y1="2693.75" x2="1588.75" y2="2706.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1601.25" y1="2706.25" x2="1588.75" y2="2693.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="1460" cy="2625" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<rect x="1393.75" y="2618.75" width="12.5" height="12.5" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1396.75" y="2628.25" fill="rgb(255,255,255)" font-size="10" font-family="Verdana" >D</text>
+	<line x1="1290" y1="2325" x2="1290" y2="2025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1290" y1="2025" x2="1400" y2="2025" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2025" x2="1400" y2="2225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2225" x2="1510" y2="2225" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2225" x2="1510" y2="2275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2275" x2="1820" y2="2275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2275" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EPSPA</text>
+	<line x1="1510" y1="2225" x2="1510" y2="2125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1510" y1="2125" x2="1620" y2="2125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2125" x2="1620" y2="2175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2175" x2="1820" y2="2175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2175" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ESPPA</text>
+	<line x1="1620" y1="2125" x2="1620" y2="2075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1620" y1="2075" x2="1820" y2="2075" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="2075" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >ESPPS</text>
+	<circle cx="1620" cy="2125" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1510" cy="2225" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="2025" x2="1400" y2="1975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1400" y1="1975" x2="1820" y2="1975" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="1975" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >EPSTX</text>
+	<circle cx="1400" cy="2025" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="1290" cy="2325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1925" x2="1180" y2="1825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1180" y1="1825" x2="1275" y2="1825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1825" x2="1275" y2="1800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1800" x2="1290" y2="1800" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1793.75" x2="1283.75" y2="1806.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1806.25" x2="1283.75" y2="1793.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<path d="M 1275 1825 Q 942.5 1250 610 875" stroke-dasharray="4" fill="transparent" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="610" y1="875" x2="625" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="613.75" y1="870" x2="618.75" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="613.75" y1="880" x2="618.75" y2="875" stroke-width="0.7" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="875" x2="625" y2="925" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="925" x2="1820" y2="925" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="925" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >HCURT</text>
+	<line x1="625" y1="875" x2="625" y2="825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="625" y1="825" x2="1820" y2="825" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="825" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >HCURV</text>
+	<circle cx="625" cy="875" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1793.75" x2="1283.75" y2="1806.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1296.25" y1="1806.25" x2="1283.75" y2="1793.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1812.5" x2="1262.5" y2="1825" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1287.5" y1="1825" x2="1275" y2="1812.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1287.5" y1="1825" x2="1275" y2="1837.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="1275" y1="1837.5" x2="1262.5" y2="1825" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<circle cx="1180" cy="1925" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="325" x2="325" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="400" x2="1820" y2="400" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="400" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Sodalis_praecaptivus_HS1.l</text>
+	<line x1="325" y1="325" x2="325" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="325" y1="275" x2="460" y2="275" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="268.75" x2="453.75" y2="281.25" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<line x1="466.25" y1="281.25" x2="453.75" y2="268.75" stroke-width="4.16667" stroke="rgb(65,170,190)" />
+	<circle cx="325" cy="325" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="337.5" x2="297.5" y2="350" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="322.5" y1="350" x2="310" y2="337.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="322.5" y1="350" x2="310" y2="362.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="310" y1="362.5" x2="297.5" y2="350" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<circle cx="190" cy="450" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="175" y1="462.5" x2="162.5" y2="475" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="187.5" y1="475" x2="175" y2="462.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="187.5" y1="475" x2="175" y2="487.5" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="175" y1="487.5" x2="162.5" y2="475" stroke-width="2.77778" stroke="rgb(65,170,190)" />
+	<line x1="80" y1="225" x2="80" y2="125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="80" y1="125" x2="190" y2="125" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="125" x2="190" y2="175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="175" x2="1820" y2="175" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="175" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Photorhabdus_luminescens_TTO1</text>
+	<line x1="190" y1="125" x2="190" y2="75" stroke-width="3" stroke="rgb(65,170,190)" />
+	<line x1="190" y1="75" x2="1820" y2="75" stroke-width="3" stroke="rgb(65,170,190)" />
+	<text x="1845" y="75" fill="rgb(65,170,190)" font-size="18" font-family="Verdana" >Photorhabdus_asymbiotica_ATCC43949</text>
+	<circle cx="190" cy="125" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+	<circle cx="80" cy="225" r="4.16667" fill="rgb(65,170,190)" stroke-width="3" stroke="rgb(65,170,190)" />
+</svg>
