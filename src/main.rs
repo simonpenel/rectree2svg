@@ -305,8 +305,6 @@ fn main()  {
     println!("==============================================");
     map_parasite_g2s(&mut tree_para_pipe, &mut para_trees[0]);
          summary(&mut tree_para_pipe);
-    drawing::draw_sptree_gntrees(&mut tree_para_pipe, &mut gene_trees, "test.svg".to_string(),
-     &options, &config);
 
     reset_pos(&mut tree_para_pipe);
     reset_pos(&mut gene_trees[0]);
