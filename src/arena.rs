@@ -263,7 +263,9 @@ impl Options {
 #[derive(Debug)]
 pub struct Config{
     pub species_color: String,
+    pub species_opacity: String,
     pub single_gene_color: String,
+    pub gene_opacity: String,
     pub species_police_color: String,
     pub species_police_size: String,
     pub gene_police_size: String,
@@ -272,7 +274,9 @@ impl Config {
     pub fn new() -> Self {
         Self {
             species_color:"pink".to_string(),
+            species_opacity:"0.9".to_string(),
             single_gene_color:"blue".to_string(),
+            gene_opacity:"0.9".to_string(),
             species_police_color:"orange".to_string(),
             species_police_size:"12".to_string(),
             gene_police_size:"10".to_string(),

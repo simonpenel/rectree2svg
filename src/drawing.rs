@@ -52,8 +52,10 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options,
             Some(p) => {
                 let n = &tree.arena[p];
                 let chemin = match index.is_a_transfert {
-                true => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),true)},
-                false => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),false)},
+                true => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),
+                         config.gene_opacity.to_string(),true)},
+                false => {get_chemin_carre(index.x,index.y,n.x,n.y,gene_color.to_string(),
+                         config.gene_opacity.to_string(),false)},
                 };
                 g.append(chemin);
                 0
@@ -150,12 +152,14 @@ pub fn draw_sptree_gntrees (
                                            index.width/2.0, index.height/2.0,
                                            n.x, n.y,
                                            n.width/2.0, n.height/2.0,
-                                           config.species_color.to_string());
+                                           config.species_color.to_string(),
+                                           config.species_opacity.to_string());
                 g.append(chemin);
                 if sp_tree.is_leaf(index.idx) {
                     let chemin = close_chemin_sp(index.x, index.y,
                                                  index.width/2.0, index.height/2.0,
-                                                 config.species_color.to_string());
+                                                 config.species_color.to_string(),
+                                                 config.species_opacity.to_string());
                     g.append(chemin);
                 }
             },
@@ -237,7 +241,8 @@ pub fn draw_sptree_gntrees (
                                 BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
                             }
                         },
-                        false => get_chemin_carre(index.x,index.y,n.x,n.y ,gene_color.to_string(),false),
+                        false => get_chemin_carre(index.x,index.y,n.x,n.y ,gene_color.to_string(),
+                                    config.gene_opacity.to_string(),false),
                      };
                      g.append(chemin);
                  },
@@ -418,7 +423,7 @@ pub fn get_cross (x: f32, y:f32, s:f32, c:String) -> Path {
 // }
 
 /// Draw a square path between x1,y1 ad x2,y2
-pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bool) -> Path {
+pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String, stroke:bool)-> Path {
     let data = Data::new()
     .move_to((x1*1.0, y1*1.0))
     .line_to((x1*1.0, y2*1.0))
@@ -426,6 +431,7 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bool)
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", c)
+    .set("opacity", o)
     .set("stroke-width", GTHICKNESS);
     let path = match stroke {
         true => path.set("stroke-dasharray","1, 1"),
@@ -490,7 +496,7 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bo
 
 /// Draw a square pipe path between x1,y1 ad x2,y2
 pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
-                      width2:f32, height2:f32, c:String ) -> Path {
+                      width2:f32, height2:f32, c:String, o:String ) -> Path {
     if x1 < x2 {
         let data = Data::new()
         .move_to((x1 - width1, y1 - height1 + (STHICKNESS / 2)  as f32))
@@ -502,6 +508,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", c)
+        .set("opacity", o)
         .set("stroke-width", STHICKNESS)
         .set("d", data);
         path
@@ -517,6 +524,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", c)
+        .set("opacity", o)
         .set("stroke-width", STHICKNESS)
         .set("d", data);
         path
@@ -524,7 +532,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
 }
 
 /// Finish  the drawing of species tree at the leaves level.
-pub fn close_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, c:String ) -> Path {
+pub fn close_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, c:String, o:String ) -> Path {
         let data = Data::new()
         .move_to((x1 - width1, y1 - height1))
         .line_to((x1 - width1, y1 + 2.0 * height1))
@@ -533,6 +541,7 @@ pub fn close_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, c:String ) -> 
         let path = Path::new()
         .set("fill", "none")
         .set("stroke", c)
+        .set("opacity", o)
         .set("stroke-width", STHICKNESS)
         .set("d", data);
         path

@@ -485,10 +485,20 @@ fn set_config(configfile: String, config: &mut Config) {
                     config.species_color=test[1].to_string();
                     info!("[set_config] species_color is now {}",config.species_color);
                 },
+                "species_opacity" => {
+                    info!("[set_config] species_opacity was {}",config.species_opacity);
+                    config.species_opacity=test[1].to_string();
+                    info!("[set_config] species_opacity is now {}",config.species_opacity);
+                },
                 "single_gene_color" => {
                     info!("[set_config] single_gene_color was {}",config.single_gene_color);
                     config.single_gene_color=test[1].to_string();
                     info!("[set_config] single_gene_color is now {}",config.single_gene_color);
+                },
+                "gene_opacity" => {
+                    info!("[set_config] gene_opacity was {}",config.gene_opacity);
+                    config.gene_opacity=test[1].to_string();
+                    info!("[set_config] gene_opacity is now {}",config.gene_opacity);
                 },
                 "species_police_color" => {
                     info!("[set_config] species_police_color was {}",config.species_police_color);
