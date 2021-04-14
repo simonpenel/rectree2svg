@@ -515,6 +515,11 @@ fn set_config(configfile: String, config: &mut Config) {
                     config.gene_police_size=test[1].to_string();
                     info!("[set_config] gene_police_size is now {}",config.gene_police_size);
                 },
+                "bezier" => {
+                    info!("[set_config] bezier was {}",config.bezier);
+                    config.bezier=test[1].to_string();
+                    info!("[set_config] bezier is now {}",config.bezier);
+                },
                 _ => {},
             }
         }

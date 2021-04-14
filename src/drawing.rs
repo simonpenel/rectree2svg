@@ -227,17 +227,17 @@ pub fn draw_sptree_gntrees (
                             // Verifie que le parent est bien un branchingout
                             match n.e {
                                 Event::BranchingOut => get_chemin_transfer(index.x,index.y,
-                                                                n.x,n.y,
-                                                                gene_color.to_string(),
-                                                                config.gene_opacity.to_string(),
-                                                                true
-                                                                           ),
+                                        n.x,n.y,
+                                        gene_color.to_string(),
+                                        config.gene_opacity.to_string(),
+                                        config.bezier.to_string().parse::<f32>().unwrap(),
+                                        true),
                                 Event::BifurcationOut => get_chemin_transfer(index.x,index.y,
-                                                                n.x,n.y,
-                                                                gene_color.to_string(),
-                                                                config.gene_opacity.to_string(),
-                                                                true
-                                                                ),
+                                        n.x,n.y,
+                                        gene_color.to_string(),
+                                        config.gene_opacity.to_string(),
+                                        config.bezier.to_string().parse::<f32>().unwrap(),
+                                        true),
                                 _ => panic!("Wrong recPhyloXML feature.
                                 The father node should be BranchingOut or
                                 BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
@@ -444,13 +444,13 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String, st
 }
 
 /// Draw a transfer path between x1,y1 ad x2,y2
-pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String,
+pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String,b:f32,
     stroke:bool) -> Path {
     // Arrivee du point: un peu avant pour dessiner la fleche
     let initial_y1 = y1 ;
     let y1 = y1 - PIPEBLOCK;
     // Courbure de la courbe de Bezier
-    let bez_y = BLOCK;
+    let bez_y = b  * BLOCK;
     // let bez_y = 20.0;
     // Point de controle de la courbe de Bezier
     let controle_x = (x1 + x2) / 2.0 ;

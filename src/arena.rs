@@ -269,6 +269,7 @@ pub struct Config{
     pub species_police_color: String,
     pub species_police_size: String,
     pub gene_police_size: String,
+    pub bezier: String,
 }
 impl Config {
     pub fn new() -> Self {
@@ -280,6 +281,7 @@ impl Config {
             species_police_color:"orange".to_string(),
             species_police_size:"12".to_string(),
             gene_police_size:"10".to_string(),
+            bezier:"1".to_string(),
         }
     }
 }
