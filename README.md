@@ -99,11 +99,13 @@ rectree2svg -f recphylo_examples/FAM000600_reconciliated_big.recphylo -c my_conf
 ```
 
 
-# Using the code:
+# Using the API:
 
 https://crates.io/crates/rectree2svg
 
-You may find more code  examples in the "examples" directory.
+The API functions and methods are tagged "API" in the Rust package documentation (https://docs.rs/rectree2svg) 
+
+You may find code  examples in the "examples" directory.
 
 Simple Rust example: read a newick.txt file and creates the svg
 ```
