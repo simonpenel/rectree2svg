@@ -6,7 +6,7 @@ pub const PIPEBLOCK: f32 = BLOCK / 4.0;
 // Structures
 // ==========
 
-/// Structure Noeud.
+/// [API] Structure Noeud.
 ///
 #[derive(Debug)]
 pub struct Noeud<T>
@@ -87,7 +87,7 @@ where
         self.y = y;
     }
 }
-/// Structure ArenaTree.
+/// [API] Structure ArenaTree.
 ///
 /// Taken from
 /// <https://dev.to/deciduously/no-more-tears-no-more-knots-arena-allocated-trees-in-rust-44k6>
@@ -228,7 +228,7 @@ where
     }
 }
 
-///  Structure Options: drawing options.
+///  [API] Structure Options: drawing options.
 #[derive(Debug)]
 pub struct Options{
     pub gene_internal: bool,
@@ -259,7 +259,7 @@ impl Options {
     }
 }
 
-///  Structure Config: drawing config.
+///  [API] Structure Config: drawing config.
 #[derive(Debug)]
 pub struct Config{
     pub species_color: String,
@@ -289,7 +289,7 @@ impl Config {
 // Enums
 // =====
 
-/// enum of the possible events in a gene tree
+/// [API] enum of the possible events in a gene tree
 #[allow(dead_code)]
 #[derive(Debug, PartialEq)]
 pub enum Event {
@@ -312,7 +312,7 @@ impl Default for Event {
 // Fonctions
 // =========
 
-/// Fill an ArenaTree structure with the contents of a parentheses  tree.
+/// [API] Fill an ArenaTree structure with the contents of a parentheses  tree.
 pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num: &mut usize) {
     info!("[newick2tree] Tree = {}",arbre);
     let arbre = arbre;
@@ -397,7 +397,7 @@ pub fn newick2tree(arbre:String, tree : &mut ArenaTree<String>, index:usize, num
     };
 }
 
-/// Check is tree in newick format is rooted
+/// [API] Check is tree in newick format is rooted
 pub fn check_is_rooted(arbre: &String) {
 let p = arbre.matches('(').count();
 let c = arbre.matches(',').count();
@@ -461,7 +461,7 @@ pub fn find_left_right(arbre:String)-> (String,String,String){
     (left,right,trail)
 }
 
-/// Fill an ArenaTree structure with the contents of a roxmltre::Node structure
+/// [API] Fill an ArenaTree structure with the contents of a roxmltre::Node structure
 pub fn xml2tree(node: roxmltree::Node, parent: usize, mut numero : &mut usize,
                 mut  tree: &mut ArenaTree<String>) {
     // Note : speciationLoss", "speciationOutLoss", "speciationOut" sont obsolètes
@@ -1123,7 +1123,7 @@ pub fn find_first_clade(  doc: &mut roxmltree::Document) -> Result < roxmltree::
     Err(0)
 }
 
-/// Get the id of the first "spTree" tag.
+/// [API] Get the id of the first "spTree" tag.
 pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId, usize> {
     let descendants = doc.root().descendants();
     // Search for the first occurnce of clade spTree
@@ -1135,7 +1135,7 @@ pub fn find_sptree( doc: &mut roxmltree::Document) -> Result < roxmltree::NodeId
     Err(0)
 }
 
-/// Get the list of ids of all the "regGeneTree" tag in a xml document.
+/// [API] Get the list of ids of all the "regGeneTree" tag in a xml document.
 pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::NodeId>, usize> {
     let descendants = doc.root().descendants();
     let mut gene_nodes:std::vec::Vec<roxmltree::NodeId> = Vec::new();
@@ -1169,14 +1169,14 @@ pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize
     }
 }
 
-/// Transforms the tree into cladogram
+/// [API] Transforms the tree into cladogram
 pub fn cladogramme( tree: &mut ArenaTree<String>) {
     let root = tree.get_root();
     let mut  max_depth = get_maxdepth(tree,root,&mut 0);
     set_leaves_to_bottom(tree,root,&mut max_depth);
 }
 
-/// Transforms the tree into real branch  length representation
+/// [API] Transforms the tree into real branch  length representation
 pub fn real_length(tree: &mut ArenaTree<String>, index: usize, dist: &mut f32, options: &Options) {
     let  dist_father = tree.arena[index].l;
     let mut dist = *dist + dist_father;
@@ -1475,7 +1475,7 @@ pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     }
 }
 
-/// Send the index of the last common ancestor of 2 nodes
+/// [API] Send the index of the last common ancestor of 2 nodes
 #[allow(dead_code)]
 pub fn lca(tree : &mut ArenaTree<String>, index1:usize, index2: usize)  -> usize {
     let p1 = tree.arena[index1].parent;
@@ -1544,7 +1544,7 @@ for index in &mut tree.arena {
 }
 
 #[allow(dead_code)]
-/// Display a short summary of each node of the tree
+/// [API] Display a short summary of each node of the tree
 pub fn summary(tree : &mut ArenaTree<String>)  {
 for index in &tree.arena {
     let children  = &index.children;
@@ -1568,7 +1568,7 @@ for index in &tree.arena {
 }
 
 #[allow(dead_code)]
-/// Add a node to another node
+/// [API] Add a node to another node
 pub fn add_child(tree : &mut ArenaTree<String>, parent:usize, child:usize)  {
     info!("[add_child] adding {} to {}",child,parent);
     tree.arena[child].parent = Some(parent);
@@ -1578,7 +1578,7 @@ pub fn add_child(tree : &mut ArenaTree<String>, parent:usize, child:usize)  {
 }
 
 #[allow(dead_code)]
-/// Move a node from a parent node to another node
+/// [API]  Move a node from a parent node to another node
 pub fn move_child(tree : &mut ArenaTree<String>, child:usize, new_parent:usize)  {
     let parent =  match tree.arena[child].parent {
         Some(p) => p,

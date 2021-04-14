@@ -103,7 +103,9 @@ rectree2svg -f recphylo_examples/FAM000600_reconciliated_big.recphylo -c my_conf
 
 https://crates.io/crates/rectree2svg
 
-The API functions and methods are tagged "API" in the Rust package documentation (https://docs.rs/rectree2svg) 
+The API functions and methods are tagged as "API" in the Rust package documentation (https://docs.rs/rectree2svg)
+
+ Semantic Versioning Specification applies only to "API" tagged functions and methods.
 
 You may find code  examples in the "examples" directory.
 

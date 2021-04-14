@@ -19,7 +19,7 @@ const GTHICKNESS: usize = 3; // Epaisseur trait gene_
 const STHICKNESS: usize = 6; // Epaisseur trait species
 const SQUARESIZE: f32 = 6.0; // taille carre dupli
 
-/// Draw a svg simple tree
+/// [API] Draw a svg simple tree
 pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options,
     config: &Config) {
     info!("[draw_tree] Drawing tree...");
@@ -112,7 +112,7 @@ pub fn draw_tree (tree: &mut ArenaTree<String>, name: String, options: &Options,
     svg::save(name, &document).unwrap();
 }
 
-/// Draw a svg pipe species tree and  several gene trees inside it
+/// [API] Draw a svg pipe species tree and  several gene trees inside it
 pub fn draw_sptree_gntrees (
     sp_tree: &mut ArenaTree<String>,
     gene_trees:&mut std::vec::Vec<ArenaTree<String>>,
