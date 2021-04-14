@@ -227,15 +227,17 @@ pub fn draw_sptree_gntrees (
                             // Verifie que le parent est bien un branchingout
                             match n.e {
                                 Event::BranchingOut => get_chemin_transfer(index.x,index.y,
-                                                                           n.x,n.y,
-                                                                           gene_color.to_string(),
-                                                                           true
+                                                                n.x,n.y,
+                                                                gene_color.to_string(),
+                                                                config.gene_opacity.to_string(),
+                                                                true
                                                                            ),
                                 Event::BifurcationOut => get_chemin_transfer(index.x,index.y,
-                                                                            n.x,n.y,
-                                                                            gene_color.to_string(),
-                                                                            true
-                                                                            ),
+                                                                n.x,n.y,
+                                                                gene_color.to_string(),
+                                                                config.gene_opacity.to_string(),
+                                                                true
+                                                                ),
                                 _ => panic!("Wrong recPhyloXML feature.
                                 The father node should be BranchingOut or
                                 BifurcationOut, but I found a {:?}\n{:?}",n.e,n),
@@ -442,7 +444,8 @@ pub fn get_chemin_carre (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String, st
 }
 
 /// Draw a transfer path between x1,y1 ad x2,y2
-pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bool) -> Path {
+pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, o:String,
+    stroke:bool) -> Path {
     // Arrivee du point: un peu avant pour dessiner la fleche
     let initial_y1 = y1 ;
     let y1 = y1 - PIPEBLOCK;
@@ -471,6 +474,7 @@ pub fn get_chemin_transfer (x1: f32, y1:f32,x2: f32, y2:f32, c:String, stroke:bo
     let path = Path::new()
     .set("fill", "none")
     .set("stroke", c)
+    .set("opacity", o)
     .set("stroke-width", GTHICKNESS);
     let path = match stroke {
         true => path.set("stroke-dasharray","1, 1"),
