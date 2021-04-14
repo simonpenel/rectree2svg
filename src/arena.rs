@@ -1152,7 +1152,7 @@ pub fn find_rgtrees( doc: &mut roxmltree::Document) -> Result < Vec<roxmltree::N
     }
 }
 
-/// Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
+/// [API] Set x and y of nodes :  left son x is 0;  right son x is 1; y is depth
 pub fn  knuth_layout(tree: &mut ArenaTree<String>,index: usize,depth: &mut usize){
     tree.arena[index].set_y_noref(BLOCK* (*depth as f32));
     let children  = &mut  tree.arena[index].children;
@@ -1226,7 +1226,7 @@ pub fn set_leaves_to_bottom( tree: &mut ArenaTree<String>, index: usize, max:&mu
     }
 }
 
-/// Shift the  x values  of a node and its children according to the cumulated xmod values
+/// [API] Shift the  x values  of a node and its children according to the cumulated xmod values
 pub fn shift_mod_xy( tree: &mut ArenaTree<String>, index: usize, xmod: &mut f32, ymod: &mut f32) {
     info!("[shift_mod_xy] shifting {:?} xmod={} ymod={}",tree.arena[index],xmod,ymod);
     let x_father = tree.arena[index].x;
@@ -1320,7 +1320,7 @@ pub fn push_down (tree: &mut ArenaTree<String>, parent: usize, left: usize, righ
     }
 }
 
-/// Solve the conflicts between the left subtree and the right subtree
+/// [API] Solve the conflicts between the left subtree and the right subtree
 pub fn  check_contour_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
@@ -1454,7 +1454,7 @@ pub fn  push_right(tree: &mut ArenaTree<String>,left_tree:usize,right_tree:usize
     0.0
 }
 
-/// Set the x of the father between its children
+/// [API] Set the x of the father between its children
 pub fn  set_middle_postorder(tree: &mut ArenaTree<String>,index:usize) {
     let children  = &mut  tree.arena[index].children;
     if children.len() > 0 {
