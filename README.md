@@ -16,7 +16,7 @@ Read a recphyloxml file:  create a svg representation of the  gene tree(s) and t
 
 Read a newick or phyloxml file: create a svg representation of the gene tree only .
 
-You may use the rectree2svg binary to draw trees to as well as the rust rectree2svg funtions to build, manipulate or draw phylogenetic trees (see "Using the code")
+You may use the rectree2svg binary to draw trees to as well as the rust rectree2svg funtions to build, manipulate or draw phylogenetic trees (see "Using the API")
 
 Keywords:  phylogeny, reconciled trees, phylogenetic trees
 
