@@ -505,7 +505,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let data = Data::new()
         .move_to((x1 - width1, y1 - height1 + (STHICKNESS / 2)  as f32))
         .line_to((x1 - width1, y2 - height2))
-        .line_to((x2 - width2, y2 - height2))
+        .line_to((x2 - width2 - (STHICKNESS / 2)  as f32, y2 - height2))
         .move_to((x1 + width1, y1 - height1 + (STHICKNESS / 2)  as f32 ))
         .line_to((x1 + width1, y2 + height2))
         .line_to((x2, y2 + height2));
@@ -521,7 +521,7 @@ pub fn get_chemin_sp (x1: f32, y1:f32, width1:f32, height1:f32, x2: f32, y2:f32,
         let data = Data::new()
         .move_to((x1 + width1, y1 - height1 + (STHICKNESS / 2)  as f32 ))
         .line_to((x1 + width1, y2 - height2))
-        .line_to((x2 + width2, y2 - height2))
+        .line_to((x2 + width2 + (STHICKNESS / 2)  as f32, y2 - height2))
         .move_to((x1 - width1, y1 - height1 + (STHICKNESS / 2)  as f32))
         .line_to((x1 - width1, y2 + height2))
         .line_to((x2, y2 + height2));
