@@ -28,19 +28,28 @@ phyloXML, recPhyloXML, rooted newick ( NHX balises will not be considered ).
 
 multiple genes reconciliation recphyloxml:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/6414f14e57131a590558711b9981aca76decbcbe/tree2svg.example.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/tree2svg.example.svg
+
 
 single gene reconciliation in recphyloxml:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/c75848cc0bbcf32aafb619eafdd1237f980abf8a/FAM000696_reconciliated_recphyloxml.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/FAM000696_reconciliated_recphyloxml.svg
 
 the same gene reconciliation in phyloxml:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/e784162ea8cb4926d77e5748e74fddae036818b2/FAM000696_reconciliated_xml.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/FAM000696_reconciliated_xml.svg
+
 
 # Install:
 
 rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io.
+
+Install cargo:
+
+    curl https://sh.rustup.rs -sSf | sh
+
+or for Windows see  https://doc.rust-lang.org/cargo/getting-started/installation.html
+
 Once Cargo is installed just open a terminal and type:
 
     cargo install rectree2svg
