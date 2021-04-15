@@ -16,29 +16,7 @@ use std::env;
 use std::process;
 use getopt::Opt;
 use webbrowser::{Browser};
-mod arena;
-use crate::arena::Options;
-use crate::arena::ArenaTree;
-use crate::arena::Config;
-use crate::arena::newick2tree;
-use crate::arena::xml2tree;
-use crate::arena::check_for_obsolete;
-use crate::arena::map_gene_trees;
-use crate::arena::map_species_trees;
-use crate::arena::bilan_mappings;
-use crate::arena::move_dupli_mappings;
-use crate::arena::center_gene_nodes;
-use crate::arena::set_species_width;
-use crate::arena::find_sptree;
-use crate::arena::find_rgtrees;
-use crate::arena::knuth_layout;
-use crate::arena::set_middle_postorder;
-use crate::arena::shift_mod_xy;
-use crate::arena::check_contour_postorder;
-use crate::arena::check_vertical_contour_postorder;
-use crate::arena::cladogramme;
-use crate::arena::real_length;
-mod drawing;
+use light_phylogeny::*;
 use log::{info};
 
 // Message d'erreur
@@ -95,7 +73,7 @@ pub enum  Format {
 
 fn main()  {
     // Initialise les options
-    let mut options: Options = Options::new();
+    let mut options: Options =  Options::new();
     // Initialise la config
     let mut config: Config = Config::new();
     // Charge la config par deuakt si elle existe
@@ -176,6 +154,10 @@ fn main()  {
             },
     };
     println!("Assume that format is {:?}",format);
+    // get the url
+    let path = env::current_dir().expect("Unable to get current dir");
+    let url_file = format!("file:///{}/{}", path.display(),outfile.clone());
+
     // Creation d'une structure ArenaTree (pour phyloxml et newick)
     // -----------------------------------------------------------
     let mut tree: ArenaTree<String> = ArenaTree::default();
@@ -184,37 +166,13 @@ fn main()  {
     match format {
         // Phymxoml
         Format::Phyloxml => {
-            let contents = fs::read_to_string(filename)
-                .expect("Something went wrong reading the phyloxml file");
-            let doc = roxmltree::Document::parse(&contents).unwrap();
-            let descendants = doc.root().descendants();
-            // Cherche la premiere occurence du clade tag
-            for node in descendants {
-                if node.has_tag_name("clade"){
-                    // node est la racine
-                    let mut index  = &mut 0;
-                    // Nom de la racine
-                    let name = "N".to_owned()+&index.to_string();
-                    // Cree le nouveau noeud et recupere son index
-                    let name = tree.new_node(name.to_string());
-                    // Appelle xlm2tree sur la racine
-                    xml2tree(node, name, &mut index, &mut tree);
-                    // on s'arrête la
-                    break;
-                }
-            }
-            phyloxml_processing(&mut tree, options, config, outfile);
+            read_phyloxml(filename.to_string(), &mut tree);
+            phyloxml_processing(&mut tree, &options, &config, outfile);
         },
         // Newick
         Format::Newick => {
-            println!("=================================================================");
-            println!("WARNING: 06 April 2021: NHX balises if any will not be considered");
-            println!("=================================================================");
-            let contents = fs::read_to_string(filename)
-                .expect("Something went wrong reading the newick file");
-            let root = tree.new_node("Root".to_string());
-            newick2tree(contents, &mut tree, root, &mut 0);
-            phyloxml_processing(&mut tree, options, config, outfile);
+            read_newick(filename.to_string(), &mut tree);
+            phyloxml_processing(&mut tree, &options, &config, outfile);
         },
         // Recphyloxml
         Format::Recphyloxml => {
@@ -224,66 +182,10 @@ fn main()  {
             // Creation de la structure ArenaTree pour l'arbre d'espece
             // --------------------------------------------------------
             let mut sp_tree: ArenaTree<String> = ArenaTree::default();
-            let contents = fs::read_to_string(filename)
-                .expect("Something went wrong reading the recphyloxml file");
-            let doc = &mut roxmltree::Document::parse(&contents).unwrap();
-            // Recupere le NodeId associe au premiere element aavce un tag spTree
-            let spnode = find_sptree(doc).expect("No clade spTree has been found in xml");
-            // Recupere le Node associe grace ai NodeId
-            let spnode = doc.get_node(spnode).expect("Unable to get the Node associated to this nodeId");
-            info!("spTree Id: {:?}",spnode);
-            let descendants = spnode.descendants();
-            // Cherche la premiere occurence du  clade tag
-            for node in descendants {
-                if node.has_tag_name("clade"){
-                    // node est la racine
-                    let mut index  = &mut 0;
-                    // Nom de la racine
-                    let name = "N".to_owned()+&index.to_string();
-                    // Cree le nouveau noeud et recupere son index
-                    let name = sp_tree.new_node(name.to_string());
-                    // Appelle xlm2tree sur la racine
-                    xml2tree(node, name, &mut index, &mut sp_tree);
-                    // on s'arrête la
-                    break;
-                }
-            }
-            if options.verbose {
-                info!("Drawing tree species verbose-species.svg");
-                drawing::draw_tree(&mut sp_tree, "verbose-species.svg".to_string(), &options, &config);
-            }
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
-            // Recupere la liste des noeuds associés à la balise  recGeneTree
-            let rgnodes = find_rgtrees(doc).expect("No clade recGeneTree has been found in xml");
-            for rgnode in rgnodes {
-                let mut gene_tree: ArenaTree<String> = ArenaTree::default();
-                info!("Search recGeneTree node {:?}",rgnode);
-                let rgnode = doc.get_node(rgnode).expect("Unable to get the Node associated to this nodeId");
-                info!("Associated recGeneTree  : {:?}",rgnode);
-                // Analyse le gene tree
-                let descendants = rgnode.descendants();
-                // Cherche la premiere occurenvce du clade tag
-                for node in descendants {
-                    if node.has_tag_name("clade"){
-                        // node est la racine
-                        let mut index  = &mut 0;
-                        // Nom de la racine
-                        let name = "N".to_owned()+&index.to_string();
-                        // Cree le nouveau noeud et recupere son index
-                        let name = gene_tree.new_node(name.to_string());
-                        // Appelle xlm2tree sur la racine
-                        xml2tree(node, name, &mut index, &mut gene_tree);
-                        // on s'arrête la
-                        break;
-                    }
-                }
-                // Traitement des balises obsoletes potentielles (ancien format recPhyloXML)
-                check_for_obsolete(&mut gene_tree, &mut sp_tree);
-                // Ajoute l'arbre de gene
-                gene_trees.push(gene_tree);
-            }
+            read_recphyloxml(filename.to_string(), &mut sp_tree, &mut gene_trees);
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
@@ -296,180 +198,18 @@ fn main()  {
                     process::exit(1);
                 }
                 let  mut tree = &mut gene_trees[options.disp_gene-1];
-                phyloxml_processing(&mut tree, options, config, outfile);
+                phyloxml_processing(&mut tree, &options, &config, outfile);
             }
             else {
-                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, options, config, outfile);
+                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, &mut options, &config, outfile);
             }
         },
     }
-}
-fn phyloxml_processing(mut tree: &mut ArenaTree<String>, options:Options, config:Config,
-     outfile: String ) {
-    info!("Tree : {:?}",tree);
-    // -----------------------
-    // Traitement en 4 étapes
-    // -----------------------
-    // Au départ l'arbre est orienté du haut vers le bas (i.e. selon Y)
-    // Le svg sera tourné de -90 a la fin.
-    //
-    //----------------------------------------------------------
-    // 1ère étape :initialisation des x,y de l'arbre :
-    // profondeur => Y, left => X= 0, right X=1
-    // ---------------------------------------------------------
-    let  root = tree.get_root();
-    knuth_layout(&mut tree,root, &mut 1);
-
-    // ---------------------------------------------------------
-    // Option : Cladogramme
-    // ---------------------------------------------------------
-    if options.clado_flag {
-        cladogramme(&mut tree);
-    }
-    // ---------------------------------------------------------
-    // 2ème étape : Vérifie les contours
-    // ---------------------------------------------------------
-     check_contour_postorder(&mut tree, root);
-    // ---------------------------------------------------------
-    // 3eme etape : Decale toutes les valeurs de x en fonction
-    // de xmod
-    // ---------------------------------------------------------
-    shift_mod_xy(&mut tree, root, &mut 0.0, &mut 0.0);
-
-    // ---------------------------------------------------------
-    // 4ème étape : Place le parent entre les enfants
-    // ---------------------------------------------------------
-    set_middle_postorder(&mut tree, root);
-    // ---------------------------------------------------------
-    // Option : real_length
-    // ---------------------------------------------------------
-    if options.real_length_flag {
-        real_length(&mut tree, root, &mut 0.0, & options);
-    }
-    // ---------------------------------------------------------
-    // Fin: Ecriture du fichier svg
-    // ---------------------------------------------------------
-    println!("Output filename is {}",outfile);
-
-    let path = env::current_dir().expect("Unable to get current dir");
-    let url_file = format!("file:///{}/{}", path.display(),outfile);
-    drawing::draw_tree(&mut tree, outfile, & options, & config);
-    // EXIT
-    // On s'arrete la, le reste du programme concerne les autres formats
     if options.open_browser {
         if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
             info!("Browser OK");
         }
     }
-
-}
-fn recphyloxml_processing(mut sp_tree: &mut ArenaTree<String>,
-    mut gene_trees:&mut std::vec::Vec<ArenaTree<String>>,
-    mut options:Options, config:Config, outfile: String ) {
-// -----------------------
-// Traitement en 12 etapes
-// -----------------------
-// Au depart l'arbre est orienté du haut vers le bas (i.e. selon Y)
-// Le svg sera tourné de -90 a la fin.
-//
-//----------------------------------------------------------
-// 1ere étape :initialisation des x,y de l'arbre d'espèces :
-// profondeur => Y, left => X= 0, right X=1
-// ---------------------------------------------------------
-let  root = sp_tree.get_root();
-knuth_layout(&mut sp_tree,root, &mut 1);
-// --------------------
-// Option : Cladogramme
-// --------------------
-if options.clado_flag {
-    cladogramme(&mut sp_tree);
-}
-// ---------------------------------------------------------
-// 2eme étape :  mapping des genes sur l'espèce pour
-// connaître le nombre de noeuds d'arbre de gènes associés à
-// chaque noeud de l'arbre d'espèces
-// ---------------------------------------------------------
-map_species_trees(&mut sp_tree,&mut gene_trees);
-info!("Species tree after mapping : {:?}",sp_tree);
-// ---------------------------------------------------------
-// 3eme étape : Vérifie les conflits dans l'arbre d'espèces
-// au niveau horizontal -> valeurs xmod
-// ---------------------------------------------------------
- check_contour_postorder(&mut sp_tree, root);
-// ---------------------------------------------------------
-// 4eme étape : Décale toutes les valeurs de x en fonction
-// de xmod dans l'abre d'espèces
-// ---------------------------------------------------------
-shift_mod_xy(&mut sp_tree, root, &mut 0.0, &mut 0.0);
-// ---------------------------------------------------------
-// 5eme étape : Place le parent entre les enfants dans
-// l'arbre d'espèces
-// ---------------------------------------------------------
-set_middle_postorder(&mut sp_tree, root);
-// ---------------------------------------------------------
-// 6ème etape : Fixe l'épaisseur de l'arbre d'espèces
-// ---------------------------------------------------------
-set_species_width(&mut sp_tree);
-// ---------------------------------------------------------
-// 7ème étape :  Vérifie les conflits verticaux dans
-// l'arbre d'espèces
-// ---------------------------------------------------------
-check_vertical_contour_postorder(&mut sp_tree, root, 0.0);
-// ---------------------------------------------------------
-// 8ème étape :  mapping des noeuds de genes sur les noeuds
-// d'espèce pour initialiser les coordonées des noeuds des
-// arbres de gènes
-// ---------------------------------------------------------
-map_gene_trees(&mut sp_tree,&mut gene_trees);
-// ---------------------------------------------------------
-// 9ème etape : décale les noeuds de gene associés à un
-// noeud d'especes pour éviter qu'ils soit superposés
-// ---------------------------------------------------------
-bilan_mappings(&mut sp_tree, &mut gene_trees,root, & options);
-// ---------------------------------------------------------
-// 10ème étape : recalcule les coordonnées svg de tous les
-// arbres de gènes
-// ---------------------------------------------------------
-let  nb_gntree =  gene_trees.len(); // Nombre d'arbres de gene
-info!("map_species_trees: {} gene trees to be processed",nb_gntree);
-let mut idx_rcgen = 0;  // Boucle sur les arbres de genes
-loop {
-    let  groot = gene_trees[idx_rcgen].get_root();
-    shift_mod_xy(&mut gene_trees[idx_rcgen], groot, &mut 0.0, &mut 0.0);
-    idx_rcgen += 1;
-    if idx_rcgen == nb_gntree {
-        break;
-    }
-}
-// ---------------------------------------------------------
-// 11eme etape : centre les noeuds de genes dans le noeud de l'espece
-// ---------------------------------------------------------
-center_gene_nodes(&mut sp_tree,&mut gene_trees,root);
-// ---------------------------------------------------------
-// 12eme etape traite spécifiquement les duplications et les feuilles
-// ---------------------------------------------------------
-move_dupli_mappings(&mut sp_tree, &mut gene_trees,root);
-// ---------------------------------------------------------
-// Fin: Ecriture du fichier svg
-// ---------------------------------------------------------
-println!("Output filename is {}",outfile);
-let path = env::current_dir().expect("Unable to get current dir");
-let url_file = format!("file:///{}/{}", path.display(),outfile);
-match options.species_only_flag {
-    true => {
-        if options.species_internal {
-             options.gene_internal = true;}
-             drawing::draw_tree(&mut sp_tree, outfile, &options,  &config);
-
-    },
-    false => drawing::draw_sptree_gntrees(&mut sp_tree, &mut gene_trees, outfile,
-        &options, &config),
-};
-if options.open_browser {
-    if webbrowser::open_browser(Browser::Default,&url_file).is_ok() {
-        info!("Browser OK");
-    }
-}
 }
 
 fn set_config(configfile: String, config: &mut Config) {
