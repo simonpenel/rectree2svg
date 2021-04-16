@@ -98,7 +98,13 @@ fn main()  {
             None => break,
             Some(opt) => match opt {
                 Opt('g', Some(string)) => {
-                    options.disp_gene = string.parse().unwrap();
+                    options.disp_gene = match string.parse::<usize>(){
+                        Ok(valeur) => valeur,
+                        Err(_err) => {
+                            eprintln!("Error! Please give a integer value with -g option");
+                            process::exit(1);
+                        },
+                    };
                     },
                 Opt('i', None) => options.gene_internal = true,
                 Opt('I', None) => options.species_internal = true,
