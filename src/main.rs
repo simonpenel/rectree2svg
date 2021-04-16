@@ -104,13 +104,25 @@ fn main()  {
                 Opt('I', None) => options.species_internal = true,
                 Opt('b', None) => options.open_browser = true,
                 Opt('r', Some(string)) => {
-                    options.ratio = string.parse().unwrap();
+                    options.ratio = match string.parse::<f32>(){
+                        Ok(valeur) => valeur,
+                        Err(_err) => {
+                            eprintln!("Error! Please give a numeric value with -r option");
+                            process::exit(1);
+                        },
+                    };
                     },
                 Opt('p', None) => options.clado_flag = false,
                 Opt('s', None) => options.species_only_flag = true,
                 Opt('l', Some(string)) => {
                     options.real_length_flag = true;
-                    options.scale = string.parse().unwrap();
+                    options.scale = match string.parse::<f32>(){
+                        Ok(valeur) => valeur,
+                        Err(_err) => {
+                            eprintln!("Error! Please give a numeric value with -l option");
+                            process::exit(1);
+                        },
+                    };
                     },
                 Opt('L', None) => options.rotate = false,
                 Opt('v', None) => {
