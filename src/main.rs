@@ -28,7 +28,7 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-L][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
     println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
@@ -36,6 +36,7 @@ fn display_help(programe_name:String) {
     println!("    -i : display internal gene nodes");
     println!("    -I : display internal species nodes");
     println!("    -l factor : use branch length, using the given factor (default 1.0)");
+    println!("    -L : display as landscape");
     println!("    -o outputfile : set name of output file");
     println!("    -p : build a phylogram");
     println!("    -r ratio : set the ratio between width of species and gene tree.");
@@ -88,7 +89,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:f:g:l:o:bhiIsr:pv");
+    let mut opts = getopt::Parser::new(&args, "c:f:g:l:Lo:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
@@ -111,6 +112,7 @@ fn main()  {
                     options.real_length_flag = true;
                     options.scale = string.parse().unwrap();
                     },
+                Opt('L', None) => options.rotate = false,
                 Opt('v', None) => {
                     options.verbose = true;
                     env::set_var("RUST_LOG", "info");
@@ -185,6 +187,8 @@ fn main()  {
             // Creation du vecteur de structure ArenaTree pour les genes
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
+            // Empty additional transfers
+            let transfers = vec![];
             read_recphyloxml(filename.to_string(), &mut sp_tree, &mut gene_trees);
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
@@ -201,7 +205,8 @@ fn main()  {
                 phyloxml_processing(&mut tree, &options, &config, outfile);
             }
             else {
-                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, &mut options, &config, outfile);
+                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, &mut options, &config,
+                    true, &transfers, outfile);
             }
         },
     }

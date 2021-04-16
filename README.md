@@ -67,6 +67,7 @@ Usage:
     -h : help
     -i : display internal gene nodes
     -I : display internal species nodes
+    -L : display as landscape
     -l factor: use branch length, using the given factor
     -o outputfile : set name of output file
     -p : build a phylogram   
