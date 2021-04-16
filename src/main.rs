@@ -94,59 +94,66 @@ fn main()  {
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
     loop {
-        match opts.next().transpose().expect("Unknown option") {
-            None => break,
-            Some(opt) => match opt {
-                Opt('g', Some(string)) => {
-                    options.disp_gene = match string.parse::<usize>(){
-                        Ok(valeur) => valeur,
-                        Err(_err) => {
-                            eprintln!("Error! Please give a integer value with -g option");
-                            process::exit(1);
+        // match opts.next().transpose().expect("Unknown option") {
+        match opts.next().transpose() {
+            Err(err) => {
+                eprintln!("Error : {}",err);
+                std::process::exit(1);
+            },
+            Ok(res) => match res {
+                None => break,
+                Some(opt) => match opt {
+                    Opt('g', Some(string)) => {
+                        options.disp_gene = match string.parse::<usize>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a integer value with -g option");
+                                process::exit(1);
+                            },
+                        };
                         },
-                    };
-                    },
-                Opt('i', None) => options.gene_internal = true,
-                Opt('I', None) => options.species_internal = true,
-                Opt('b', None) => options.open_browser = true,
-                Opt('r', Some(string)) => {
-                    options.ratio = match string.parse::<f32>(){
-                        Ok(valeur) => valeur,
-                        Err(_err) => {
-                            eprintln!("Error! Please give a numeric value with -r option");
-                            process::exit(1);
+                        Opt('i', None) => options.gene_internal = true,
+                        Opt('I', None) => options.species_internal = true,
+                        Opt('b', None) => options.open_browser = true,
+                        Opt('r', Some(string)) => {
+                            options.ratio = match string.parse::<f32>(){
+                                Ok(valeur) => valeur,
+                                Err(_err) => {
+                                    eprintln!("Error! Please give a numeric value with -r option");
+                                    process::exit(1);
+                                },
+                            };
                         },
-                    };
+                        Opt('p', None) => options.clado_flag = false,
+                        Opt('s', None) => options.species_only_flag = true,
+                        Opt('l', Some(string)) => {
+                            options.real_length_flag = true;
+                            options.scale = match string.parse::<f32>(){
+                                Ok(valeur) => valeur,
+                                Err(_err) => {
+                                    eprintln!("Error! Please give a numeric value with -l option");
+                                    process::exit(1);
+                                },
+                            };
                     },
-                Opt('p', None) => options.clado_flag = false,
-                Opt('s', None) => options.species_only_flag = true,
-                Opt('l', Some(string)) => {
-                    options.real_length_flag = true;
-                    options.scale = match string.parse::<f32>(){
-                        Ok(valeur) => valeur,
-                        Err(_err) => {
-                            eprintln!("Error! Please give a numeric value with -l option");
-                            process::exit(1);
+                    Opt('L', None) => options.rotate = false,
+                    Opt('v', None) => {
+                        options.verbose = true;
+                        env::set_var("RUST_LOG", "info");
+                        env_logger::init();
+                        info!("Verbosity set to Info");
                         },
-                    };
-                    },
-                Opt('L', None) => options.rotate = false,
-                Opt('v', None) => {
-                    options.verbose = true;
-                    env::set_var("RUST_LOG", "info");
-                    env_logger::init();
-                    info!("Verbosity set to Info");
-                    },
-                Opt('c', Some(string)) => {
+                    Opt('c', Some(string)) => {
                         set_config(string, &mut config);
-                        },
-                Opt('f', Some(string)) => {
-                    infile = string.clone();
-                    nb_args += 1;
                     },
-                Opt('o', Some(string)) => outfile = string.clone(),
-                Opt('h', None) => display_help(args[0].to_string()),
-                _ => unreachable!(),
+                    Opt('f', Some(string)) => {
+                        infile = string.clone();
+                        nb_args += 1;
+                    },
+                    Opt('o', Some(string)) => outfile = string.clone(),
+                    Opt('h', None) => display_help(args[0].to_string()),
+                    _ => unreachable!(),
+                }
             }
         }
     }
