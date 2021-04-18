@@ -62,7 +62,8 @@ Usage:
     rectree2svg -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
     -b : open svg in browser
-    -c configfile: use a configuration file
+    -c configfile: use a configuration file    
+    -F phylo/recphylo: force format phyloXML/recPhyloXML
     -g <n> : display the gene #n in phyloxml style (no species tree)
     -h : help
     -i : display internal gene nodes
