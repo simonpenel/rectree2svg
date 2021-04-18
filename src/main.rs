@@ -31,7 +31,7 @@ fn display_help(programe_name:String) {
     println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-l factor][-L][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
-    println!("    -F phylo/recphylo: force use format phyloXML/recPhyloXML");
+    println!("    -F phylo/recphylo: force format phyloXML/recPhyloXML");
     println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
