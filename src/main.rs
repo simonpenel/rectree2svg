@@ -28,9 +28,10 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-L][-o output file][-p][-r ratio][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-l factor][-L][-o output file][-p][-r ratio][-s][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
+    println!("    -F phylo/recphylo: force use format phyloXML/recPhyloXML");
     println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
@@ -89,12 +90,12 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:f:g:l:Lo:bhiIsr:pv");
+    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:bhiIsr:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
+    let mut _format = Format::Newick;
     loop {
-        // match opts.next().transpose().expect("Unknown option") {
         match opts.next().transpose() {
             Err(err) => {
                 eprintln!("Error : {}",err);
@@ -103,6 +104,16 @@ fn main()  {
             Ok(res) => match res {
                 None => break,
                 Some(opt) => match opt {
+                    Opt('F', Some(string)) => {
+                        _format = match string.as_str() {
+                            "recphylo" => Format::Recphyloxml,
+                            "phyloxml" => Format::Phyloxml,
+                            _ => {
+                                eprintln!("Error! Please give a correct format (recphylo/phyloxml)");
+                                process::exit(1);
+                            },
+                        };
+                    },
                     Opt('g', Some(string)) => {
                         options.disp_gene = match string.parse::<usize>(){
                             Ok(valeur) => valeur,
@@ -111,30 +122,30 @@ fn main()  {
                                 process::exit(1);
                             },
                         };
-                        },
-                        Opt('i', None) => options.gene_internal = true,
-                        Opt('I', None) => options.species_internal = true,
-                        Opt('b', None) => options.open_browser = true,
-                        Opt('r', Some(string)) => {
-                            options.ratio = match string.parse::<f32>(){
-                                Ok(valeur) => valeur,
-                                Err(_err) => {
-                                    eprintln!("Error! Please give a numeric value with -r option");
-                                    process::exit(1);
-                                },
-                            };
-                        },
-                        Opt('p', None) => options.clado_flag = false,
-                        Opt('s', None) => options.species_only_flag = true,
-                        Opt('l', Some(string)) => {
-                            options.real_length_flag = true;
-                            options.scale = match string.parse::<f32>(){
-                                Ok(valeur) => valeur,
-                                Err(_err) => {
-                                    eprintln!("Error! Please give a numeric value with -l option");
-                                    process::exit(1);
-                                },
-                            };
+                    },
+                    Opt('i', None) => options.gene_internal = true,
+                    Opt('I', None) => options.species_internal = true,
+                    Opt('b', None) => options.open_browser = true,
+                    Opt('r', Some(string)) => {
+                        options.ratio = match string.parse::<f32>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a numeric value with -r option");
+                                process::exit(1);
+                            },
+                        };
+                    },
+                    Opt('p', None) => options.clado_flag = false,
+                    Opt('s', None) => options.species_only_flag = true,
+                    Opt('l', Some(string)) => {
+                        options.real_length_flag = true;
+                        options.scale = match string.parse::<f32>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a numeric value with -l option");
+                                process::exit(1);
+                            },
+                        };
                     },
                     Opt('L', None) => options.rotate = false,
                     Opt('v', None) => {
@@ -180,7 +191,16 @@ fn main()  {
             }
             },
     };
-    println!("Assume that format is {:?}",format);
+    let format = match _format {
+        Format::Newick => {
+            println!("Assume that format is {:?}",format);
+            format
+        },
+        _ => {
+            println!("User defined format {:?}",_format);
+            _format
+        },
+    };
     // get the url
     let path = env::current_dir().expect("Unable to get current dir");
     let url_file = format!("file:///{}/{}", path.display(),outfile.clone());
