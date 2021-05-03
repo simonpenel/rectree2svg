@@ -75,7 +75,7 @@ Usage:
     -r ratio : set the ratio between width of species and gene tree.
                Default 1.0, you usualy do not need to change it.
     -s : drawing species tree only    
-    -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if abundance is higher tan t. Only ine gene is displayed.
+    -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if abundance is higher tan t. Only one gene is displayed.
     -T <n> : with option -t, select the gene to display
 
     -v : verbose

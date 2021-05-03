@@ -46,7 +46,7 @@ fn display_help(programe_name:String) {
 
     println!("    -s : drawing species tree only");
     println!("    -t <t> : redudant transfers are displayed as one, with opacity according \
-    to abundance and only if abundance is higher tan t. Only ine gene is displayed.");
+    to abundance and only if abundance is higher tan t. Only one gene is displayed.");
     println!("    -T <n> : with option -t, select the gene to display");
     println!("    -v : verbose");
     println!("");
