@@ -45,12 +45,13 @@ fn display_help(programe_name:String) {
     println!("               Default 1.0, you usualy do not need to change it. ");
 
     println!("    -s : drawing species tree only");
-    println!("    -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if \
-    abundance is higher tan t. Only ine gene is displayed.");
+    println!("    -t <t> : redudant transfers are displayed as one, with opacity according \
+    to abundance and only if abundance is higher tan t. Only ine gene is displayed.");
     println!("    -T <n> : with option -t, select the gene to display");
     println!("    -v : verbose");
     println!("");
-    println!("    Note on -b option : you must set a browser as default application for opening svg file");
+    println!("    Note on -b option : you must set a browser as default application for opening \
+    svg file");
     println!("");
     println!("Input format is guessed according to the file name extension:");
 
@@ -282,8 +283,8 @@ fn main()  {
                 println!("Transfers = {:?}",transfers);
                 let mut selected_gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
                 selected_gene_trees.push(gene_trees.remove(options.thickness_gene));
-                recphyloxml_processing(&mut sp_tree, &mut selected_gene_trees, &mut options, &config, true,
-                    &transfers, outfile);
+                recphyloxml_processing(&mut sp_tree, &mut selected_gene_trees, &mut options,
+                    &config, true, &transfers, outfile);
             }
             else {
                 if options.disp_gene  > 0 {
