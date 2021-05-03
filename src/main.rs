@@ -28,7 +28,8 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-l factor][-L][-o output file][-p][-r ratio][-s][-v]",programe_name);
+    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-l factor][-L]\
+    [-o output file][-p][-r ratio][-s][-t threshold][-t #][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
     println!("    -F phylo/recphylo: force format phyloXML/recPhyloXML");
@@ -44,6 +45,9 @@ fn display_help(programe_name:String) {
     println!("               Default 1.0, you usualy do not need to change it. ");
 
     println!("    -s : drawing species tree only");
+    println!("    -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if \
+    abundance is higher tan t. Only ine gene is displayed.");
+    println!("    -T <n> : with option -t, select the gene to display");
     println!("    -v : verbose");
     println!("");
     println!("    Note on -b option : you must set a browser as default application for opening svg file");
@@ -90,7 +94,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:bhiIsr:pv");
+    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:bhiIst:T:r:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
@@ -137,6 +141,26 @@ fn main()  {
                     },
                     Opt('p', None) => options.clado_flag = false,
                     Opt('s', None) => options.species_only_flag = true,
+                    Opt('t', Some(string)) => {
+                        options.thickness_thresh = match string.parse::<usize>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a integer value with -t option");
+                                process::exit(1);
+                            },
+                        };
+                        options.thickness_flag = true;
+                        println!("Options = {:?}",options);
+                    },
+                    Opt('T', Some(string)) => {
+                        options.thickness_gene = match string.parse::<usize>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a integer value with -T option");
+                                process::exit(1);
+                            },
+                        };
+                    },
                     Opt('l', Some(string)) => {
                         options.real_length_flag = true;
                         options.scale = match string.parse::<f32>(){
@@ -233,25 +257,49 @@ fn main()  {
             // ---------------------------------------------------------
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
             // Empty additional transfers
-            let transfers = vec![];
+            let mut transfers = vec![];
+
             read_recphyloxml(filename.to_string(), &mut sp_tree, &mut gene_trees);
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
-
-            if options.disp_gene  > 0 {
-                // On traite l'arbre de gene comme un arbre au format phylxoml
-                if options.disp_gene > nb_gntree {
+            if options.thickness_flag {
+                if options.thickness_gene > nb_gntree {
                     println!("There are only {} genes in the file, unable to display gene #{}",
-                    nb_gntree,options.disp_gene);
+                    nb_gntree,options.thickness_gene);
                     process::exit(1);
                 }
-                let  mut tree = &mut gene_trees[options.disp_gene-1];
-                phyloxml_processing(&mut tree, &options, &config, outfile);
+                //  Recupere les transferts
+                transfers = get_gtransfer(&mut gene_trees[0]);
+                let mut i = 1;
+                while i < nb_gntree {
+                    let gene_transfer = get_gtransfer(&mut gene_trees[i]);
+                    for val in gene_transfer {
+                        transfers.push(val);
+                    }
+                    i = i + 1;
+                }
+                println!("Transfers = {:?}",transfers);
+                let mut selected_gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
+                selected_gene_trees.push(gene_trees.remove(options.thickness_gene));
+                recphyloxml_processing(&mut sp_tree, &mut selected_gene_trees, &mut options, &config, true,
+                    &transfers, outfile);
             }
             else {
-                recphyloxml_processing(&mut sp_tree,&mut  gene_trees, &mut options, &config,
-                    true, &transfers, outfile);
+                if options.disp_gene  > 0 {
+                    // On traite l'arbre de gene comme un arbre au format phylxoml
+                    if options.disp_gene > nb_gntree {
+                        println!("There are only {} genes in the file, unable to display gene #{}",
+                        nb_gntree,options.disp_gene);
+                        process::exit(1);
+                    }
+                    let  mut tree = &mut gene_trees[options.disp_gene-1];
+                    phyloxml_processing(&mut tree, &options, &config, outfile);
+                }
+                else {
+                    recphyloxml_processing(&mut sp_tree,&mut  gene_trees, &mut options, &config,
+                        true, &transfers, outfile);
+                }
             }
         },
     }

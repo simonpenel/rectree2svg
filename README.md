@@ -74,7 +74,10 @@ Usage:
     -p : build a phylogram   
     -r ratio : set the ratio between width of species and gene tree.
                Default 1.0, you usualy do not need to change it.
-    -s : drawing species tree only
+    -s : drawing species tree only    
+    -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if abundance is higher tan t. Only ine gene is displayed.
+    -T <n> : with option -t, select the gene to display
+
     -v : verbose
 
 `Input format is guessed according to the file name extension:`
