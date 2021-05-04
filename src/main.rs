@@ -28,7 +28,7 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-J][-l factor][-L]\
+    println!("{} -f input file [-b][-c config file][-F format][-g #][-h][-i][-I][-J][-l factor][-L]\
     [-o output file][-p][-r ratio][-s][-t threshold][-t #][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
