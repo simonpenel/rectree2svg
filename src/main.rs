@@ -55,8 +55,8 @@ fn display_help(programe_name:String) {
     println!("");
     println!("Input format is guessed according to the file name extension:");
 
-    println!(".xml         => phyloxml");
     println!(".phyloxml    => phyloXML");
+    println!(".xml         => recPhyloxml");
     println!(".recphyloxml => recPhyloXML");
     println!(".recPhyloXML => recPhyloXML");
     println!(".recphylo    => recPhyloXML");
@@ -207,7 +207,7 @@ fn main()  {
             let suffix = &filename[dot..];
             info!("File suffix is {:?}",suffix);
             match suffix {
-                ".xml" => Format::Phyloxml,
+                ".xml" => Format::Recphyloxml,
                 ".phyloxml" => Format::Phyloxml,
                 ".recphyloxml" => Format::Recphyloxml,
                 ".recPhyloXML" => Format::Recphyloxml,

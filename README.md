@@ -82,8 +82,8 @@ Usage:
 
 `Input format is guessed according to the file name extension:`
 
-    - .xml         => phyloxml
     - .phyloxml    => phyloXML
+    - .xml         => recPhyloxml
     - .recphyloxml => recPhyloXML
     - .recPhyloXML => recPhyloXML
     - .recphylo    => recPhyloXML
