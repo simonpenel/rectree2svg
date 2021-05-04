@@ -28,7 +28,7 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-l factor][-L]\
+    println!("{} -f input file [-b][-c config file][-F format[-g #][-h][-i][-I][-J][-l factor][-L]\
     [-o output file][-p][-r ratio][-s][-t threshold][-t #][-v]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
@@ -37,6 +37,7 @@ fn display_help(programe_name:String) {
     println!("    -h : help");
     println!("    -i : display internal gene nodes");
     println!("    -I : display internal species nodes");
+    println!("    -J : with option -t, display the abundance of redudant transfers");
     println!("    -l factor : use branch length, using the given factor (default 1.0)");
     println!("    -L : display as landscape");
     println!("    -o outputfile : set name of output file");
@@ -95,7 +96,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:bhiIst:T:r:pv");
+    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:bhiIJst:T:r:pv");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
@@ -130,6 +131,7 @@ fn main()  {
                     },
                     Opt('i', None) => options.gene_internal = true,
                     Opt('I', None) => options.species_internal = true,
+                    Opt('J', None) => options.thickness_disp_score = true,
                     Opt('b', None) => options.open_browser = true,
                     Opt('r', Some(string)) => {
                         options.ratio = match string.parse::<f32>(){

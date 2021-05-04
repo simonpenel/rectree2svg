@@ -68,6 +68,7 @@ Usage:
     -h : help
     -i : display internal gene nodes
     -I : display internal species nodes
+    -J : with option -t, display the abundance of redudant transfers
     -L : display as landscape
     -l factor: use branch length, using the given factor
     -o outputfile : set name of output file
