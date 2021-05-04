@@ -59,7 +59,7 @@ Format is guessed according to filename (default is newick)
 
 Usage:
 
-    rectree2svg -f input file [-b][-c config file][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
+    rectree2svg -f input file [-b][-c config file][-F format][-g #][-h][-i][-I][-l factor][-o output file][-p][-r ratio][-s][-v]
 
     -b : open svg in browser
     -c configfile: use a configuration file    
