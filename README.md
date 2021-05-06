@@ -33,6 +33,11 @@ the same gene reconciliation in phyloxml:
 https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/FAM000696_reconciliated_xml.svg
 
 
+multiple gene trees with redundant transfers. Display only 1 gene tree and the transfers according to the abundance of the transfer:
+
+https://raw.githubusercontent.com/simonpenel/rectree2svg/768eaa1aead9ce6b599a438a6ef6df3f85f6a418/transfers_abundance.svg
+
+
 # Install:
 
 rectree2svg is written in Rust. The code is managed using Cargo and published on crates.io.
