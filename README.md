@@ -65,21 +65,24 @@ Usage:
     -c configfile: use a configuration file    
     -F phylo/recphylo: force format phyloXML/recPhyloXML
     -g <n> : display the gene #n in phyloxml style (no species tree)
-    -h : help
+    -h : help    
+    -H height : multiply the tree height by factor 'height' (default 1.0)
     -i : display internal gene nodes
     -I : display internal species nodes
     -J : with option -t, display the abundance of redudant transfers
     -L : display as landscape
     -l factor: use branch length, using the given factor
-    -o outputfile : set name of output file
+    -o outputfile : set name of output file    
+    -O switching nodes in order to minimise transfer crossings (under development)
     -p : build a phylogram   
     -r ratio : set the ratio between width of species and gene tree.
                Default 1.0, you usualy do not need to change it.
     -s : drawing species tree only    
     -t <t> : redudant transfers are displayed as one, with opacity according to abundance and only if abundance is higher tan t. Only one gene is displayed.
     -T <n> : with option -t, select the gene to display
+    -v : verbose   
+    -W width : multiply the tree width by factor 'width' (default 1.0)
 
-    -v : verbose
 
 `Input format is guessed according to the file name extension:`
 

@@ -28,13 +28,14 @@ fn display_help(programe_name:String) {
     println!("{} v{}", NAME.unwrap_or("unknown"),VERSION.unwrap_or("unknown"));
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
-    println!("{} -f input file [-b][-c config file][-F format][-g #][-h][-i][-I][-J][-l factor][-L]\
-    [-o output file][-O][-p][-r ratio][-s][-t threshold][-t #][-v]",programe_name);
+    println!("{} -f input file [-b][-c config file][-F format][-g #][-h][-H height][-i][-I][-J][-l factor][-L]\
+    [-o output file][-O][-p][-r ratio][-s][-t threshold][-t #][-v][-W width]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
     println!("    -F phylo/recphylo: force format phyloXML/recPhyloXML");
     println!("    -g <n> : display the gene #n in phyloxml style (no species tree)");
     println!("    -h : help");
+    println!("    -H height : multiply the tree height by factor 'height' (default 1.0)");
     println!("    -i : display internal gene nodes");
     println!("    -I : display internal species nodes");
     println!("    -J : with option -t, display the abundance of redudant transfers");
@@ -51,6 +52,7 @@ fn display_help(programe_name:String) {
     to abundance and only if abundance is higher tan t. Only one gene is displayed.");
     println!("    -T <n> : with option -t, select the gene to display");
     println!("    -v : verbose");
+    println!("    -W width : multiply the tree width by factor 'width' (default 1.0)");
     println!("");
     println!("    Note on -b option : you must set a browser as default application for opening \
     svg file");
@@ -97,7 +99,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:f:F:g:l:Lo:ObhiIJst:T:r:pv");
+    let mut opts = getopt::Parser::new(&args, "c:bf:F:g:hH:iIJl:Lo:Opr:st:T:vW:");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
@@ -126,6 +128,15 @@ fn main()  {
                             Ok(valeur) => valeur,
                             Err(_err) => {
                                 eprintln!("Error! Please give a integer value with -g option");
+                                process::exit(1);
+                            },
+                        };
+                    },
+                    Opt('H', Some(string)) => {
+                        options.height = match string.parse::<f32>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a numeric value with -H option");
                                 process::exit(1);
                             },
                         };
@@ -192,6 +203,15 @@ fn main()  {
                     Opt('o', Some(string)) => outfile = string.clone(),
                     Opt('O', None) => options.optimisation = true,
                     Opt('h', None) => display_help(args[0].to_string()),
+                    Opt('W', Some(string)) => {
+                        options.width = match string.parse::<f32>(){
+                            Ok(valeur) => valeur,
+                            Err(_err) => {
+                                eprintln!("Error! Please give a numeric value with -W option");
+                                process::exit(1);
+                            },
+                        };
+                    },
                     _ => unreachable!(),
                 }
             }
