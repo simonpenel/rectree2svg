@@ -29,7 +29,7 @@ fn display_help(programe_name:String) {
     println!("{}", DESCRIPTION.unwrap_or("unknown"));
     println!("Usage:");
     println!("{} -f input file [-b][-c config file][-F format][-g #][-h][-H height][-i][-I][-J][-l factor][-L]\
-    [-o output file][-O][-p][-r ratio][-s][-t threshold][-t #][-v][-W width]",programe_name);
+    [-o output file][-O][-p][-r ratio][-s][-S][-t threshold][-t #][-v][-W width]",programe_name);
     println!("    -b : open svg in browser");
     println!("    -c configfile: use a configuration file");
     println!("    -F phylo/recphylo: force format phyloXML/recPhyloXML");
@@ -48,6 +48,7 @@ fn display_help(programe_name:String) {
     println!("               Default 1.0, you usualy do not need to change it. ");
 
     println!("    -s : drawing species tree only");
+    println!("    -S : display node support");
     println!("    -t <t> : redudant transfers are displayed as one, with opacity according \
     to abundance and only if abundance is higher tan t. Only one gene is displayed.");
     println!("    -T <n> : with option -t, select the gene to display");
@@ -99,7 +100,7 @@ fn main()  {
     if args.len() == 1 {
          display_help(args[0].to_string());
     }
-    let mut opts = getopt::Parser::new(&args, "c:bf:F:g:hH:iIJl:Lo:Opr:st:T:vW:");
+    let mut opts = getopt::Parser::new(&args, "c:bf:F:g:hH:iIJl:Lo:Opr:sSt:T:vW:");
     let mut infile = String::new();
     let mut outfile = String::from("tree2svg.svg");
     let mut nb_args = 0;
@@ -156,6 +157,7 @@ fn main()  {
                     },
                     Opt('p', None) => options.clado_flag = false,
                     Opt('s', None) => options.species_only_flag = true,
+                    Opt('S', None) => options.support = true,
                     Opt('t', Some(string)) => {
                         options.thickness_thresh = match string.parse::<usize>(){
                             Ok(valeur) => valeur,
