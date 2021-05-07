@@ -167,7 +167,6 @@ fn main()  {
                             },
                         };
                         options.thickness_flag = true;
-                        println!("Options = {:?}",options);
                     },
                     Opt('T', Some(string)) => {
                         options.thickness_gene = match string.parse::<usize>(){
