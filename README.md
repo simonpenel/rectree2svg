@@ -21,7 +21,7 @@ phyloXML, recPhyloXML, rooted newick ( NHX balises will not be considered ).
 
 multiple genes reconciliation recphyloxml:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/tree2svg.example.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/684e2ecccf04408cf15815e3fb71bbeebfa19d12/tree2svg.example.svg
 
 
 single gene reconciliation in recphyloxml:
