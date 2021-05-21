@@ -35,7 +35,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b338
 
 multiple gene trees with redundant transfers. Display only 1 gene tree and the transfers according to the abundance of the transfer:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/768eaa1aead9ce6b599a438a6ef6df3f85f6a418/transfers_abundance.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/f9ee031fa23b815ff7cc7298fd0dc4fb45707d53/transfers_abundance.svg
 
 
 # Install:
