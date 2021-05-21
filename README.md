@@ -26,7 +26,7 @@ https://raw.githubusercontent.com/simonpenel/rectree2svg/684e2ecccf04408cf15815e
 
 single gene reconciliation in recphyloxml:
 
-https://raw.githubusercontent.com/simonpenel/rectree2svg/9244f3136961f909fd7b33818f0a220e3f32c880/FAM000696_reconciliated_recphyloxml.svg
+https://raw.githubusercontent.com/simonpenel/rectree2svg/5e23e92396d44a68337b33c579f2d9d372d18b4d/FAM000696_reconciliated_recphyloxml.svg
 
 the same gene reconciliation in phyloxml:
 
