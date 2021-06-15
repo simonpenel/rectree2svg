@@ -284,8 +284,9 @@ fn main()  {
             let mut gene_trees:std::vec::Vec<ArenaTree<String>> = Vec::new();
             // Empty additional transfers
             let mut transfers = vec![];
-
-            read_recphyloxml(filename.to_string(), &mut sp_tree, &mut gene_trees);
+            let mut global_roots: std::vec::Vec<usize> = Vec::new();
+            read_recphyloxml_multi(filename.to_string(), &mut sp_tree, &mut gene_trees,
+                &mut global_roots);
             let  nb_gntree =  gene_trees.len().clone();
             println!("Number of gene trees : {}",nb_gntree);
             info!("List of gene trees : {:?}",gene_trees);
