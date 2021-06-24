@@ -2,7 +2,7 @@
 
 [![rectree2svg at crates.io](https://img.shields.io/crates/v/rectree2svg.svg)](https://crates.io/crates/rectree2svg)
 
-
+OBSOLETE: Pease see 'thirdkind' instead!
 
 Build a svg representation of a phylogenetic reconciled (or not) tree with events (loss, duplication, speciation, transfer).
 

@@ -1,9 +1,9 @@
 [package]
 name = "rectree2svg"
-version = "2.10.0"
+version = "2.10.1"
 authors = ["Simon Penel <simon.penel@univ-lyon1.fr>"]
 edition = "2018"
-description ="Read  phylogenetic tree(s) in newick, phyloxml or recPhyloXML file and build a svg representation of the tree(s)."
+description ="OBSOLETE: Pease see 'thirdkind' instead! (Read  phylogenetic tree(s) in newick, phyloxml or recPhyloXML file and build a svg representation of the tree(s).)"
 license="CECILL-2.1"
 keywords=["phylogeny", "recphyloxml", "tree-reconciliation", "svg", "phylogenetic-tree"]
 homepage = "https://github.com/simonpenel/rectree2svg/wiki"
